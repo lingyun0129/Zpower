@@ -12,7 +12,7 @@
             android:id="@+id/tv_title"
             style="@style/fragment_setting_text"
             android:text="公制"/>
-        <com.vogtec.cr01.view.MaterialCheckBox
+        <com.zpower.view.MaterialCheckBox
             android:id="@+id/cb_km"
             android:layout_width="30dp"
             android:layout_height="30dp"
