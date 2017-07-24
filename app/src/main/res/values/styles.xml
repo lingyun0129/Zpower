@@ -1,0 +1,122 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="iv_close">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:src">@mipmap/close</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <style name="tv_in_login_and_sign_up">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+    <style name="et_in_login_and_sign_up">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:textColorHint">@color/gray_text</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:background">@drawable/shape_edit_text</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>
+    <style name="btn_in_login_and_sign_up">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/selector_sign_and_login</item>
+    </style>
+    <!--fragment cycling_record 文字style-->
+    <style name="fragment_cycling_record_small_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="fragment_cycling_record_big_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--设置 文字style-->
+    <style name="fragment_setting_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    <style name="fragment_setting_account_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:drawableRight">@mipmap/next</item>
+        <item name="android:drawablePadding">20dp</item>
+    </style>
+    <!--设备信息text style-->
+    <style name="fragment_setting_info">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+    <!--最佳记录数据text style s小 m中 l大 -->
+    <style name="fragment_best_data_m">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+    <style name="fragment_best_data_l">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="fragment_best_data_s">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+    <!--历史记录banner text style-->
+    <style name="fragment_history_data">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

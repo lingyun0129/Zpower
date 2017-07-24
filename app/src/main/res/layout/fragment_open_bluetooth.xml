@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@color/colorPrimary"
+                android:weightSum="3">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="2">
+        <include
+            android:id="@+id/include"
+            layout="@layout/connect_common"/>
+        <LinearLayout
+            android:id="@+id/ll_connecting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/include"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/phone"/>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/lodaingView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                app:indicatorName="BallBeatIndicator"/>
+            <ImageView
+                android:id="@+id/iv_power_meter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/power_meter"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_discovering"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/bluetooth"
+                android:layout_marginRight="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Discovering devices..."
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+            <TextView
+                android:id="@+id/tv_rescan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:layout_marginRight="20dp"
+                android:clickable="true"
+                android:text="Rescan"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:background="@drawable/selector_textview_button"/>
+            <TextView
+                android:id="@+id/tv_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:layout_marginLeft="20dp"
+                android:clickable="true"
+                android:text="Skip"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:background="@drawable/selector_textview_button"/>
+
+    </LinearLayout>
+
+</LinearLayout>

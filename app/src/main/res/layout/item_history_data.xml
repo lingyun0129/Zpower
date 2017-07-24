@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="20dp"
+              android:paddingBottom="20dp"
+    android:background="@color/colorPrimary">
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="02月17日"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="00:30:20"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"/>
+    <TextView
+        android:id="@+id/tv_watt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/watt_s"
+        android:paddingLeft="20dp"
+        android:drawablePadding="10dp"
+        android:text="230"
+        android:textSize="16sp"
+        android:textColor="@color/watt_red"/>
+
+</LinearLayout>
