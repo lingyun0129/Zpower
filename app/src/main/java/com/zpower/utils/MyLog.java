@@ -34,11 +34,11 @@ public class MyLog {
 	// 日志打印级别
 	private static char MYLOG_TYPE = 'v';
 	// 日志存储路径
-	public static String MYLOG_PATH_SDCARD_DIR = "/mnt/asec/cr01/log";
+	public static String MYLOG_PATH_SDCARD_DIR = "/mnt/zpower/log";
 	// 历史日志保存时间
 	private static int SDCARD_LOG_FILE_SAVE_DAYS = 0;
 	// 日志文件名称
-	private static String MYLOG_FILE_NAME = "SKSLog.txt";
+	private static String MYLOG_FILE_NAME = "zpower.txt";
 	// 日志时间
 	private static SimpleDateFormat myLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	// 日志文件夹时间

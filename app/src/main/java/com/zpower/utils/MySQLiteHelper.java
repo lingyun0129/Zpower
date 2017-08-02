@@ -10,7 +10,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
 	private static final String tag = MySQLiteHelper.class.getSimpleName();
 
-	private final static String db_name = "cr01";
+	private final static String db_name = "zpower";
 	private final static int db_version = 1;
 
 	private static MySQLiteHelper mInstance;

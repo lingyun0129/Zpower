@@ -35,6 +35,7 @@
     <include
         layout="@layout/line_divider"/>
     <TextView
+        android:id="@+id/tv_id"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:text="wildgreen@163.com"
@@ -50,10 +51,10 @@
         android:paddingRight="30dp">
         <TextView
             style="@style/fragment_setting_text"
-            android:text="身高"/>
-        <TextView
+            android:text="身高(cm)"/>
+        <EditText
             style="@style/fragment_setting_account_text"
-            android:text="178cm"/>
+            android:text="点击设置"/>
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
@@ -64,8 +65,8 @@
         android:paddingRight="30dp">
         <TextView
             style="@style/fragment_setting_text"
-            android:text="体重"/>
-        <TextView
+            android:text="体重(Kg)"/>
+        <EditText
             style="@style/fragment_setting_account_text"
             android:text="点击设置"/>
 
@@ -81,9 +82,9 @@
             style="@style/fragment_setting_text"
             android:text="年龄"/>
 
-        <TextView
+        <EditText
             style="@style/fragment_setting_account_text"
-            android:text="点击设置"/>
+            android:hint="点击设置" />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>

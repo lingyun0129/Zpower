@@ -14,7 +14,7 @@
         android:layout_marginTop="60dp"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
-        android:text="VOGTEC"/>
+        android:text="Zpower"/>
     <TextView
         android:id="@+id/tv_power_training"
         android:layout_width="wrap_content"

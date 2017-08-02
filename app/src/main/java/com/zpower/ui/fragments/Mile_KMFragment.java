@@ -16,7 +16,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Created by zx on 2017/2/28.
  */
 
-public class Mile_KMFragment extends SupportFragment implements View.OnClickListener {
+public class Mile_KMFragment extends BaseFragment implements View.OnClickListener {
 
 
     private View rootView;

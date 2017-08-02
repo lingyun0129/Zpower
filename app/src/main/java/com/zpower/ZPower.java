@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.Environment;
 import android.util.Log;
 
-import com.zpower.BuildConfig;
 import com.zpower.utils.MyLog;
 
 import java.io.File;
@@ -32,7 +31,7 @@ public class ZPower extends Application {
 		GlobalVars.mAppStartTime = System.currentTimeMillis();
 		String state = Environment.getExternalStorageState();
 		if(state != null && state.equals("mounted")){
-			GlobalVars.mAppRootDir = Environment.getExternalStorageDirectory()+"/cr01";
+			GlobalVars.mAppRootDir = Environment.getExternalStorageDirectory()+"/zpower";
 			File root = new File(GlobalVars.mAppRootDir);
 			if(!root.exists()){
 				root.mkdir();

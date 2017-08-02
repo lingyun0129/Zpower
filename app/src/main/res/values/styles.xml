@@ -74,6 +74,9 @@
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:drawableRight">@mipmap/next</item>
         <item name="android:drawablePadding">20dp</item>
+        <item name="android:inputType">number</item>
+        <item name="android:textColorHint">@color/gray_text</item>
+        <item name="android:background">@null</item>
     </style>
     <!--设备信息text style-->
     <style name="fragment_setting_info">
