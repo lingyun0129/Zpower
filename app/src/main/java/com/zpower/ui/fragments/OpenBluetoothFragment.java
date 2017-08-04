@@ -54,6 +54,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         ImageView iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         TextView tv_rescan = (TextView) rootView.findViewById(R.id.tv_rescan);
         TextView tv_skip = (TextView) rootView.findViewById(R.id.tv_skip);
+
         iv_back.setOnClickListener(this);
         tv_rescan.setOnClickListener(this);
         tv_skip.setOnClickListener(this);

@@ -54,7 +54,8 @@
             android:text="身高(cm)"/>
         <EditText
             style="@style/fragment_setting_account_text"
-            android:text="点击设置"/>
+            android:hint="点击设置"
+            android:id="@+id/et_height"/>
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
@@ -68,7 +69,8 @@
             android:text="体重(Kg)"/>
         <EditText
             style="@style/fragment_setting_account_text"
-            android:text="点击设置"/>
+            android:hint="点击设置"
+            android:id="@+id/et_weight"/>
 
     </RelativeLayout>
     <include
@@ -84,7 +86,8 @@
 
         <EditText
             style="@style/fragment_setting_account_text"
-            android:hint="点击设置" />
+            android:hint="点击设置"
+            android:id="@+id/et_age"/>
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
