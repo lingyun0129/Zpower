@@ -79,9 +79,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/tv_total_time"
                     style="@style/fragment_cycling_record_big_text"
                     android:text="120"/>
                 <TextView
+                    android:id="@+id/tv_total_kilometre"
                     style="@style/fragment_cycling_record_big_text"
                     android:text="620"/>
             </LinearLayout>
@@ -103,9 +105,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/tv_total_watt"
                     style="@style/fragment_cycling_record_big_text"
                     android:text="220"/>
                 <TextView
+                    android:id="@+id/tv_total_kcal"
                     style="@style/fragment_cycling_record_big_text"
                     android:text="322K"/>
             </LinearLayout>

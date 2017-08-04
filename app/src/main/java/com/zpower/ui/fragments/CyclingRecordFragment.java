@@ -32,6 +32,11 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     private  final static String TAG = CyclingFragment.class.getCanonicalName();
     private View rootView;
     private TextView tv_device_name;
+    private TextView tvTotalTime;
+    private TextView tvTotalKilometre;
+    private TextView tvTotalWatt;
+    private TextView tvTotalKcal;
+
     private BluetoothDevice device;
     private TextView tv_connected;
     private ProgressDialog progressDialog;
@@ -63,6 +68,12 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         rl_connected_bg = (RelativeLayout) rootView.findViewById(R.id.RL_connected_bg);
         tv_device_name = (TextView) rootView.findViewById(R.id.tv_name);
         tv_connected = (TextView) rootView.findViewById(R.id.tv_connected);
+
+        tvTotalTime = (TextView)rootView.findViewById(R.id.tv_total_time);
+        tvTotalKilometre = (TextView) rootView.findViewById(R.id.tv_total_kilometre);
+        tvTotalWatt = (TextView) rootView.findViewById(R.id.tv_total_watt);
+        tvTotalKcal = (TextView) rootView.findViewById(R.id.tv_total_kcal);
+
         iv_back.setOnClickListener(this);
         iv_setting.setOnClickListener(this);
         iv_best_record.setOnClickListener(this);

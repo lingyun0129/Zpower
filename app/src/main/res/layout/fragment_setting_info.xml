@@ -62,8 +62,9 @@
             style="@style/fragment_setting_text"
             android:text="蓝牙"/>
         <TextView
+            android:id="@+id/tv_bt_mac"
             style="@style/fragment_setting_info"
-            android:text="F4:31:C3:61:A756"/>
+            />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>

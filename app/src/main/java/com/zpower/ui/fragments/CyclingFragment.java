@@ -119,6 +119,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         xl.setEnabled(false);
 
         YAxis leftAxis = mChart.getAxisLeft();
+
         leftAxis.setEnabled(false);
         leftAxis.setAxisMaximum(290f);
         leftAxis.setAxisMinimum(0f);
