@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.DefaultADCCallback;
+import com.zpower.model.RecordData;
 import com.zpower.service.MainService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,8 +29,8 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by zx on 2017/2/27.
  */
 
-public class CyclingRecordFragment extends BaseFragment implements View.OnClickListener{
-    private  final static String TAG = CyclingFragment.class.getCanonicalName();
+public class CyclingRecordFragment extends BaseFragment implements View.OnClickListener {
+    private final static String TAG = CyclingFragment.class.getCanonicalName();
     private View rootView;
     private TextView tv_device_name;
     private TextView tvTotalTime;
@@ -44,16 +45,19 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     private RelativeLayout rl_connected_bg;
     private MainService mService;
     boolean isReset = false;
-    public CyclingRecordFragment(){
+
+    public CyclingRecordFragment() {
         mService = MainService.getService();
     }
-    public static CyclingRecordFragment newInstance(){
+
+    public static CyclingRecordFragment newInstance() {
         return new CyclingRecordFragment();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_cycling_record,container,false);
+        rootView = inflater.inflate(R.layout.fragment_cycling_record, container, false);
         initView();
         EventBus.getDefault().register(this);
         return rootView;
@@ -69,7 +73,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         tv_device_name = (TextView) rootView.findViewById(R.id.tv_name);
         tv_connected = (TextView) rootView.findViewById(R.id.tv_connected);
 
-        tvTotalTime = (TextView)rootView.findViewById(R.id.tv_total_time);
+        tvTotalTime = (TextView) rootView.findViewById(R.id.tv_total_time);
         tvTotalKilometre = (TextView) rootView.findViewById(R.id.tv_total_kilometre);
         tvTotalWatt = (TextView) rootView.findViewById(R.id.tv_total_watt);
         tvTotalKcal = (TextView) rootView.findViewById(R.id.tv_total_kcal);
@@ -84,7 +88,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_setting:
                 start(SettingFragment.newInstance());
                 break;
@@ -93,10 +97,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 break;
             case R.id.iv_start_cycling:
                 //isReset = true;
-                if (isReset){
-                    start(CyclingFragment.newInstance(),STANDARD);
-                }else {
-                    Toast.makeText(getActivity(),"请先校准ADC",Toast.LENGTH_SHORT).show();
+                if (isReset) {
+                    start(CyclingFragment.newInstance(), STANDARD);
+                } else {
+                    Toast.makeText(getActivity(), "请先校准ADC", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.iv_back:
@@ -117,7 +121,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                             MainService.getService().connectBLEDevice(device);
                         }
                     }).start();
-                }else if (device == null){
+                } else if (device == null) {
                     start(OpenBluetoothFragment.newInstance());
                 }
                 break;
@@ -126,14 +130,14 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("ADC校准");
                 builder.setMessage("请将曲柄置于垂直状态");
-                builder.setNegativeButton("取消",null);
+                builder.setNegativeButton("取消", null);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x35});
-                        if (success){
+                        if (success) {
                             isReset = true;
-                            Log.e(TAG,"writeDataToCharacteristic(new byte[]{0x35}");
+                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x35}");
                         }
                     }
                 });
@@ -143,31 +147,33 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         }
 
     }
+
     DefaultADCCallback defaultADCCallback = new DefaultADCCallback() {
         @Override
         public void onDefaultADC(int adc) {
             int defaultADC = adc;
-            Toast.makeText(getActivity(),"defaultADC:"+defaultADC,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "defaultADC:" + defaultADC, Toast.LENGTH_SHORT).show();
         }
     };
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    public void onEventReceiver(BluetoothDevice device){
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventReceiver(BluetoothDevice device) {
         isConnected = true;
         this.device = device;
-        if (this.device != null){
+        if (this.device != null) {
             tv_connected.setVisibility(View.VISIBLE);
             tv_device_name.setText(device.getName());
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    public void onEventReceiver(Boolean isSkipped){
-        if (isSkipped && !isConnected){
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventReceiver(Boolean isSkipped) {
+        if (isSkipped && !isConnected) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("蓝牙未连接");
             builder.setMessage("现在连接蓝牙?");
-            builder.setNegativeButton("取消",null);
+            builder.setNegativeButton("取消", null);
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -176,6 +182,14 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
             });
             builder.show();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventReceiver(RecordData data) {
+        tvTotalTime.setText(data.getTime());
+        tvTotalKilometre.setText(data.getKm()+"");
+        tvTotalWatt.setText(data.getAvg_p()+"");
+        tvTotalKcal.setText(data.getCalorie()+"");
     }
 
     @Override
@@ -193,12 +207,12 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onBluetoothConnect(BluetoothDevice device) {
         isConnected = true;
-        if (this.device != null){
+        if (this.device != null) {
             tv_connected.setVisibility(View.VISIBLE);
             tv_device_name.setText(device.getName());
         }
         Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

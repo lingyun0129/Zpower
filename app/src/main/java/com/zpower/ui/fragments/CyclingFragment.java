@@ -34,7 +34,9 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.zpower.R;
 import com.zpower.inter.RecordDataCallback;
+import com.zpower.model.RecordData;
 import com.zpower.service.MainService;
+import com.zpower.utils.DBHelper;
 import com.zpower.utils.MyLog;
 import com.zpower.view.WaveLoadingView;
 
@@ -43,6 +45,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by zxx on 2017/3/7.
@@ -63,6 +67,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     private TextView tv_avgWatt;
     private TextView tv_total_km;
     private long startTime;
+    private long endTime;
     private TextView tv_kcal;
     private double totalTime;
     private ProgressDialog progressDialog;
@@ -76,7 +81,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     private ImageView iv_stop;
     private boolean isConnected = false;
     private int maxWatt = 0;
-
+    private RecordData recordData;
     public CyclingFragment(){
         mService = MainService.getService();
     }
@@ -215,8 +220,8 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         mService.stopRecord();
         tv_avgWatt.setText("0");
         tv_max_watt.setText("0");
-        tv_total_km.setText("0:00");
-        tv_kcal.setText("0:00");
+        tv_total_km.setText("0.00");
+        tv_kcal.setText("0.00");
         chronometer.setText("00:00");
         startCycling();
     }
@@ -266,11 +271,32 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 pop();
+                saveRecordData();
             }
         });
         builder.show();
     }
+    private void saveRecordData(){
+        SimpleDateFormat dateFormat=new SimpleDateFormat("MM月dd日");
+        String date=dateFormat.format(new Date(startTime));
+        MyLog.i("cly","current date="+date);
+        String totalTime=chronometer.getText().toString();
+        MyLog.i("cly","current totalTime="+totalTime);
+        int avg_watt=Integer.parseInt(tv_avgWatt.getText().toString());
+        MyLog.i("cly","current avg_watt="+avg_watt);
+        int avg_rpm=Integer.parseInt(tv_rpm.getText().toString());
+        MyLog.i("cly","current avg_rpm="+avg_rpm);
+        double km=Double.parseDouble(tv_total_km.getText().toString());
+        MyLog.i("cly","current km="+km);
+        double calorie=Double.parseDouble(tv_kcal.getText().toString());
+        MyLog.i("cly","current calorie="+calorie);
+        recordData=new RecordData(date,totalTime,avg_watt,avg_rpm,km,calorie);
 
+        DBHelper dbHelper=new DBHelper(getActivity());
+        dbHelper.insertRecordData(recordData);
+        EventBus.getDefault().postSticky(recordData);
+
+    }
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onEventReceiver(BluetoothDevice device){
         isConnected = true;
@@ -357,10 +383,11 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataTotalKM(double totalKM) {
-        totalTime = (double) (System.currentTimeMillis() - startTime)/(double) (1000*60);
-        double km = (totalKM*totalTime*3.84/1000);
+        //totalKM:每分钟行驶的米数
+        totalTime = (double) (System.currentTimeMillis() - startTime)/(double) (1000*60);//共计多少分钟
+        double km = (totalKM*totalTime*3.84/1000);//?为何要*3.84
         BigDecimal bd = new BigDecimal(km);
-        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);//保留2位小数，四舍五入
         tv_total_km.setText(bd+"");
 
     }

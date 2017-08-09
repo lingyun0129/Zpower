@@ -3,6 +3,11 @@ package com.zpower.model;
 /**
  * Created by guzhicheng on 2017/3/7.
  * 存储传过来的byte数据
+ * buffer[0];//第一个字节代表圈数
+ * buffer[1];//秒
+ * buffer[2];//毫秒
+ * buffer[3]--buffer[5];//ADC的值
+ * buffer[6];//电量
  */
 
 public class DataModel {

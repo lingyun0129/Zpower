@@ -10,8 +10,8 @@ import android.widget.ListView;
 import com.zpower.R;
 import com.zpower.adapter.HistoryDataAdapter;
 import com.zpower.model.HistoryData;
+import com.zpower.utils.DBHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,14 +36,15 @@ public class DataHistoryFragment extends BaseFragment {
     }
 
     private void initData() {
-        data = new ArrayList<>();
-        for (int i = 0 ; i <20 ; i++){
+        DBHelper dbHelper=new DBHelper(getActivity());
+        data=dbHelper.queryHistoryData();
+  /*      for (int i = 0 ; i <20 ; i++){
             HistoryData historyData = new HistoryData();
             historyData.setDate("02月17日");
             historyData.setTime("03:30:12");
             historyData.setWatt("320");
             data.add(historyData);
-        }
+        } */
     }
 
     private void initView() {

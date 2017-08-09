@@ -1,5 +1,7 @@
 package com.zpower.utils;
 
+import android.os.SystemClock;
+
 /**
  * Created by guzhicheng on 2017/3/9.
  */
@@ -32,4 +34,22 @@ public class BaseUtils {
         return (b0 << 16) | (b1 << 8) | b2;
     }
 
+
+    /**
+     * 将String类型的时间转换成long,如：12:01:08
+     * @param strTime String类型的时间
+     * @return long类型的时间
+     * */
+    public static long convertStrTimeToLong(String strTime) {
+        // TODO Auto-generated method stub
+        String []timeArry=strTime.split(":");
+        long longTime=0;
+        if (timeArry.length==2) {//如果时间是MM:SS格式
+            longTime=Integer.parseInt(timeArry[0])*1000*60+Integer.parseInt(timeArry[1])*1000;
+        }else if (timeArry.length==3){//如果时间是HH:MM:SS格式
+            longTime=Integer.parseInt(timeArry[0])*1000*60*60+Integer.parseInt(timeArry[1])
+                    *1000*60+Integer.parseInt(timeArry[0])*1000;
+        }
+        return SystemClock.elapsedRealtime()-longTime;
+    }
 }

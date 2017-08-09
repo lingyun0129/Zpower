@@ -68,7 +68,7 @@
                 android:orientation="horizontal">
                 <TextView
                     style="@style/fragment_cycling_record_small_text"
-                    android:text="TOTAL  HOURS"/>
+                    android:text="TOTAL  MINUTES"/>
                 <TextView
                     style="@style/fragment_cycling_record_small_text"
                     android:text="TOTAL  KM"
@@ -81,11 +81,11 @@
                 <TextView
                     android:id="@+id/tv_total_time"
                     style="@style/fragment_cycling_record_big_text"
-                    android:text="120"/>
+                    android:text="--"/>
                 <TextView
                     android:id="@+id/tv_total_kilometre"
                     style="@style/fragment_cycling_record_big_text"
-                    android:text="620"/>
+                    android:text="--"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,11 +107,11 @@
                 <TextView
                     android:id="@+id/tv_total_watt"
                     style="@style/fragment_cycling_record_big_text"
-                    android:text="220"/>
+                    android:text="--"/>
                 <TextView
                     android:id="@+id/tv_total_kcal"
                     style="@style/fragment_cycling_record_big_text"
-                    android:text="322K"/>
+                    android:text="--"/>
             </LinearLayout>
         </LinearLayout>
 

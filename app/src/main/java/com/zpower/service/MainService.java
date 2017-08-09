@@ -275,6 +275,12 @@ public class MainService {
         stopTimer();
     }
 
+    /**
+     * 保存本次骑行数据
+     */
+    public void saveRecord(){
+
+    }
     /***
      * 暂停读取数据
      */

@@ -30,7 +30,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		Log.i(tag, "SQLite Create Users table");
 		db.execSQL("create table users (id integer primary key autoincrement, Email varchar, password varchar)");
-		
+		db.execSQL("CREATE TABLE IF NOT EXISTS data_records" +
+				" (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+				"date VARCHAR," +
+				"total_time VARCHAR," +
+				"avg_p INTEGER," +
+				"avg_rpm INTEGER," +
+				"km double," +
+				"cal double)");
 	}
 
 
