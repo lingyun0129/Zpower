@@ -33,7 +33,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE IF NOT EXISTS data_records" +
 				" (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
 				"date VARCHAR," +
-				"total_time VARCHAR," +
+				"total_time INTEGER," +
 				"avg_p INTEGER," +
 				"avg_rpm INTEGER," +
 				"km double," +

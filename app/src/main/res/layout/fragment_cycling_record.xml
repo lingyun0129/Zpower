@@ -68,7 +68,7 @@
                 android:orientation="horizontal">
                 <TextView
                     style="@style/fragment_cycling_record_small_text"
-                    android:text="TOTAL  MINUTES"/>
+                    android:text="TOTAL  Time"/>
                 <TextView
                     style="@style/fragment_cycling_record_small_text"
                     android:text="TOTAL  KM"

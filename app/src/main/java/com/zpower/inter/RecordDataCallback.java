@@ -32,22 +32,27 @@ public interface RecordDataCallback {
     public void onDataTotalCalores(double AVGWatt);
 
     /**
-     * 返回本次骑行的最大速度
+     * 返回本次骑行的最大功率
      * @param maxWatt
      */
     public void onDataMaxWatt(int maxWatt);
 
     /**
-     * 返回本次骑行的时速
+     * 返回本次骑行的功率（即时功率）
      * @param watt
      */
     public void onDataWatt(int watt);
 
-    /***
+    /**
      * 踏频
      * @param rpm
      */
     public void onRPM(int rpm);
+
     public void onDefaultADC(int adc);
+
+    public void onDataMaxRpm(int rpm);
+
+    public void onDataMaxSpeed(float speed);
 
 }

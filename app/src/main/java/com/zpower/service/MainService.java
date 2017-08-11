@@ -128,13 +128,15 @@ public class MainService {
                             mFrquency = f;
                         }
                         mDataCallback.onRPM(mFrquency);//瞬时踏频
+                        mDataCallback.onDataMaxRpm(mFrquency);//最大踏频
                         mDataCallback.onDataTotalKM(avgFrequency*l);//平均踏频*周长
                         //曲柄速度
                         v1 = (mFrquency * l) / 60;
+                        mDataCallback.onDataMaxSpeed((float) v1);//最大速度
                         //int defaultValue = 4229852;//初始值
                         //int defaultValue = 6450823;//初始值
                         //质量
-                        m = (Math.abs(ADC - defaultADC)) / 300000;
+                        m = (double)(Math.abs(ADC - defaultADC)) / 300000;
                         double F = m * g;//力
                         double p = F * v1;//功率
                         MyLog.e(tag,"ADC:功率"+ADC);

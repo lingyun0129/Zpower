@@ -1,7 +1,5 @@
 package com.zpower.utils;
 
-import android.os.SystemClock;
-
 /**
  * Created by guzhicheng on 2017/3/9.
  */
@@ -45,11 +43,50 @@ public class BaseUtils {
         String []timeArry=strTime.split(":");
         long longTime=0;
         if (timeArry.length==2) {//如果时间是MM:SS格式
-            longTime=Integer.parseInt(timeArry[0])*1000*60+Integer.parseInt(timeArry[1])*1000;
+            longTime=Integer.parseInt(timeArry[0])*60+Integer.parseInt(timeArry[1]);
         }else if (timeArry.length==3){//如果时间是HH:MM:SS格式
-            longTime=Integer.parseInt(timeArry[0])*1000*60*60+Integer.parseInt(timeArry[1])
-                    *1000*60+Integer.parseInt(timeArry[0])*1000;
+            longTime=Integer.parseInt(timeArry[0])*60*60+Integer.parseInt(timeArry[1])
+                    *60+Integer.parseInt(timeArry[2]);
         }
-        return SystemClock.elapsedRealtime()-longTime;
+        return longTime;
+    }
+
+    public static String coventLongTimeToStr(long longTime){
+        String hh,mm,ss;
+        String colon=":";
+        int hour=(int)longTime/(60*60);
+        int minute=(int)(longTime-hour*60*60)/60;
+        int second=(int)(longTime-hour*60*60-minute*60);
+        //hh
+        if(hour>0){//时间格式为HH:MM:SS
+            if(hour<10){
+                hh="0"+hour+colon;
+            }else {
+                hh=hour+colon;
+            }
+        }else{//时间格式为MM:SS
+            hh="";
+        }
+        //mm
+        if(minute>0){
+            if(minute<10){
+                mm="0"+minute+colon;
+            }else{
+                mm=minute+colon;
+            }
+        }else{
+            mm="00"+colon;
+        }
+        //ss
+        if(second>0){
+            if(second<10){
+                ss="0"+second;
+            }else{
+                ss=second+"";
+            }
+        }else{
+            ss="00";
+        }
+        return (hh+mm+ss);
     }
 }

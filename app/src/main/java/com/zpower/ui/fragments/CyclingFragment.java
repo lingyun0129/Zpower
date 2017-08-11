@@ -38,6 +38,7 @@ import com.zpower.model.RecordData;
 import com.zpower.service.MainService;
 import com.zpower.utils.DBHelper;
 import com.zpower.utils.MyLog;
+import com.zpower.utils.SPUtils;
 import com.zpower.view.WaveLoadingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,6 +82,12 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     private ImageView iv_stop;
     private boolean isConnected = false;
     private int maxWatt = 0;
+    private int maxRpm=0;
+    private float maxSpeed=0.0f;
+    private float maxKcal=0.0f;
+    private float longestDistance=0.0f;
+    private long longestTime=0L;
+
     private RecordData recordData;
     public CyclingFragment(){
         mService = MainService.getService();
@@ -398,6 +405,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         tv_avgWatt.setText(getAVGWatt(p)+"");
     }
 
+
     private double wattSum = 0;
     private int wattCount = 0;
     private  int getAVGWatt(int watt){
@@ -424,9 +432,26 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
             maxWatt = p;
             Log.e(tag,"最大功率："+maxWatt);
             tv_max_watt.setText(maxWatt +"");
+            SPUtils.put(getActivity(),"maxWatt",maxWatt);
         }
     }
 
+    @Override
+    public void onDataMaxRpm(int rpm) {
+        if(maxRpm<rpm){
+            maxRpm=rpm;
+            SPUtils.put(getActivity(),"maxRpm",maxRpm);
+        }
+    }
+
+    @Override
+    public void onDataMaxSpeed(float speed) {
+        if(maxSpeed<speed){
+            maxSpeed=speed;
+
+            SPUtils.put(getActivity(),"maxSpeed",maxSpeed);
+        }
+    }
     /***
      * 当前功率
      * @param watt
