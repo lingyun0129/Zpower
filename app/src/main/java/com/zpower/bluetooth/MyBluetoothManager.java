@@ -1,5 +1,6 @@
 package com.zpower.bluetooth;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -11,12 +12,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.zpower.GlobalVars;
 import com.zpower.MessageTypes;
+import com.zpower.R;
 import com.zpower.model.BluetoothUUID;
 import com.zpower.service.BluetoothService;
 import com.zpower.utils.MyLog;
@@ -70,8 +74,21 @@ public class MyBluetoothManager {
      * @param context
      * @return
      */
-    public void checkDevice(Context context) {
+    public void checkDevice(Activity context) {
 
+        // 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+        if (!context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(context, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            context.finish();
+            return;
+        }
+        // 检查设备上是否支持蓝牙
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(context, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+            context.finish();
+            return;
+        }
+        //检查蓝牙是否打开
         if (mBluetoothAdapter != null) {
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -210,17 +227,18 @@ public class MyBluetoothManager {
         public Handler handler;
         public BluetoothDevice device;
 
+        //当连接上设备或者失去连接时会回调该函数
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
 
             MyLog.e(TAG, "Status:" + status + "  newSatte:" + newState);
-            if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {
+            if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothGatt.STATE_CONNECTED) {//连接成功
                 MyLog.e(TAG, "Status--STATE_CONNECTED");
                 mBluetoothGatt = gatt;
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mBluetoothGatt.discoverServices();
+                        mBluetoothGatt.discoverServices();//连接成功后就去找出该设备中的服务
                     }
                 }, 500);
                 if(!isConnected) {
@@ -247,13 +265,14 @@ public class MyBluetoothManager {
             }
         }
 
-        @Override
+        @Override//当设备是否找到服务时，会回调该函数
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 //                        super.onServicesDiscovered(gatt, status);
             MyLog.e(TAG, "onServicesDiscovered(" + status + ")");
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 return;
             }
+            //找到服务了
             mBluetoothGatt = gatt;
             BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.SERVICE);
             if (service == null) {
@@ -276,18 +295,25 @@ public class MyBluetoothManager {
             MyLog.e(TAG, "setCharacteristicNotification");
         }
 
-        @Override
+        @Override//当读取设备时会回调该函数
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic
                 characteristic, int status) {
             MyLog.e(TAG, "onCharacteristicRead");
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                //读取到的数据存在characteristic当中，可以通过characteristic.getValue();函数取出。然后再进行解析操作。
+                //int charaProp = characteristic.getProperties();
+                // if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0)
+                // 表示可发出通知。  判断该Characteristic属性
+            }
             super.onCharacteristicRead(gatt, characteristic, status);
         }
 
-        @Override
+        @Override//设备发出通知时会调用到该接口
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
           MyLog.e(TAG, "onCharacteristicChanged");
 //            super.onCharacteristicChanged(gatt, characteristic);
             byte[] data = characteristic.getValue();
+
             BluetoothService.handlerBlueData(data);
         }
 
