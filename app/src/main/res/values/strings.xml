@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Zpower</string>
+    <string name="ble_not_supported">不支持低功耗蓝牙</string>
+    <string name="error_bluetooth_not_supported">设备不支持蓝牙</string>
 </resources>

@@ -51,6 +51,11 @@ public class BaseUtils {
         return longTime;
     }
 
+    /**
+     * 将long类型的秒数时间转化成hh:mm:ss或mm:ss类型的字符串
+     * @param longTime
+     * @return
+     */
     public static String coventLongTimeToStr(long longTime){
         String hh,mm,ss;
         String colon=":";
