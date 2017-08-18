@@ -73,7 +73,9 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                 }
                 break;
             case R.id.tv_skip:
-                myBluetoothAdapter.cancelDiscovery();
+                //myBluetoothAdapter.cancelDiscovery();
+                //stop scan
+                myBluetoothManager.scanLeDevice(false);
                 EventBus.getDefault().postSticky(true);
                 start(StartTrainingFragment.newInstance());
                 break;
@@ -120,7 +122,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                     //nrf51422_HRM E7:9B:EE:4B:9C:79
                     //E3:B1:08:D7:12:E5
                     /*if (device.getAddress().equals("DC:C5:0A:7D:1C:AC")||device.getAddress().equals("E2:0A:F4:68:E4:9D")||device.getAddress().equals("E9:BC:4E:A5:DB:AE"))*/ {
-                        myBluetoothAdapter.cancelDiscovery();
+                       // myBluetoothAdapter.cancelDiscovery();
+                        myBluetoothManager.scanLeDevice(false);
                         start(DiscoveredFragment.newInstance());//跳转到DiscoveredFragment
                         EventBus.getDefault().postSticky(device);
                     }

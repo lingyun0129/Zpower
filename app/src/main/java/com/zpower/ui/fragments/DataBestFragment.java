@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.zpower.R;
@@ -13,6 +14,8 @@ import com.zpower.utils.DBHelper;
 import com.zpower.utils.SPUtils;
 
 import java.math.BigDecimal;
+
+import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * Created by zx on 2017/3/7.
@@ -25,6 +28,7 @@ public class DataBestFragment extends BaseFragment {
     private TextView tvLongestDistance;
     private TextView tvMaxSpeed;
     private TextView tvMaxKcal;
+    private Button btn_ftp_test;
     private View rootView;
     public static DataBestFragment newInstance() {
         return new DataBestFragment();
@@ -45,6 +49,15 @@ public class DataBestFragment extends BaseFragment {
         tvLongestDistance = (TextView) rootView.findViewById(R.id.tv_longestDistance);
         tvMaxSpeed = (TextView) rootView.findViewById(R.id.tv_maxSpeed);
         tvMaxKcal = (TextView) rootView.findViewById(R.id.tv_maxKcal);
+        btn_ftp_test=(Button)rootView.findViewById(R.id.btn_ftp_test);
+        btn_ftp_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SupportFragment parent=(SupportFragment)getParentFragment();
+                parent.start(FTPTestFragment.newInstance());
+
+            }
+        });
     }
     private void initData() {
         DBHelper dbHelper=new DBHelper(getActivity());

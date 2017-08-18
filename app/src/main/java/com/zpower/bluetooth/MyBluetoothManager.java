@@ -36,10 +36,12 @@ import java.util.Arrays;
  */
 public class MyBluetoothManager {
     private final static String TAG = MyBluetoothManager.class.getCanonicalName();
-    //单例模式
-    private static MyBluetoothManager mInstance;
+    private static final long SCAN_PERIOD = 10*1000;
+    //懒汉单例模式（双重检查锁定保证线程安全）
+    private static MyBluetoothManager mInstance=null;
 
     private boolean isConnected = false;
+    private boolean mScanning=false;
 
     private MyBluetoothManager() {
         Log.i(TAG, "BluetoothService()");
@@ -51,8 +53,12 @@ public class MyBluetoothManager {
      * @return
      */
     public static MyBluetoothManager getInstance() {
-        if (mInstance == null) {
-            mInstance = new MyBluetoothManager();
+        if(mInstance==null) {
+            synchronized (MyBluetoothManager.class) {
+                if (mInstance == null) {
+                    mInstance = new MyBluetoothManager();
+                }
+            }
         }
         return mInstance;
     }
@@ -101,13 +107,45 @@ public class MyBluetoothManager {
      * 开始扫描设备
      */
     public void startDiscoveringDevices() {
-        if (mBluetoothAdapter.isDiscovering()) {
+       /* if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
         mBluetoothAdapter.startDiscovery();
-        MyLog.e(TAG, "startDiscoveringDevices");
+        MyLog.e(TAG, "startDiscoveringDevices");*/
+       scanLeDevice(true);
     }
 
+    /**
+     * 扫描低功率蓝牙外设
+     * @param enable
+     */
+    private BluetoothAdapter.LeScanCallback mLeScanCallback=new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+            MyLog.i("cly","find a new device name:"+device.getName()+" mac:"+device.getAddress());
+            onRegisterBTReceiver.onBluetoothNewDevice(device);//发现新设备
+        }
+    };
+    public void scanLeDevice(final boolean enable) {
+        Handler mHandler=new Handler();
+        if (enable) {
+            // Stops scanning after a pre-defined scan period.
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    onRegisterBTReceiver.onDiscoveryFinished();//停掉扫描动画
+                }
+            }, SCAN_PERIOD);
+
+            mScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallback);
+        } else {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        }
+    }
     /**
      * 蓝牙状态接口
      */
@@ -159,7 +197,8 @@ public class MyBluetoothManager {
             context.unregisterReceiver(myBluetoothReceiver);
         }
         if (getmBluetoothAdapter() != null)
-            getmBluetoothAdapter().cancelDiscovery();
+            //getmBluetoothAdapter().cancelDiscovery();
+            scanLeDevice(false);
     }
 
     /**
