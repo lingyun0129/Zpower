@@ -319,6 +319,7 @@ public class MyBluetoothManager {
                 return;
             }
             characteristic = service.getCharacteristic(BluetoothUUID.NOTIFICATION1);
+
             if (characteristic == null) {
                 MyLog.e(TAG, "Chara is null.");
                 return;
