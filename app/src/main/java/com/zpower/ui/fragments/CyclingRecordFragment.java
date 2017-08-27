@@ -134,10 +134,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x35});
+                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
                         if (success) {
                             isReset = true;
-                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x35}");
+                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x07}");
                         }
                     }
                 });

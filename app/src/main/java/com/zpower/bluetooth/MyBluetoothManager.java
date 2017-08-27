@@ -26,6 +26,7 @@ import com.zpower.service.BluetoothService;
 import com.zpower.utils.MyLog;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 处理蓝牙的管理工作，提供相关管理接口
@@ -107,12 +108,12 @@ public class MyBluetoothManager {
      * 开始扫描设备
      */
     public void startDiscoveringDevices() {
-       /* if (mBluetoothAdapter.isDiscovering()) {
+        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
         mBluetoothAdapter.startDiscovery();
-        MyLog.e(TAG, "startDiscoveringDevices");*/
-       scanLeDevice(true);
+        MyLog.e(TAG, "startDiscoveringDevices");
+       //scanLeDevice(true);
     }
 
     /**
@@ -197,8 +198,8 @@ public class MyBluetoothManager {
             context.unregisterReceiver(myBluetoothReceiver);
         }
         if (getmBluetoothAdapter() != null)
-            //getmBluetoothAdapter().cancelDiscovery();
-            scanLeDevice(false);
+            getmBluetoothAdapter().cancelDiscovery();
+            //scanLeDevice(false);
     }
 
     /**
@@ -308,17 +309,28 @@ public class MyBluetoothManager {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 //                        super.onServicesDiscovered(gatt, status);
             MyLog.e(TAG, "onServicesDiscovered(" + status + ")");
+            int i=0,j=0;
+            List<BluetoothGattService> serviceList=gatt.getServices();
+            for(BluetoothGattService service:serviceList){
+                MyLog.e(TAG,"service "+(++i)+" UUID="+service.getUuid().toString());
+                List<BluetoothGattCharacteristic> charList=service.getCharacteristics();
+                j=0;
+                for (BluetoothGattCharacteristic charac:charList){
+                    MyLog.e(TAG,"Characteristic "+(++j)+" UUID="+charac.getUuid().toString());
+                }
+            }
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 return;
             }
             //找到服务了
             mBluetoothGatt = gatt;
-            BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.SERVICE);
+            BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
             if (service == null) {
                 MyLog.e(TAG, "Service is null");
                 return;
             }
-            characteristic = service.getCharacteristic(BluetoothUUID.NOTIFICATION1);
+
+            characteristic = service.getCharacteristic(BluetoothUUID.INDOOR_BIKE_DATA);
 
             if (characteristic == null) {
                 MyLog.e(TAG, "Chara is null.");
@@ -353,7 +365,7 @@ public class MyBluetoothManager {
           MyLog.e(TAG, "onCharacteristicChanged");
 //            super.onCharacteristicChanged(gatt, characteristic);
             byte[] data = characteristic.getValue();
-
+            MyLog.e(TAG,"接收到的数据:"+Arrays.toString(data));
             BluetoothService.handlerBlueData(data);
         }
 
@@ -371,13 +383,14 @@ public class MyBluetoothManager {
             Log.e(TAG, "lost connection");
             return false;
         }
-        BluetoothGattService Service = mBluetoothGatt.getService(BluetoothUUID.WRITE_SERVICE);
+        BluetoothGattService Service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
         if (Service == null) {
             Log.e(TAG, "service not found!");
             return false;
         }
+
         BluetoothGattCharacteristic charac = Service
-                .getCharacteristic(BluetoothUUID.WRITE);
+                .getCharacteristic(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT);
         if (charac == null) {
             Log.e(TAG, "char not found!");
             return false;
