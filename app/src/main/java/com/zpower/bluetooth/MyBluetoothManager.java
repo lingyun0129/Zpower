@@ -125,10 +125,10 @@ public class MyBluetoothManager {
      * 开始扫描设备
      */
     public void startDiscoveringDevices() {
-        if (mBluetoothAdapter.isDiscovering()) {
+/*        if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
         }
-        mBluetoothAdapter.startDiscovery();
+        mBluetoothAdapter.startDiscovery();*/
        scanLeDevice(true);
     }
 
@@ -217,8 +217,8 @@ public class MyBluetoothManager {
             context.unregisterReceiver(myBluetoothReceiver);
         }
         if (getmBluetoothAdapter() != null)
-            getmBluetoothAdapter().cancelDiscovery();
-            //scanLeDevice(false);
+            //getmBluetoothAdapter().cancelDiscovery();
+            scanLeDevice(false);
     }
 
     /**
@@ -266,7 +266,9 @@ public class MyBluetoothManager {
 
 
     private BluetoothGatt mBluetoothGatt;
-    BluetoothGattCharacteristic characteristic;
+    BluetoothGattCharacteristic indoor_bike_data_characteristic;
+    BluetoothGattCharacteristic status_characteristic;
+    BluetoothGattCharacteristic control_point_characteristic;
 
     /**
      * 尝试配对和连接
@@ -350,20 +352,34 @@ public class MyBluetoothManager {
                 return;
             }
 
-            characteristic = service.getCharacteristic(BluetoothUUID.INDOOR_BIKE_DATA);
+            indoor_bike_data_characteristic = service.getCharacteristic(BluetoothUUID.INDOOR_BIKE_DATA);
 
-            if (characteristic == null) {
-                MyLog.e(TAG, "Chara is null.");
+            if (indoor_bike_data_characteristic == null) {
+                MyLog.e(TAG, "indoor bike data Chara is null.");
                 return;
             }
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(BluetoothUUID.DESCR);
+            BluetoothGattDescriptor descriptor = indoor_bike_data_characteristic.getDescriptor(BluetoothUUID.DESCR);
             if (descriptor == null) {
                 MyLog.e(TAG, "descriptor is null");
                 return;
             }
-            gatt.setCharacteristicNotification(characteristic, true);
+            gatt.setCharacteristicNotification(indoor_bike_data_characteristic, true);
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
+
+            //status
+            status_characteristic=service.getCharacteristic(BluetoothUUID.FITNESS_MACHINE_STATUS);
+            BluetoothGattDescriptor status_descriptor = status_characteristic.getDescriptor(BluetoothUUID.DESCR);
+            gatt.setCharacteristicNotification(status_characteristic, true);
+            status_descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(status_descriptor);
+
+            //control point
+            control_point_characteristic=service.getCharacteristic(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT);
+            BluetoothGattDescriptor control_point_descriptor = status_characteristic.getDescriptor(BluetoothUUID.DESCR);
+            control_point_descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(control_point_descriptor);
+
             MyLog.e(TAG, "setCharacteristicNotification");
         }
 
@@ -383,15 +399,27 @@ public class MyBluetoothManager {
         @Override//设备发出通知时会调用到该接口
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             MyLog.e(TAG, "onCharacteristicChanged");
-//            super.onCharacteristicChanged(gatt, characteristic);
             byte[] data = characteristic.getValue();
-            MyLog.e(TAG,"接收到的数据:"+Arrays.toString(data));
+            if (data != null && data.length > 0) {
+                final StringBuilder stringBuilder = new StringBuilder(data.length);
+                for (byte byteChar : data)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                MyLog.e(TAG,"接收到的数据:"+stringBuilder.toString());
+            }
+
             BluetoothService.handlerBlueData(data);
         }
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            MyLog.e(TAG, "onCharacteristicWrite");
+            MyLog.e(TAG, "onCharacteristicWrite uuid="+characteristic.getUuid().toString());
+            byte[]data=characteristic.getValue();
+            if (data != null && data.length > 0) {
+                final StringBuilder stringBuilder = new StringBuilder(data.length);
+                for (byte byteChar : data)
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                MyLog.e(TAG,"写操作响应的数据:"+stringBuilder.toString()+" status="+status);
+            }
             super.onCharacteristicWrite(gatt, characteristic, status);
         }
     }
