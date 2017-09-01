@@ -1,11 +1,15 @@
 package com.zpower.ui.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,10 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wang.avi.AVLoadingIndicatorView;
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.utils.MyLog;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,9 +77,9 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                 }
                 break;
             case R.id.tv_skip:
-                myBluetoothAdapter.cancelDiscovery();
+                //myBluetoothAdapter.cancelDiscovery();
                 //stop scan
-               // myBluetoothManager.scanLeDevice(false);
+               myBluetoothManager.scanLeDevice(false);
                 EventBus.getDefault().postSticky(true);
                 start(StartTrainingFragment.newInstance());
                 break;
@@ -89,7 +93,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         MyLog.e(TAG,"myBluetoothAdapter.isEnabled:"+myBluetoothAdapter.isEnabled());
         if (myBluetoothAdapter.isEnabled()){
             lodingIndicator.setVisibility(View.VISIBLE);
-            if (Build.VERSION.SDK_INT > 22) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermission();
             }
             myBluetoothManager.startDiscoveringDevices();
@@ -103,9 +107,23 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
             //判断是否需要 向用户解释，为什么要申请该权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.READ_CONTACTS)) {
-                Toast.makeText(getActivity(), "shouldShowRequestPermissionRationale", Toast.LENGTH_SHORT).show();
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                Toast.makeText(getActivity(), "自Android 6.0开始需要打开位置权限才可以搜索到Ble设备", Toast.LENGTH_SHORT).show();
             }
+        }
+        //检查位置信息是否打开
+        if(!myBluetoothManager.isLocationEnable(getActivity())){
+            AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+            builder.setTitle("需要打开位置信息");
+            builder.setMessage("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备.");
+            builder.setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    getActivity().startActivityForResult(locationIntent, 2);
+                }
+            });
+            builder.show();
         }
     }
 
@@ -122,8 +140,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                     //nrf51422_HRM E7:9B:EE:4B:9C:79
                     //E3:B1:08:D7:12:E5
                     /*if (device.getAddress().equals("DC:C5:0A:7D:1C:AC")||device.getAddress().equals("E2:0A:F4:68:E4:9D")||device.getAddress().equals("E9:BC:4E:A5:DB:AE"))*/ {
-                        myBluetoothAdapter.cancelDiscovery();
-                        //myBluetoothManager.scanLeDevice(false);
+                        //myBluetoothAdapter.cancelDiscovery();
+                        myBluetoothManager.scanLeDevice(false);
                         start(DiscoveredFragment.newInstance());//跳转到DiscoveredFragment
                         EventBus.getDefault().postSticky(device);
                     }

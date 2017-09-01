@@ -33,6 +33,7 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.zpower.R;
+import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.RecordDataCallback;
 import com.zpower.model.RecordData;
 import com.zpower.service.MainService;
@@ -207,6 +208,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         chronometer.start();
         hideButtons();
         isCycling = true;
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start or resume
     }
     private void stopCycling(){
 
@@ -222,6 +224,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         chronometer.stop();
         showButtons();
         isCycling = false;
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x02});//pause
     }
     private void restart() {
         mService.stopRecord();
@@ -302,6 +305,10 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         DBHelper dbHelper=new DBHelper(getActivity());
         dbHelper.insertRecordData(recordData);
         EventBus.getDefault().postSticky(recordData);
+        //stop
+        if(!MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01})){
+            MyLog.e(tag,"write stop command failed");
+        };
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
@@ -401,8 +408,10 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataAvgWatt(int p) {
-        Log.e(tag,"平均功率："+getAVGWatt(p));
-        tv_avgWatt.setText(getAVGWatt(p)+"");
+/*        Log.e(tag,"平均功率："+getAVGWatt(p));
+        tv_avgWatt.setText(getAVGWatt(p)+"");*/
+        MyLog.e(tag,"平均功率是："+p);
+        tv_avgWatt.setText(p+"");
     }
 
 
@@ -416,10 +425,12 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataTotalCalores(double p) {
-        double AVGWatt = getAVGWatt((int) p);
+        //double AVGWatt = getAVGWatt((int) p);
+        double AVGWatt=p;
         BigDecimal bd = new BigDecimal(AVGWatt*totalTime*60/1000/4.184/0.22);
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
         tv_kcal.setText(bd+"");
+        MyLog.e(tag,"当前消耗的卡路里："+bd);
     }
 
     /***
@@ -430,7 +441,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataMaxWatt(int p) {
         if (p > maxWatt){
             maxWatt = p;
-            Log.e(tag,"最大功率："+maxWatt);
+            MyLog.e(tag,"最大功率："+maxWatt);
             tv_max_watt.setText(maxWatt +"");
             SPUtils.put(getActivity(),"maxWatt",maxWatt);
         }
@@ -440,6 +451,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataMaxRpm(int rpm) {
         if(maxRpm<rpm){
             maxRpm=rpm;
+            MyLog.e(tag,"最大踏频："+maxRpm);
             SPUtils.put(getActivity(),"maxRpm",maxRpm);
         }
     }
@@ -448,7 +460,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataMaxSpeed(float speed) {
         if(maxSpeed<speed){
             maxSpeed=speed;
-
+            MyLog.e(tag,"最大速度："+maxSpeed);
             SPUtils.put(getActivity(),"maxSpeed",maxSpeed);
         }
     }
@@ -458,7 +470,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
      */
     @Override
     public void onDataWatt(int watt) {
-        Log.e(tag,"当前功率："+watt);
+        MyLog.e(tag,"当前功率："+watt);
         tv_watt.setText(watt+"");
         if (watt>290){
             watt = 290;

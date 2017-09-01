@@ -32,12 +32,20 @@ public class BaseUtils {
         return (b0 << 16) | (b1 << 8) | b2;
     }
 
-
     /**
-     * 将String类型的时间转换成long,如：12:01:08
-     * @param strTime String类型的时间
-     * @return long类型的时间
-     * */
+     * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序。
+     */
+    public static int bytes2ToInt(byte[] src, int offset) {
+        int value;
+        value = (int) (((src[offset+1] & 0xFF) << 8)
+                | (src[offset ] & 0xFF));
+        return value;
+    }
+        /**
+         * 将String类型的时间转换成long,如：12:01:08
+         * @param strTime String类型的时间
+         * @return long类型的时间
+         * */
     public static long convertStrTimeToLong(String strTime) {
         // TODO Auto-generated method stub
         String []timeArry=strTime.split(":");

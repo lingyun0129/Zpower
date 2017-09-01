@@ -2,13 +2,11 @@ package com.zpower.service;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.zpower.MessageTypes;
-import com.zpower.model.DataModel;
+import com.zpower.model.DataRecord;
+import com.zpower.utils.BaseUtils;
 import com.zpower.utils.MyLog;
-
-import java.util.Arrays;
 
 /**
  * Created by guzhicheng on 2017/3/7.
@@ -45,21 +43,22 @@ public class BluetoothService {
      * @param buffer
      */
     public static void handlerBlueData(byte[] buffer){
-        Log.e(TAG, "buffer:"+Arrays.toString(buffer));
         if(!mStartRead){
             return;
         }
         if(mHandler == null){
             return;
         }
-        if (buffer.length == 7) {
+        if (buffer.length == 10) {
             if (buffer[0] == -1){
                 byte[] adc_default = new byte[3];//ADC初始值
                 System.arraycopy(buffer, 3, adc_default, 0, 3);//把adc的值存入adc_default数组
                 sendDefaultADC(mHandler,adc_default);
             }else {
-                DataModel d1 =  new DataModel();
-                d1.value(buffer);
+                DataRecord d1 =  new DataRecord(buffer);
+                MyLog.e(TAG,"接收到的数据转Int后数据："+ BaseUtils.bytes2ToInt(d1.getFlag(),0)
+                +" "+d1.getInsCadence()+" "+d1.getAvgCadence()
+                +" "+d1.getInsPower()+" "+d1.getAvgPower());
                 sendBluetoothMessage(mHandler,d1);
             }
         }else {
@@ -72,7 +71,7 @@ public class BluetoothService {
      * @param handler
      * @param data
      */
-    private static void sendBluetoothMessage(Handler handler, DataModel data){
+    private static void sendBluetoothMessage(Handler handler, DataRecord data){
         Message msg = handler.obtainMessage();
         msg.what = MessageTypes.MSG_BLUETOOTH;
         msg.obj = data;

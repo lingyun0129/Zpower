@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -37,12 +38,12 @@ import java.util.List;
  */
 public class MyBluetoothManager {
     private final static String TAG = MyBluetoothManager.class.getCanonicalName();
-    private static final long SCAN_PERIOD = 10*1000;
+    private static final long SCAN_PERIOD = 10 * 1000;
     //懒汉单例模式（双重检查锁定保证线程安全）
-    private static MyBluetoothManager mInstance=null;
+    private static MyBluetoothManager mInstance = null;
 
     private boolean isConnected = false;
-    private boolean mScanning=false;
+    private boolean mScanning = false;
 
     private MyBluetoothManager() {
         Log.i(TAG, "BluetoothService()");
@@ -54,7 +55,7 @@ public class MyBluetoothManager {
      * @return
      */
     public static MyBluetoothManager getInstance() {
-        if(mInstance==null) {
+        if (mInstance == null) {
             synchronized (MyBluetoothManager.class) {
                 if (mInstance == null) {
                     mInstance = new MyBluetoothManager();
@@ -63,6 +64,7 @@ public class MyBluetoothManager {
         }
         return mInstance;
     }
+
     /**
      * 蓝牙适配器
      * BluetoothAdapter是Android系统中所有蓝牙操作都需要的，
@@ -71,6 +73,7 @@ public class MyBluetoothManager {
      * 当你获取到它的实例之后，就能进行相关的蓝牙操作了。
      */
     private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
     public BluetoothAdapter getmBluetoothAdapter() {
         return mBluetoothAdapter;
     }
@@ -104,6 +107,20 @@ public class MyBluetoothManager {
         }
     }
 
+    /**
+     * Location service if enable
+     *
+     * @param context
+     * @return location is enable if return true, otherwise disable.
+     */
+    public static final boolean isLocationEnable(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean networkProvider = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean gpsProvider = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (networkProvider || gpsProvider) return true;
+        return false;
+    }
+
     /***
      * 开始扫描设备
      */
@@ -112,23 +129,24 @@ public class MyBluetoothManager {
             mBluetoothAdapter.cancelDiscovery();
         }
         mBluetoothAdapter.startDiscovery();
-        MyLog.e(TAG, "startDiscoveringDevices");
-       //scanLeDevice(true);
+       scanLeDevice(true);
     }
 
     /**
      * 扫描低功率蓝牙外设
+     *
      * @param enable
      */
-    private BluetoothAdapter.LeScanCallback mLeScanCallback=new BluetoothAdapter.LeScanCallback() {
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            MyLog.i("cly","find a new device name:"+device.getName()+" mac:"+device.getAddress());
+            MyLog.e(TAG, "find a new device name:" + device.getName() + " mac:" + device.getAddress());
             onRegisterBTReceiver.onBluetoothNewDevice(device);//发现新设备
         }
     };
+
     public void scanLeDevice(final boolean enable) {
-        Handler mHandler=new Handler();
+        Handler mHandler = new Handler();
         if (enable) {
             // Stops scanning after a pre-defined scan period.
             mHandler.postDelayed(new Runnable() {
@@ -147,6 +165,7 @@ public class MyBluetoothManager {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
     }
+
     /**
      * 蓝牙状态接口
      */
@@ -189,12 +208,12 @@ public class MyBluetoothManager {
      * @param context
      */
     public void unregisterReceiver(Context context) {
-        if(mBluetoothGatt != null){
+        if (mBluetoothGatt != null) {
             mBluetoothGatt.disconnect();
             mBluetoothGatt.close();
             mBluetoothGatt = null;
         }
-        if(myBluetoothReceiver != null){
+        if (myBluetoothReceiver != null) {
             context.unregisterReceiver(myBluetoothReceiver);
         }
         if (getmBluetoothAdapter() != null)
@@ -255,11 +274,12 @@ public class MyBluetoothManager {
      * @param device
      */
     public void createBond(final BluetoothDevice device, final Handler handler) {
-            mGattCallback.handler = handler;
-            mGattCallback.device = device;
-            //连接蓝牙
-            mBluetoothGatt = device.connectGatt(GlobalVars.mMainActivity, true, mGattCallback);
+        mGattCallback.handler = handler;
+        mGattCallback.device = device;
+        //连接蓝牙
+        mBluetoothGatt = device.connectGatt(GlobalVars.mMainActivity, true, mGattCallback);
     }
+
     private MyBluetoothGattCallback mGattCallback = new MyBluetoothGattCallback();
 
     class MyBluetoothGattCallback extends BluetoothGattCallback {
@@ -281,7 +301,7 @@ public class MyBluetoothManager {
                         mBluetoothGatt.discoverServices();//连接成功后就去找出该设备中的服务
                     }
                 }, 500);
-                if(!isConnected) {
+                if (!isConnected) {
                     Message msg = handler.obtainMessage(MessageTypes.CONNECT_STATE_CONNECTED);
                     msg.obj = device;
                     msg.sendToTarget();
@@ -362,7 +382,7 @@ public class MyBluetoothManager {
 
         @Override//设备发出通知时会调用到该接口
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-          MyLog.e(TAG, "onCharacteristicChanged");
+            MyLog.e(TAG, "onCharacteristicChanged");
 //            super.onCharacteristicChanged(gatt, characteristic);
             byte[] data = characteristic.getValue();
             MyLog.e(TAG,"接收到的数据:"+Arrays.toString(data));
@@ -375,9 +395,10 @@ public class MyBluetoothManager {
             super.onCharacteristicWrite(gatt, characteristic, status);
         }
     }
+
     //写入
     public boolean writeCharacteristic(byte[] value) {
-        Log.e(TAG,"value:"+Arrays.toString(value));
+        Log.e(TAG, "value:" + Arrays.toString(value));
         //check mBluetoothGatt is available
         if (mBluetoothGatt == null) {
             Log.e(TAG, "lost connection");

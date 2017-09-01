@@ -97,10 +97,17 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 break;
             case R.id.iv_start_cycling:
                 //isReset = true;
-                if (isReset) {
+/*                if (isReset) {
                     start(CyclingFragment.newInstance(), STANDARD);
                 } else {
                     Toast.makeText(getActivity(), "请先校准ADC", Toast.LENGTH_SHORT).show();
+                }*/
+                //发送控制指令--start or resume
+                boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
+                if (success){
+                    start(CyclingFragment.newInstance(), STANDARD);
+                }else{
+                    Toast.makeText(getActivity(), "写入控制指令失败!", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.iv_back:
@@ -187,9 +194,9 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventReceiver(RecordData data) {
         tvTotalTime.setText(data.getTime());
-        tvTotalKilometre.setText(data.getKm()+"");
-        tvTotalWatt.setText(data.getAvg_p()+"");
-        tvTotalKcal.setText(data.getCalorie()+"");
+        tvTotalKilometre.setText(data.getKm() + "");
+        tvTotalWatt.setText(data.getAvg_p() + "");
+        tvTotalKcal.setText(data.getCalorie() + "");
     }
 
     @Override

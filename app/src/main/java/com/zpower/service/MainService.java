@@ -11,7 +11,7 @@ import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.BluetoothConnectCallback;
 import com.zpower.inter.DefaultADCCallback;
 import com.zpower.inter.RecordDataCallback;
-import com.zpower.model.DataModel;
+import com.zpower.model.DataRecord;
 import com.zpower.utils.BaseUtils;
 import com.zpower.utils.MyLog;
 
@@ -71,12 +71,12 @@ public class MainService {
 
             switch (msg.what) {
                 case MessageTypes.MSG_CYCLE_TIMER:
-                    if (LastRound == round){
+/*                    if (LastRound == round){
                         mDataCallback.onRPM(0);
                         mDataCallback.onDataWatt(0);
                     }
                     LastRound = round;
-                    Log.e(tag,"mFrquency"+mFrquency);
+                    Log.e(tag,"mFrquency"+mFrquency);*/
                     break;
                 case MessageTypes.CONNECT_STATE_CONNECTED:
                     BluetoothDevice connectedDevice = (BluetoothDevice) msg.obj;
@@ -113,11 +113,19 @@ public class MainService {
                 case MessageTypes.MSG_BLUETOOTH://蓝牙数据
 
                     //根据踏频计算相应参数
-                    DataModel dataModel = (DataModel) msg.obj;
+                    DataRecord data=(DataRecord)msg.obj;
+                    mDataCallback.onRPM(data.getInsCadence());//瞬时踏频
+                    mDataCallback.onDataMaxRpm(data.getInsCadence());//最大踏频
+                    mDataCallback.onDataTotalKM(data.getAvgCadence()*l);//平均踏频*周长
+
+                    mDataCallback.onDataWatt((int) data.getInsPower());//当前功率
+                    mDataCallback.onDataMaxWatt((int) data.getInsPower());//用来计算最大功率
+                    mDataCallback.onDataAvgWatt((int) data.getAvgPower());//用来计算平均功率
+                    mDataCallback.onDataTotalCalores(data.getAvgPower());//用来计算卡路里
+                    /*DataModel dataModel = (DataModel) msg.obj;
                     if (dataModel == null) {
                         return;
                     }
-//                    MyLog.e(tag, "Data:" + dataModel.toString());
                     if (mDataCallback == null) {
                         return;
                     }else{
@@ -133,24 +141,20 @@ public class MainService {
                         //曲柄速度
                         v1 = (mFrquency * l) / 60;
                         mDataCallback.onDataMaxSpeed((float) v1);//最大速度
-                        //int defaultValue = 4229852;//初始值
-                        //int defaultValue = 6450823;//初始值
                         //质量
                         m = (double)(Math.abs(ADC - defaultADC)) / 300000;
                         double F = m * g;//力
                         double p = F * v1;//功率
                         MyLog.e(tag,"ADC:功率"+ADC);
                         MyLog.e(tag, "ADC-力：" + F);
-                        //MyLog.e(tag, "ADC-功率：" + p);
 
                         if (p < 450){
                             mDataCallback.onDataWatt((int) p);//当前功率
                             mDataCallback.onDataMaxWatt((int) p);//用来计算最大功率
                             mDataCallback.onDataAvgWatt((int) p);//用来计算平均功率
-                            //Log.e(tag,"平均功率："+getAVGWatt(p));
                             mDataCallback.onDataTotalCalores(p);//用来计算卡路里
                         }
-                    }
+                    }*/
                     break;
                 case MessageTypes.MSG_DEFAULT_ADC:
                     defaultADC = getADC((byte[]) msg.obj);

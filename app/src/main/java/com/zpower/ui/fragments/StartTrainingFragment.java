@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.zpower.R;
+import com.zpower.bluetooth.MyBluetoothManager;
+import com.zpower.utils.MyLog;
 
 /**
  * Created by zx on 2017/2/25.
@@ -34,6 +36,8 @@ public class StartTrainingFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 start(CyclingRecordFragment.newInstance());
+                MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x00});
+                MyLog.e("cly","write Initiates code 0x00");
             }
         });
         return rootView;
