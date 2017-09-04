@@ -114,6 +114,9 @@ public class MainService {
 
                     //根据踏频计算相应参数
                     DataRecord data=(DataRecord)msg.obj;
+                    if(data==null||mDataCallback==null){
+                        return;
+                    }
                     mDataCallback.onRPM(data.getInsCadence());//瞬时踏频
                     mDataCallback.onDataMaxRpm(data.getInsCadence());//最大踏频
                     mDataCallback.onDataTotalKM(data.getAvgCadence()*l);//平均踏频*周长

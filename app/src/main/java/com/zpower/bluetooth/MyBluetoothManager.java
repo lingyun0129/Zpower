@@ -28,6 +28,7 @@ import com.zpower.utils.MyLog;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 处理蓝牙的管理工作，提供相关管理接口
@@ -44,6 +45,7 @@ public class MyBluetoothManager {
 
     private boolean isConnected = false;
     private boolean mScanning = false;
+
     private MyBluetoothManager() {
         Log.i(TAG, "BluetoothService()");
     }
@@ -64,6 +66,7 @@ public class MyBluetoothManager {
         }
         return mInstance;
     }
+
     /**
      * 蓝牙适配器
      * BluetoothAdapter是Android系统中所有蓝牙操作都需要的，
@@ -128,7 +131,7 @@ public class MyBluetoothManager {
             mBluetoothAdapter.cancelDiscovery();
         }
         mBluetoothAdapter.startDiscovery();*/
-       scanLeDevice(true);
+        scanLeDevice(true);
     }
 
     /**
@@ -330,14 +333,14 @@ public class MyBluetoothManager {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 //                        super.onServicesDiscovered(gatt, status);
             MyLog.e(TAG, "onServicesDiscovered(" + status + ")");
-            int i=0,j=0;
-            List<BluetoothGattService> serviceList=gatt.getServices();
-            for(BluetoothGattService service:serviceList){
-                MyLog.e(TAG,"service "+(++i)+" UUID="+service.getUuid().toString());
-                List<BluetoothGattCharacteristic> charList=service.getCharacteristics();
-                j=0;
-                for (BluetoothGattCharacteristic charac:charList){
-                    MyLog.e(TAG,"Characteristic "+(++j)+" UUID="+charac.getUuid().toString());
+            int i = 0, j = 0;
+            List<BluetoothGattService> serviceList = gatt.getServices();
+            for (BluetoothGattService service : serviceList) {
+                MyLog.e(TAG, "service " + (++i) + " UUID=" + service.getUuid().toString());
+                List<BluetoothGattCharacteristic> charList = service.getCharacteristics();
+                j = 0;
+                for (BluetoothGattCharacteristic charac : charList) {
+                    MyLog.e(TAG, "Characteristic " + (++j) + " UUID=" + charac.getUuid().toString());
                 }
             }
             if (status != BluetoothGatt.GATT_SUCCESS) {
@@ -345,42 +348,11 @@ public class MyBluetoothManager {
             }
             //找到服务了
             mBluetoothGatt = gatt;
-            BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
-            if (service == null) {
-                MyLog.e(TAG, "Service is null");
-                return;
-            }
-
-            indoor_bike_data_characteristic = service.getCharacteristic(BluetoothUUID.INDOOR_BIKE_DATA);
-
-            if (indoor_bike_data_characteristic == null) {
-                MyLog.e(TAG, "indoor bike data Chara is null.");
-                return;
-            }
-            BluetoothGattDescriptor descriptor = indoor_bike_data_characteristic.getDescriptor(BluetoothUUID.DESCR);
-            if (descriptor == null) {
-                MyLog.e(TAG, "descriptor is null");
-                return;
-            }
-            gatt.setCharacteristicNotification(indoor_bike_data_characteristic, true);
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-
-            //status
-            status_characteristic=service.getCharacteristic(BluetoothUUID.FITNESS_MACHINE_STATUS);
-            BluetoothGattDescriptor status_descriptor = status_characteristic.getDescriptor(BluetoothUUID.DESCR);
-            gatt.setCharacteristicNotification(status_characteristic, true);
-            status_descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(status_descriptor);
-
-            //control point
-            control_point_characteristic=service.getCharacteristic(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT);
-            BluetoothGattDescriptor control_point_descriptor = control_point_characteristic.getDescriptor(BluetoothUUID.DESCR);
-            control_point_descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(control_point_descriptor);
-
-            MyLog.e(TAG, "setCharacteristicNotification");
+            //setCharacteristicNotification(BluetoothUUID.INDOOR_BIKE_DATA,false);
+            //setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_STATUS,false);
+            setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT,true);
         }
+
 
         @Override//当读取设备时会回调该函数
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic
@@ -403,7 +375,7 @@ public class MyBluetoothManager {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
                 for (byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
-                MyLog.e(TAG,"接收到的数据:"+stringBuilder.toString());
+                MyLog.e(TAG, "接收到的数据:" + stringBuilder.toString());
             }
             //save data to file
 /*            if(data.length>2){
@@ -414,19 +386,52 @@ public class MyBluetoothManager {
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            MyLog.e(TAG, "onCharacteristicWrite uuid="+characteristic.getUuid().toString());
-            byte[]data=characteristic.getValue();
+            MyLog.e(TAG, "onCharacteristicWrite uuid=" + characteristic.getUuid().toString());
+            byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
                 for (byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
-                MyLog.e(TAG,"写操作响应的数据:"+stringBuilder.toString()+" status="+status);
+                MyLog.e(TAG, "写操作响应的数据:" + stringBuilder.toString() + " status=" + status);
             }
-
             super.onCharacteristicWrite(gatt, characteristic, status);
         }
     }
+        //set nofication or indication enable
+    public boolean setCharacteristicNotification(UUID characteristic_uuid, boolean isIndication) {
+        boolean result = false;
+        if (mBluetoothGatt == null) {
+            MyLog.e(TAG, "mBluetoothGatt is null");
+            return false;
+        }
+        BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
+        if (service == null) {
+            MyLog.e(TAG, "Service is null");
+            return false;
+        }
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristic_uuid);
+        if (characteristic == null) {
+            MyLog.e(TAG, "characteristic is null");
+            return false;
+        }
+        mBluetoothGatt.setCharacteristicNotification(characteristic, true);
 
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(BluetoothUUID.DESCR);
+        if (descriptor == null) {
+            MyLog.e(TAG, "descriptor is null");
+            return false;
+        }
+        if (isIndication) {
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+        } else {
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        }
+        result = mBluetoothGatt.writeDescriptor(descriptor);
+        if (result) {
+            MyLog.e(TAG, "setCharacteristicNotification success");
+        }
+        return result;
+    }
 
     //写入
     public boolean writeCharacteristic(byte[] value) {

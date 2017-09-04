@@ -35,9 +35,12 @@ public class StartTrainingFragment extends BaseFragment {
         btn_start_training.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                start(CyclingRecordFragment.newInstance());
-                MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x00});
-                MyLog.e("cly","write Initiates code 0x00");
+                boolean status = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x00});
+                if (status) {
+                    start(CyclingRecordFragment.newInstance());
+                } else {
+                    MyLog.e("cly", "write 0x00 failed !");
+                }
             }
         });
         return rootView;

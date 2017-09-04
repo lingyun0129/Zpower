@@ -107,7 +107,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 if (success){
                     start(CyclingFragment.newInstance(), STANDARD);
                 }else{
-                    Toast.makeText(getActivity(), "写入控制指令失败!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "write 0x07 failed !", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.iv_back:
@@ -141,10 +141,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
+                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x09});
                         if (success) {
                             isReset = true;
-                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x07}");
+                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x09}");
                         }
                     }
                 });
