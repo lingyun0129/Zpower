@@ -376,7 +376,7 @@ public class MyBluetoothManager {
 
             //control point
             control_point_characteristic=service.getCharacteristic(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT);
-            BluetoothGattDescriptor control_point_descriptor = status_characteristic.getDescriptor(BluetoothUUID.DESCR);
+            BluetoothGattDescriptor control_point_descriptor = control_point_characteristic.getDescriptor(BluetoothUUID.DESCR);
             control_point_descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
             mBluetoothGatt.writeDescriptor(control_point_descriptor);
 
