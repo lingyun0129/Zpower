@@ -44,7 +44,6 @@ public class MyBluetoothManager {
 
     private boolean isConnected = false;
     private boolean mScanning = false;
-
     private MyBluetoothManager() {
         Log.i(TAG, "BluetoothService()");
     }
@@ -59,12 +58,12 @@ public class MyBluetoothManager {
             synchronized (MyBluetoothManager.class) {
                 if (mInstance == null) {
                     mInstance = new MyBluetoothManager();
+                    //FileUtils.init();
                 }
             }
         }
         return mInstance;
     }
-
     /**
      * 蓝牙适配器
      * BluetoothAdapter是Android系统中所有蓝牙操作都需要的，
@@ -406,7 +405,10 @@ public class MyBluetoothManager {
                     stringBuilder.append(String.format("%02X ", byteChar));
                 MyLog.e(TAG,"接收到的数据:"+stringBuilder.toString());
             }
-
+            //save data to file
+/*            if(data.length>2){
+                FileUtils.saveBytesToFile(data);
+            }*/
             BluetoothService.handlerBlueData(data);
         }
 
@@ -420,9 +422,11 @@ public class MyBluetoothManager {
                     stringBuilder.append(String.format("%02X ", byteChar));
                 MyLog.e(TAG,"写操作响应的数据:"+stringBuilder.toString()+" status="+status);
             }
+
             super.onCharacteristicWrite(gatt, characteristic, status);
         }
     }
+
 
     //写入
     public boolean writeCharacteristic(byte[] value) {

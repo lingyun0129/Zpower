@@ -309,6 +309,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         if(!MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01})){
             MyLog.e(tag,"write stop command failed");
         };
+        //FileUtils.closeWriter();
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
