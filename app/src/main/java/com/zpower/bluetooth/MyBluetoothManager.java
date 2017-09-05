@@ -270,9 +270,6 @@ public class MyBluetoothManager {
 
 
     private BluetoothGatt mBluetoothGatt;
-    BluetoothGattCharacteristic indoor_bike_data_characteristic;
-    BluetoothGattCharacteristic status_characteristic;
-    BluetoothGattCharacteristic control_point_characteristic;
 
     /**
      * 尝试配对和连接

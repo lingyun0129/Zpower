@@ -409,8 +409,6 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataAvgWatt(int p) {
-/*        Log.e(tag,"平均功率："+getAVGWatt(p));
-        tv_avgWatt.setText(getAVGWatt(p)+"");*/
         MyLog.e(tag,"平均功率是："+p);
         tv_avgWatt.setText(p+"");
     }
@@ -426,7 +424,6 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataTotalCalores(double p) {
-        //double AVGWatt = getAVGWatt((int) p);
         double AVGWatt=p;
         BigDecimal bd = new BigDecimal(AVGWatt*totalTime*60/1000/4.184/0.22);
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);

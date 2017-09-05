@@ -56,13 +56,4 @@ public class DataModel {
             Battery_VOL = buffer[6];//第7个字节代表电量
         return true;
     }
-
-    /*@Override
-    public String toString() {
-        String t = "";
-        for(byte b:data) {
-            t += b;
-        }
-            return "Type:"+type+"  Data:"+t;
-    }*/
 }
