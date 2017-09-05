@@ -7,6 +7,7 @@ import com.zpower.MessageTypes;
 import com.zpower.model.DataRecord;
 import com.zpower.utils.BaseUtils;
 import com.zpower.utils.MyLog;
+import com.zpower.view.FTMSConstant;
 
 /**
  * Created by guzhicheng on 2017/3/7.
@@ -38,6 +39,31 @@ public class BluetoothService {
     }
 
     /**
+     * 接收indication 数据
+     * @param buffer
+     */
+    public static void handlerIndicationData(byte[] buffer){
+        //response data formate:responseCode+opCode+ResultCode+ResponseParameter(if present)
+        if (buffer.length>=3){
+            int responseCode=buffer[0];
+            int opCode=buffer[1];
+            int result=buffer[2];
+            //校准
+            if (buffer.length>=5&&opCode== FTMSConstant.OP_CALIBRATION){
+                if (result==FTMSConstant.RESULT_SUCCESS) {
+                    byte[] adc_default = new byte[2];
+                    System.arraycopy(buffer, 3, adc_default, 0, 2);//把adc的值存入adc_default数组
+                    sendDefaultADC(mHandler,BaseUtils.bytes2ToInt(adc_default,0));
+                }
+                else{
+                    MyLog.e(TAG,"calibration failed !!! result="+result);
+                }
+            }
+        }else{
+            MyLog.e(TAG,"indication response Data is error.");
+        }
+    }
+    /**
      * 接收蓝牙数据，并发送到UI
      *
      * @param buffer
@@ -50,17 +76,11 @@ public class BluetoothService {
             return;
         }
         if (buffer.length == 10) {
-            if (buffer[0] == -1){
-                byte[] adc_default = new byte[3];//ADC初始值
-                System.arraycopy(buffer, 3, adc_default, 0, 3);//把adc的值存入adc_default数组
-                sendDefaultADC(mHandler,adc_default);
-            }else {
-                DataRecord d1 =  new DataRecord(buffer);
-                MyLog.e(TAG,"接收到的数据转Int后数据："+ BaseUtils.bytes2ToInt(d1.getFlag(),0)
-                +" "+d1.getInsCadence()+" "+d1.getAvgCadence()
-                +" "+d1.getInsPower()+" "+d1.getAvgPower());
-                sendBluetoothMessage(mHandler,d1);
-            }
+            DataRecord d1 = new DataRecord(buffer);
+            MyLog.e(TAG, "接收到的数据转Int后数据：" + BaseUtils.bytes2ToInt(d1.getFlag(), 0)
+                    + " " + d1.getInsCadence() + " " + d1.getAvgCadence()
+                    + " " + d1.getInsPower() + " " + d1.getAvgPower());
+            sendBluetoothMessage(mHandler, d1);
         }else {
             MyLog.e(TAG,"Data is error.");
         }
@@ -83,7 +103,7 @@ public class BluetoothService {
      * @param handler
      * @param data
      */
-    private static void sendDefaultADC(Handler handler, byte[] data){
+    private static void sendDefaultADC(Handler handler, int data){
         Message msg = handler.obtainMessage();
         msg.what = MessageTypes.MSG_DEFAULT_ADC;
         msg.obj = data;

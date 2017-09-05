@@ -28,6 +28,8 @@ import com.zpower.utils.MyLog;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 /**
@@ -348,6 +350,13 @@ public class MyBluetoothManager {
             }
             //找到服务了
             mBluetoothGatt = gatt;
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setCharacteristicNotification(BluetoothUUID.INDOOR_BIKE_DATA,false);
+                }
+            },2000);
             //setCharacteristicNotification(BluetoothUUID.INDOOR_BIKE_DATA,false);
             //setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_STATUS,false);
             setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT,true);
@@ -381,7 +390,11 @@ public class MyBluetoothManager {
 /*            if(data.length>2){
                 FileUtils.saveBytesToFile(data);
             }*/
-            BluetoothService.handlerBlueData(data);
+            if (characteristic.getUuid().equals(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT)){
+                BluetoothService.handlerIndicationData(data);
+            }else if (characteristic.getUuid().equals(BluetoothUUID.INDOOR_BIKE_DATA)){
+                BluetoothService.handlerBlueData(data);
+            }
         }
 
         @Override

@@ -160,7 +160,7 @@ public class MainService {
                     }*/
                     break;
                 case MessageTypes.MSG_DEFAULT_ADC:
-                    defaultADC = getADC((byte[]) msg.obj);
+                    defaultADC =(int)msg.obj; //getADC((byte[]) msg.obj);
                     mDefaultADCCallback.onDefaultADC(defaultADC);
                     Log.e(tag,"MainService defaultADC:"+ defaultADC +"");
                     break;
