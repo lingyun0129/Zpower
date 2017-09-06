@@ -59,7 +59,7 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initView() {
-        iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
+        //iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
         tv_to_login = (TextView) rootView.findViewById(R.id.tv_to_login);
         btn_sign_up = (Button) rootView.findViewById(R.id.btn_sign_up);
         et_email = (EditText) rootView.findViewById(R.id.et_email);
@@ -67,10 +67,9 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initListener() {
-        iv_close.setOnClickListener(this);
         tv_to_login.setOnClickListener(this);
         btn_sign_up.setOnClickListener(this);
-        iv_close.setOnClickListener(this);
+        //iv_close.setOnClickListener(this);
     }
 
     @Override
@@ -106,9 +105,9 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                     }
                 }
                 break;
-            case R.id.iv_close:
+/*            case R.id.iv_close:
                 pop();
-                break;
+                break;*/
         }
 
     }

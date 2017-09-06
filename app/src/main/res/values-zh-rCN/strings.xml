@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nameTitle">邮箱</string>
+    <string name="passwordTitle">密码</string>
+    <string name="login">登录</string>
+    <string name="signUP">注册</string>
+    <string name="bt_connect">点击连接</string>
+    <string name="unknown_device">未知设备</string>
+    <string name="connected_title">设备已连接</string>
+    <string name="count_down_time">3秒后开始</string>
+</resources>

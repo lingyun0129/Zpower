@@ -58,11 +58,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         et_email.setText((CharSequence) SPUtils.get(getActivity(),"user_email",""));//SP中保存的用户邮箱
         et_password = (EditText) rootView.findViewById(R.id.et_password);
         et_password.setText((CharSequence) SPUtils.get(getActivity(),"user_password",""));//SP中的用户密码
-        iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
+        //iv_close = (ImageView) rootView.findViewById(R.id.iv_close);
         btn_login = (Button) rootView.findViewById(R.id.btn_login);
         tv_to_sign_up = (TextView) rootView.findViewById(R.id.tv_to_sign_up);
         btn_login.setOnClickListener(this);
-        iv_close.setOnClickListener(this);
+        //iv_close.setOnClickListener(this);
         tv_to_sign_up.setOnClickListener(this);
     }
 
@@ -89,10 +89,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     }
         }
         break;
-            case R.id.iv_close:
+  /*          case R.id.iv_close:
                 pop();//出栈当前Fragment
                 getActivity().finish();
-                break;
+                break;*/
         }
     }
 }

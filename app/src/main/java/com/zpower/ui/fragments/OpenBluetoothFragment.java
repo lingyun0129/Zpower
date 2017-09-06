@@ -142,7 +142,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                     /*if (device.getAddress().equals("DC:C5:0A:7D:1C:AC")||device.getAddress().equals("E2:0A:F4:68:E4:9D")||device.getAddress().equals("E9:BC:4E:A5:DB:AE"))*/ {
                         //myBluetoothAdapter.cancelDiscovery();
                         myBluetoothManager.scanLeDevice(false);
-                        start(DiscoveredFragment.newInstance());//跳转到DiscoveredFragment
+                        start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
                         EventBus.getDefault().postSticky(device);
                     }
                 }

@@ -6,7 +6,7 @@
               android:paddingLeft="10dp"
               android:paddingRight="10dp"
               android:gravity="center_horizontal"
-              android:background="@color/colorPrimary">
+              android:background="@mipmap/bg">
     <include
         android:id="@+id/include"
         layout="@layout/connect_common"/>
@@ -16,11 +16,11 @@
         android:layout_margin="30dp"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
-        android:text="已连接"/>
+        android:text="@string/connected_title"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/connected"/>
+        android:src="@mipmap/icon_connect"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:text="3秒后进入主界面"/>
+        android:text="count_down_time"/>
     <TextView
         android:id="@+id/tv_count_down"
         android:layout_width="wrap_content"
