@@ -35,6 +35,6 @@
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:text="立即开始"
+        android:text="@string/start"
         android:background="@drawable/selector_start_training_button"/>
 </RelativeLayout>

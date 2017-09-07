@@ -10,4 +10,12 @@
     <string name="unknown_device">Unknown device</string>
     <string name="connected_title">Device Connected</string>
     <string name="count_down_time">Start after 3S</string>
+    <string name="start">Go now</string>
+    <string name="restart">Restart</string>
+    <string name="stop">Stop</string>
+    <string name="connect_bluetooth">connect BT</string>
+    <string name="data_record">Data Record</string>
+    <string name="best">Best</string>
+    <string name="History">History</string>
+
 </resources>

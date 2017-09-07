@@ -8,4 +8,11 @@
     <string name="unknown_device">未知设备</string>
     <string name="connected_title">设备已连接</string>
     <string name="count_down_time">3秒后开始</string>
+    <string name="start">现在开始</string>
+    <string name="restart">重来</string>
+    <string name="stop">停止</string>
+    <string name="connect_bluetooth">点击连接蓝牙</string>
+    <string name="data_record">数据记录</string>
+    <string name="best">最佳</string>
+    <string name="History">历史</string>
 </resources>

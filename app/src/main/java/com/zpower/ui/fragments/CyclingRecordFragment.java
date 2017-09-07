@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.shinelw.library.ColorArcProgressBar;
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.DefaultADCCallback;
@@ -35,7 +36,8 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     private TextView tv_device_name;
     private TextView tvTotalTime;
     private TextView tvTotalKilometre;
-    private TextView tvTotalWatt;
+    //private TextView tvTotalWatt;
+    private ColorArcProgressBar prg_avg_watt;
     private TextView tvTotalKcal;
 
     private BluetoothDevice device;
@@ -75,7 +77,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
 
         tvTotalTime = (TextView) rootView.findViewById(R.id.tv_total_time);
         tvTotalKilometre = (TextView) rootView.findViewById(R.id.tv_total_kilometre);
-        tvTotalWatt = (TextView) rootView.findViewById(R.id.tv_total_watt);
+        prg_avg_watt = (ColorArcProgressBar) rootView.findViewById(R.id.prg_avg_watt);
         tvTotalKcal = (TextView) rootView.findViewById(R.id.tv_total_kcal);
 
         iv_back.setOnClickListener(this);
@@ -195,7 +197,8 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     public void onEventReceiver(RecordData data) {
         tvTotalTime.setText(data.getTime());
         tvTotalKilometre.setText(data.getKm() + "");
-        tvTotalWatt.setText(data.getAvg_p() + "");
+        //tvTotalWatt.setText(data.getAvg_p() + "");
+        prg_avg_watt.setCurrentValues(data.getAvg_p());
         tvTotalKcal.setText(data.getCalorie() + "");
     }
 

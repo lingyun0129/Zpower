@@ -28,7 +28,7 @@
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:text="count_down_time"/>
+        android:text="@string/count_down_time"/>
     <TextView
         android:id="@+id/tv_count_down"
         android:layout_width="wrap_content"
