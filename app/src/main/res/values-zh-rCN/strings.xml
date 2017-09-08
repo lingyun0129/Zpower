@@ -15,4 +15,26 @@
     <string name="data_record">数据记录</string>
     <string name="best">最佳</string>
     <string name="History">历史</string>
+    <string name="retest">重新测试</string>
+    <string name="max_power">最大功率</string>
+    <string name="longest_time">最长时间</string>
+    <string name="max_cadence">最高踏频</string>
+    <string name="longest_distance">单日最远距离</string>
+    <string name="max_speed">最大速度</string>
+    <string name="max_calorie">单日最多卡路里</string>
+    <string name="recent">最近</string>
+    <string name="tranning_time">训练时间</string>
+    <string name="avg_power">平均功率</string>
+    <string name="current_power">当前功率</string>
+    <string name="adc_calibration">ADC 校准</string>
+    <string name="calibration_hint">请将曲柄置于竖直状态</string>
+    <string name="zpower_cancel">取消</string>
+    <string name="zpower_ok">确定</string>
+    <string name="bt_disconnect">蓝牙未连接</string>
+    <string name="bt_connect_now">现在连接蓝牙？</string>
+    <string name="connecting_bluetooth">正在连接</string>
+    <string name="end_cycling">结束骑行</string>
+    <string name="end_cycling_confim">结束本次骑行?</string>
+    <string name="connect_success">连接成功</string>
+    <string name="bt_disconnected">蓝牙断开连接</string>
 </resources>

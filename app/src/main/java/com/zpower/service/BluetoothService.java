@@ -56,6 +56,7 @@ public class BluetoothService {
                     sendDefaultADC(mHandler,BaseUtils.bytes2ToInt(adc_default,0));
                 }
                 else{
+                    sendDefaultADC(mHandler,-1);//calibration failed
                     MyLog.e(TAG,"calibration failed !!! result="+result);
                 }
             }

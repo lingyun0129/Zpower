@@ -1,161 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:background="@color/black_bg"
         android:layout_weight="2"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FTP290W"
             android:layout_marginBottom="10dp"
+            android:text="FTP290W"
             android:textColor="@android:color/white"
-            android:textSize="28sp"/>
+            android:textSize="28sp" />
+
         <Button
             android:id="@+id/btn_ftp_test"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="重新测试"
-            android:textColor="@color/gray_text"
-            android:textSize="18sp"
-            android:background="@drawable/selector_retest_button"/>
+            android:background="@drawable/selector_connect_button"
+            android:text="@string/retest"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="@color/blurry_bg"
         android:orientation="vertical"
-        android:background="@color/colorPrimary"
-        android:paddingTop="10dp"
         android:paddingRight="20dp"
-        android:layout_weight="3">
+        android:paddingTop="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:text="最大功率"
-                    style="@style/fragment_best_data_m"/>
+                    style="@style/fragment_best_data_m"
+                    android:text="@string/max_power" />
+
                 <TextView
-                    android:text=">100%最长时间"
-                    style="@style/fragment_best_data_m"/>
+                    style="@style/fragment_best_data_m"
+                    android:text="@string/longest_time" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_maxWatt"
                     style="@style/fragment_best_data_l"
-                    android:text="0"/>
+                    android:text="0" />
+
                 <TextView
                     android:id="@+id/tv_longestTime"
                     style="@style/fragment_best_data_l"
-                    android:text="06:32"/>
+                    android:text="06:32" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/fragment_best_data_s"
-                    android:text="WATT"/>
-                <TextView
-                    style="@style/fragment_best_data_s"/>
+                    android:text="WATT" />
+
+                <TextView style="@style/fragment_best_data_s" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/fragment_best_data_m"
-                    android:text="最高踏频"/>
+                    android:text="@string/max_cadence" />
+
                 <TextView
                     style="@style/fragment_best_data_m"
-                    android:text="单日最远距离"/>
+                    android:text="@string/longest_distance" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_maxRpm"
                     style="@style/fragment_best_data_l"
-                    android:text="0"/>
+                    android:text="0" />
+
                 <TextView
                     android:id="@+id/tv_longestDistance"
                     style="@style/fragment_best_data_l"
-                    android:text="0.00"/>
+                    android:text="0.00" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/fragment_best_data_s"
-                    android:text="RPM"/>
+                    android:text="RPM" />
+
                 <TextView
                     style="@style/fragment_best_data_s"
-                    android:text="KM"/>
+                    android:text="KM" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/fragment_best_data_m"
-                    android:text="最大速度"/>
+                    android:text="@string/max_speed" />
+
                 <TextView
                     style="@style/fragment_best_data_m"
-                    android:text="单日最多卡路里"/>
+                    android:text="@string/max_calorie" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/tv_maxSpeed"
                     style="@style/fragment_best_data_l"
-                    android:text="0.00"/>
+                    android:text="0.00" />
+
                 <TextView
                     android:id="@+id/tv_maxKcal"
                     style="@style/fragment_best_data_l"
-                    android:text="0.00"/>
+                    android:text="0.00" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/fragment_best_data_s"
-                    android:text="KM/H"/>
+                    android:text="KM/H" />
+
                 <TextView
                     style="@style/fragment_best_data_s"
-                    android:text="KCAL"/>
+                    android:text="KCAL" />
             </LinearLayout>
         </LinearLayout>
 

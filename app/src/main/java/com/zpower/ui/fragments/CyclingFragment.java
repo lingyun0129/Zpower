@@ -274,10 +274,10 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     }
     private void showDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("结束骑行");
-        builder.setMessage("是否结束本次骑行?");
-        builder.setNegativeButton("取消",null);
-        builder.setPositiveButton("结束", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.end_cycling);
+        builder.setMessage(R.string.end_cycling_confim);
+        builder.setNegativeButton(R.string.zpower_cancel,null);
+        builder.setPositiveButton(R.string.zpower_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 pop();
@@ -347,7 +347,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.setCancelable(true);
                     progressDialog.setCanceledOnTouchOutside(true);
-                    progressDialog.setMessage("正在连接设备:" + mDevice.getName());
+                    progressDialog.setMessage(R.string.connecting_bluetooth + mDevice.getName());
                     progressDialog.show();
                     //在子线程中连接蓝牙设备
                     new Thread(new Runnable() {
@@ -502,7 +502,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         }
         tv_connected.setVisibility(View.VISIBLE);
         tv_device_name.setText(device.getName());
-        Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.connect_success, Toast.LENGTH_SHORT).show();
         startCycling();
         if (progressDialog != null){
             progressDialog.dismiss();
@@ -513,9 +513,9 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onBluetoothDisconnect() {
         MyLog.e(tag,"onBluetoothDisconnect");
         isConnected = false;
-        Toast.makeText(getActivity(), "设备断开连接", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.bt_disconnected, Toast.LENGTH_SHORT).show();
         tv_connected.setVisibility(View.GONE);
-        tv_device_name.setText("点击连接蓝牙");
+        tv_device_name.setText(R.string.connect_bluetooth);
         stopCycling();
     }
     @Override

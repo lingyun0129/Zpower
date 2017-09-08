@@ -121,7 +121,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progressDialog.setCancelable(true);
                     progressDialog.setCanceledOnTouchOutside(true);
-                    progressDialog.setMessage("正在连接设备:" + device.getName());
+                    progressDialog.setMessage(R.string.connecting_bluetooth + device.getName());
                     progressDialog.show();
                     //在子线程中连接蓝牙设备
                     new Thread(new Runnable() {
@@ -137,10 +137,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_reset:
                 mService.getDefaultADC(defaultADCCallback);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("ADC校准");
-                builder.setMessage("请将曲柄置于垂直状态");
-                builder.setNegativeButton("取消", null);
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.adc_calibration);
+                builder.setMessage(R.string.calibration_hint);
+                builder.setNegativeButton(R.string.zpower_cancel, null);
+                builder.setPositiveButton(R.string.zpower_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x09});
@@ -161,7 +161,11 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         @Override
         public void onDefaultADC(int adc) {
             int defaultADC = adc;
-            Toast.makeText(getActivity(), "defaultADC:" + defaultADC, Toast.LENGTH_SHORT).show();
+            if(defaultADC==-1){
+                Toast.makeText(getActivity(), "ADC Clibration Failed ！", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getActivity(), "defaultADC:" + defaultADC, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -180,10 +184,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     public void onEventReceiver(Boolean isSkipped) {
         if (isSkipped && !isConnected) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("蓝牙未连接");
-            builder.setMessage("现在连接蓝牙?");
-            builder.setNegativeButton("取消", null);
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.bt_disconnect);
+            builder.setMessage(R.string.bt_connect_now);
+            builder.setNegativeButton(R.string.zpower_cancel, null);
+            builder.setPositiveButton(R.string.zpower_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     start(OpenBluetoothFragment.newInstance());
@@ -221,7 +225,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
             tv_connected.setVisibility(View.VISIBLE);
             tv_device_name.setText(device.getName());
         }
-        Toast.makeText(getActivity(), "连接成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.connected_title, Toast.LENGTH_SHORT).show();
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
@@ -231,7 +235,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     public void onBluetoothDisconnect() {
         isConnected = false;
         tv_connected.setVisibility(View.GONE);
-        tv_device_name.setText("点击连接蓝牙");
+        tv_device_name.setText(R.string.connect_bluetooth);
     }
 
 }

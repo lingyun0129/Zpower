@@ -92,7 +92,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textColor">@color/white</item>
     </style>
     <style name="fragment_best_data_l">
         <item name="android:layout_width">0dp</item>
@@ -100,7 +100,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/digital</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="fragment_best_data_s">
@@ -109,7 +109,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textColor">@color/white</item>
     </style>
     <!--历史记录banner text style-->
     <style name="fragment_history_data">

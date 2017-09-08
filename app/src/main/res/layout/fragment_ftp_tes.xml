@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="@mipmap/bg">
     <RelativeLayout
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
@@ -38,9 +38,9 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/progressbar"
         app:is_need_content="true"
-        app:front_color1="#d27b97"
-        app:front_color2="#a40e43"
-        app:front_color3="#fc0318"
+        app:front_color1="@color/btn_bg"
+        app:front_color2="@color/btn_bg"
+        app:front_color3="@color/btn_bg"
         app:max_value="300"
         app:back_width="10dp"
         app:front_width="10dp"
@@ -48,7 +48,7 @@
         app:is_need_unit="true"
         app:string_unit="WATT"
         app:is_need_title="true"
-        app:string_title="当前功率"
+        app:string_title="@string/current_power"
         app:back_color="@android:color/white"
         android:layout_marginTop="50dp"
         />
