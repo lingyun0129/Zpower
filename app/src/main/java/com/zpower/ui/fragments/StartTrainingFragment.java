@@ -50,6 +50,7 @@ public class StartTrainingFragment extends BaseFragment {
     public boolean onBackPressedSupport() {
 
         if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
+            MyBluetoothManager.getInstance().close();
             _mActivity.finish();
         } else {
             TOUCH_TIME = System.currentTimeMillis();

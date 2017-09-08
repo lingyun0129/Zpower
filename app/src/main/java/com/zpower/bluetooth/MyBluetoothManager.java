@@ -467,4 +467,12 @@ public class MyBluetoothManager {
         boolean status = mBluetoothGatt.writeCharacteristic(charac);
         return status;
     }
+
+    public void close(){
+        if (mBluetoothGatt==null){
+            return;
+        }
+        mBluetoothGatt.close();
+        mBluetoothGatt=null;
+    }
 }
