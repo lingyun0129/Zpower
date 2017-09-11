@@ -41,7 +41,20 @@ public class BaseUtils {
                 | (src[offset ] & 0xFF));
         return value;
     }
-        /**
+    /**
+     * short整数转换为2字节的byte数组(高位在前，低位在后)
+     *
+     * @param s
+     *      short整数
+     * @return byte数组
+     */
+    public static byte[] unsignedShortToByte2(int s) {
+        byte[] targets = new byte[2];
+        targets[0] = (byte) (s >> 8 & 0xFF);
+        targets[1] = (byte) (s & 0xFF);
+        return targets;
+    }
+    /**
          * 将String类型的时间转换成long,如：12:01:08
          * @param strTime String类型的时间
          * @return long类型的时间

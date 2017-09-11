@@ -370,6 +370,7 @@ public class MyBluetoothManager {
                 // if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0)
                 // 表示可发出通知。  判断该Characteristic属性
             }
+
             super.onCharacteristicRead(gatt, characteristic, status);
         }
 
