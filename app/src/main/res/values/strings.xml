@@ -39,6 +39,8 @@
     <string name="end_cycling_confim">Finish this cycling?</string>
     <string name="connect_success">Connect success</string>
     <string name="bt_disconnected">Device disconnected</string>
+    <string name="btn_scan">Scan</string>
+    <string name="btn_skip">Skip</string>
 
 
 </resources>

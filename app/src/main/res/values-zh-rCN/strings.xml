@@ -37,4 +37,6 @@
     <string name="end_cycling_confim">结束本次骑行?</string>
     <string name="connect_success">连接成功</string>
     <string name="bt_disconnected">蓝牙断开连接</string>
+    <string name="btn_scan">扫描</string>
+    <string name="btn_skip">跳过</string>
 </resources>

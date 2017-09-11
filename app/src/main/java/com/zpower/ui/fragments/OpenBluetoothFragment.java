@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,12 +57,12 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     private void initView() {
         lodingIndicator = (AVLoadingIndicatorView) rootView.findViewById(R.id.lodaingView);
         ImageView iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
-        TextView tv_rescan = (TextView) rootView.findViewById(R.id.tv_rescan);
-        TextView tv_skip = (TextView) rootView.findViewById(R.id.tv_skip);
+        Button btn_rescan = (Button) rootView.findViewById(R.id.btn_scan);
+        Button btn_skip= (Button) rootView.findViewById(R.id.btn_skip);
 
         iv_back.setOnClickListener(this);
-        tv_rescan.setOnClickListener(this);
-        tv_skip.setOnClickListener(this);
+        btn_rescan.setOnClickListener(this);
+        btn_skip.setOnClickListener(this);
     }
 
     @Override
@@ -70,13 +71,13 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             case iv_back:
                 pop();
                 break;
-            case R.id.tv_rescan:
+            case R.id.btn_scan:
                 if (lodingIndicator.getVisibility() == View.INVISIBLE){
                     lodingIndicator.setVisibility(View.VISIBLE);
                     initData();
                 }
                 break;
-            case R.id.tv_skip:
+            case R.id.btn_skip:
                 //myBluetoothAdapter.cancelDiscovery();
                 //stop scan
                myBluetoothManager.scanLeDevice(false);
