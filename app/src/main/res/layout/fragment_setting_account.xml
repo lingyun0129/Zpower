@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:background="@color/colorPrimary">
     <RelativeLayout
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
@@ -21,19 +21,26 @@
             android:layout_toRightOf="@id/iv_back"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="设置"
+            android:text="@string/setting"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的账户"
+            android:text="@string/my_account"
             android:textColor="@android:color/white"
             android:textSize="26sp"/>
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/default_account_photo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        />
     <TextView
         android:id="@+id/tv_id"
         android:layout_width="match_parent"
@@ -49,13 +56,15 @@
         android:layout_height="60dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
+
         <TextView
             style="@style/fragment_setting_text"
-            android:text="身高(cm)"/>
+            android:text="@string/height" />
+
         <EditText
+            android:id="@+id/et_height"
             style="@style/fragment_setting_account_text"
-            android:hint="点击设置"
-            android:id="@+id/et_height"/>
+            android:hint="@string/click_to_setting" />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
@@ -64,13 +73,15 @@
         android:layout_height="60dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
+
         <TextView
             style="@style/fragment_setting_text"
-            android:text="体重(Kg)"/>
+            android:text="@string/weight" />
+
         <EditText
+            android:id="@+id/et_weight"
             style="@style/fragment_setting_account_text"
-            android:hint="点击设置"
-            android:id="@+id/et_weight"/>
+            android:hint="@string/click_to_setting" />
 
     </RelativeLayout>
     <include
@@ -80,14 +91,15 @@
         android:layout_height="60dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
+
         <TextView
             style="@style/fragment_setting_text"
-            android:text="年龄"/>
+            android:text="@string/age" />
 
         <EditText
+            android:id="@+id/et_age"
             style="@style/fragment_setting_account_text"
-            android:hint="点击设置"
-            android:id="@+id/et_age"/>
+            android:hint="@string/click_to_setting" />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>

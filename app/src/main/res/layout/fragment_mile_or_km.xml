@@ -15,22 +15,24 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/back"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/iv_back"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="设置"
+            android:layout_toRightOf="@id/iv_back"
+            android:text="@string/setting"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="英里/公制"
+            android:text="@string/unit_distance"
             android:textColor="@android:color/white"
-            android:textSize="26sp"/>
+            android:textSize="26sp" />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>
@@ -40,9 +42,10 @@
         android:layout_height="60dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
+
         <TextView
             style="@style/fragment_setting_text"
-            android:text="英里"/>
+            android:text="@string/mile" />
         <ImageView
             android:id="@+id/iv_mile"
             android:layout_width="30dp"
@@ -60,9 +63,10 @@
         android:layout_height="60dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
+
         <TextView
             style="@style/fragment_setting_text"
-            android:text="公制"/>
+            android:text="@string/kilometer" />
         <ImageView
             android:id="@+id/iv_km"
             android:layout_width="30dp"

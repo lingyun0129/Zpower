@@ -366,9 +366,13 @@ public class MyBluetoothManager {
             MyLog.e(TAG, "onCharacteristicRead");
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //读取到的数据存在characteristic当中，可以通过characteristic.getValue();函数取出。然后再进行解析操作。
-                //int charaProp = characteristic.getProperties();
-                // if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0)
-                // 表示可发出通知。  判断该Characteristic属性
+                int charaProp = characteristic.getProperties();
+                if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0){
+                    if (characteristic.getUuid().equals(BluetoothUUID.BATTERY_NOTIFICATION)){
+                        byte[] data=characteristic.getValue();
+                        MyLog.e(TAG,"剩余电量:"+String.format("%d",data[0])+"%");
+                    }
+                }
             }
 
             super.onCharacteristicRead(gatt, characteristic, status);
@@ -469,6 +473,25 @@ public class MyBluetoothManager {
         return status;
     }
 
+    //read
+    public boolean readBatteryLevel(){
+
+        if(mBluetoothGatt==null){
+            return false;
+        }
+        BluetoothGattService Service = mBluetoothGatt.getService(BluetoothUUID.BATTERY_SERVICE);
+        if (Service == null) {
+            Log.e(TAG, " battery service not found!");
+            return false;
+        }
+        BluetoothGattCharacteristic charac = Service
+                .getCharacteristic(BluetoothUUID.BATTERY_NOTIFICATION);
+        if (charac == null) {
+            Log.e(TAG, "battery char not found!");
+            return false;
+        }
+        return mBluetoothGatt.readCharacteristic(charac);
+    }
     public void close(){
         if (mBluetoothGatt==null){
             return;

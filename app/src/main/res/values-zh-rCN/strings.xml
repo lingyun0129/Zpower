@@ -39,4 +39,23 @@
     <string name="bt_disconnected">蓝牙断开连接</string>
     <string name="btn_scan">扫描</string>
     <string name="btn_skip">跳过</string>
+    <string name="setting">设置</string>
+    <string name="my_account">我的账户</string>
+    <string name="unit_distance">英里/公里</string>
+    <string name="device_info">设备信息</string>
+    <string name="error_bluetooth_not_supported">设备不支持蓝牙</string>
+    <string name="ble_not_supported">不支持低功耗蓝牙</string>
+    <string name="height">身高(cm)</string>
+    <string name="weight">体重(kg)</string>
+    <string name="age">年龄</string>
+    <string name="click_to_setting">点击设置</string>
+    <string name="device_name">名称</string>
+    <string name="bt_mac">蓝牙地址</string>
+    <string name="power_meter">功率计</string>
+    <string name="model">型号</string>
+    <string name="serial_number">序列号</string>
+    <string name="version">版本</string>
+    <string name="mile">英里</string>
+    <string name="kilometer">公里</string>
+    <string name="battery_level">电池电量</string>
 </resources>

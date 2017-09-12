@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="设置"
+            android:text="@string/setting"
             android:textColor="@android:color/white"
             android:textSize="26sp"/>
     </RelativeLayout>
@@ -37,7 +37,7 @@
         android:clickable="true">
         <TextView
             style="@style/fragment_setting_text"
-            android:text="我的账户"/>
+            android:text="@string/my_account"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         android:clickable="true">
         <TextView
             style="@style/fragment_setting_text"
-            android:text="英里/公制"/>
+            android:text="@string/unit_distance"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
         android:clickable="true">
         <TextView
             style="@style/fragment_setting_text"
-            android:text="设备信息"/>
+            android:text="@string/device_info"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
