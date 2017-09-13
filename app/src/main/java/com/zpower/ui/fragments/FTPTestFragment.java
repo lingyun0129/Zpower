@@ -14,6 +14,8 @@ import com.zpower.R;
 import com.zpower.inter.RecordDataCallback;
 import com.zpower.service.MainService;
 import com.zpower.utils.BaseUtils;
+import com.zpower.utils.SPUtils;
+import com.zpower.view.FTMSConstant;
 
 /**
  * Created by user on 2017/8/16.
@@ -68,6 +70,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
         ImageView iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(this);
         progressBar = (ColorArcProgressBar) rootView.findViewById(R.id.progressbar);
+        progressBar.setMaxValues((float) SPUtils.get(getActivity(),"ftp", FTMSConstant.FTP));
     }
 
     @Override

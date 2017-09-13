@@ -21,6 +21,8 @@ import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.DefaultADCCallback;
 import com.zpower.model.RecordData;
 import com.zpower.service.MainService;
+import com.zpower.utils.SPUtils;
+import com.zpower.view.FTMSConstant;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,13 +81,14 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         tvTotalKilometre = (TextView) rootView.findViewById(R.id.tv_total_kilometre);
         prg_avg_watt = (ColorArcProgressBar) rootView.findViewById(R.id.prg_avg_watt);
         tvTotalKcal = (TextView) rootView.findViewById(R.id.tv_total_kcal);
-
+        prg_avg_watt.setMaxValues((float) SPUtils.get(getActivity(),"ftp", FTMSConstant.FTP));
         iv_back.setOnClickListener(this);
         iv_setting.setOnClickListener(this);
         iv_best_record.setOnClickListener(this);
         iv_start_cycling.setOnClickListener(this);
         rl_connected_bg.setOnClickListener(this);
         iv_reset.setOnClickListener(this);
+
     }
 
     @Override

@@ -40,6 +40,7 @@ import com.zpower.service.MainService;
 import com.zpower.utils.DBHelper;
 import com.zpower.utils.MyLog;
 import com.zpower.utils.SPUtils;
+import com.zpower.view.FTMSConstant;
 import com.zpower.view.WaveLoadingView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -134,7 +135,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         YAxis leftAxis = mChart.getAxisLeft();
 
         leftAxis.setEnabled(false);
-        leftAxis.setAxisMaximum(290f);
+        leftAxis.setAxisMaximum((float)SPUtils.get(getActivity(),"ftp",FTMSConstant.FTP));
         leftAxis.setAxisMinimum(0f);
 
         YAxis rightAxis = mChart.getAxisRight();
@@ -470,11 +471,12 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataWatt(int watt) {
         MyLog.e(tag,"当前功率："+watt);
         tv_watt.setText(watt+"");
-        if (watt>290){
-            watt = 290;
+        int ftp=(int)SPUtils.get(getActivity(),"ftp",FTMSConstant.FTP);
+        if (watt>ftp){
+            watt = ftp;
         }
         addEntry(watt);
-        int percent = watt*100/290;
+        int percent = watt*100/ftp;
         tv_percent.setText(percent+"%");
         waveLoadingView.setProgressValue((int) (watt/2.9));
     }

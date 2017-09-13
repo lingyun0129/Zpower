@@ -6,5 +6,5 @@ package com.zpower.inter;
  */
 
 public interface BatteryLevelCallback {
-    public void onBatterLevelDisplay(int level);
+     void onBatterLevelDisplay(int level);
 }

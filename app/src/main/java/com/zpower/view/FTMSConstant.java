@@ -26,6 +26,8 @@ public class FTMSConstant {
     //Control Information Parameter Value for Stop or Pause Procedure
     public final static int PARAM_STOP=0x01;
     public final static int PARAM_PAUSE=0x02;
-
-
+    /**
+     * 功能阈值功率：代表的是你在一段时间内可以稳定输出的最高的平均功率
+     */
+    public final static int FTP=290;//function threshold power
 }

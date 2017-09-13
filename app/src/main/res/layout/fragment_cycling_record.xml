@@ -69,7 +69,6 @@
         app:front_color1="@color/btn_bg"
         app:front_color2="@color/btn_bg"
         app:front_color3="@color/btn_bg"
-        app:max_value="300"
         app:back_width="10dp"
         app:front_width="10dp"
         app:total_engle="270"
