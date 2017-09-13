@@ -16,5 +16,6 @@ public class MessageTypes {
     public final static int CONNECT_STATE_DISCONNECTED = 1004;
     public final static int MSG_CYCLE_TIMER = 1005;
     public final static int MSG_DEFAULT_ADC = 1006;
+    public final static int MSG_BATTERY_LEVEL=1007;
 
 }

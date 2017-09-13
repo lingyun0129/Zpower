@@ -49,7 +49,7 @@
     <string name="weight">Weight(kg)</string>
     <string name="age">Age</string>
     <string name="click_to_setting">Setting</string>
-    <string name="device_name">Device name</string>
+    <string name="device_name">Name</string>
     <string name="bt_mac">Mac</string>
     <string name="power_meter">Power meter</string>
     <string name="model">Model</string>
@@ -58,6 +58,7 @@
     <string name="mile">Mile</string>
     <string name="kilometer">Kilometer</string>
     <string name="battery_level">Battery level</string>
+    <string name="low_battery">Low battery warning</string>
 
 
 </resources>

@@ -88,6 +88,19 @@ public class BluetoothService {
     }
 
     /**
+     * 接收剩余电量数据，发送到UI
+     * @param level
+     */
+    public static void handleBatteryLevelData(int level){
+        if(mHandler == null){
+            return;
+        }
+        Message msg = mHandler.obtainMessage();
+        msg.what = MessageTypes.MSG_BATTERY_LEVEL;
+        msg.obj = level;
+        msg.sendToTarget();
+    }
+    /**
      * 发送蓝牙数据消息
      * @param handler
      * @param data

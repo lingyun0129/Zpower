@@ -370,7 +370,9 @@ public class MyBluetoothManager {
                 if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0){
                     if (characteristic.getUuid().equals(BluetoothUUID.BATTERY_NOTIFICATION)){
                         byte[] data=characteristic.getValue();
-                        MyLog.e(TAG,"剩余电量:"+String.format("%d",data[0])+"%");
+                        int batteryLevel=Integer.valueOf(String.format("%d",data[0])).intValue();
+                        BluetoothService.handleBatteryLevelData(batteryLevel);
+                        MyLog.e(TAG,"剩余电量:"+batteryLevel+"%");
                     }
                 }
             }

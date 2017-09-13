@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.zpower.MessageTypes;
 import com.zpower.bluetooth.MyBluetoothManager;
+import com.zpower.inter.BatteryLevelCallback;
 import com.zpower.inter.BluetoothConnectCallback;
 import com.zpower.inter.DefaultADCCallback;
 import com.zpower.inter.RecordDataCallback;
@@ -45,7 +46,7 @@ public class MainService {
     private RecordDataCallback mDataCallback;
     private BluetoothConnectCallback mBLEconnCallback;
     private DefaultADCCallback mDefaultADCCallback;
-
+    private BatteryLevelCallback mBatteryLevelCallback;
     private MainService() {
     }
 
@@ -164,7 +165,10 @@ public class MainService {
                     mDefaultADCCallback.onDefaultADC(defaultADC);
                     Log.e(tag,"MainService defaultADC:"+ defaultADC +"");
                     break;
-
+                case MessageTypes.MSG_BATTERY_LEVEL:
+                    int battery_level=(int)msg.obj;
+                    mBatteryLevelCallback.onBatterLevelDisplay(battery_level);
+                    break;
             }
         }
 
@@ -284,12 +288,6 @@ public class MainService {
         stopTimer();
     }
 
-    /**
-     * 保存本次骑行数据
-     */
-    public void saveRecord(){
-
-    }
     /***
      * 暂停读取数据
      */
@@ -303,6 +301,10 @@ public class MainService {
         mDefaultADCCallback = callback;
     }
 
+    public void setBatteryLevelCallback(BatteryLevelCallback callback){
+        BluetoothService.startReadingData(mHandler);
+        mBatteryLevelCallback = callback;
+    }
     public boolean isInCycling() {
         return isInCycling;
     }

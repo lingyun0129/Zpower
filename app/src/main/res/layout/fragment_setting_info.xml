@@ -132,7 +132,7 @@
         <TextView
             android:id="@+id/tv_battery_level"
             style="@style/fragment_setting_info"
-            android:text="20%"/>
+            />
     </RelativeLayout>
     <include
         layout="@layout/line_divider"/>

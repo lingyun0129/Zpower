@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
+import com.zpower.inter.BatteryLevelCallback;
+import com.zpower.service.MainService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -20,7 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by zx on 2017/2/27.
  */
 
-public class SettingInfoFragment extends BaseFragment implements View.OnClickListener {
+public class SettingInfoFragment extends BaseFragment implements View.OnClickListener ,BatteryLevelCallback{
     private View rootView;
     private TextView tv_bt_mac;
     private TextView tv_battery_level;
@@ -42,6 +45,7 @@ public class SettingInfoFragment extends BaseFragment implements View.OnClickLis
         iv.setOnClickListener(this);
         tv_bt_mac=(TextView)rootView.findViewById(R.id.tv_bt_mac);
         tv_battery_level=(TextView)rootView.findViewById(R.id.tv_battery_level);
+        MainService.getService().setBatteryLevelCallback(this);
     }
     private void getBatteryLevel(){
         MyBluetoothManager.getInstance().readBatteryLevel();
@@ -68,17 +72,17 @@ public class SettingInfoFragment extends BaseFragment implements View.OnClickLis
     public void onEventReceiver(BluetoothDevice device){
         tv_bt_mac.setText(device.getAddress());
     }
-    /***
-     * 接收Eventbus消息
-     * @param battery_level
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    public void onEventReceiver(int battery_level){
-        tv_battery_level.setText(battery_level+"%");
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onBatterLevelDisplay(int level) {
+        if (level<10){
+            Toast.makeText(getActivity(),R.string.low_battery,Toast.LENGTH_SHORT).show();
+        }
+        tv_battery_level.setText(level+"%");
     }
 }
