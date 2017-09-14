@@ -136,7 +136,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onRPM(int rpm) {
-        progressBar.setCurrentValues(rpm);
+        //progressBar.setCurrentValues(rpm);
     }
 
     @Override
