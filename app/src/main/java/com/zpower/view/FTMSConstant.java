@@ -29,5 +29,5 @@ public class FTMSConstant {
     /**
      * 功能阈值功率：代表的是你在一段时间内可以稳定输出的最高的平均功率
      */
-    public final static int FTP=290;//function threshold power
+    public final static float FTP=290.0f;//function threshold power
 }

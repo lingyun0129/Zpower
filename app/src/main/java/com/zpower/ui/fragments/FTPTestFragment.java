@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.shinelw.library.ColorArcProgressBar;
 import com.zpower.R;
+import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.RecordDataCallback;
 import com.zpower.service.MainService;
 import com.zpower.utils.BaseUtils;
@@ -59,10 +60,12 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onFinish() {
                 tv_countDownTime.setText("Done");
+                stopFTPTest();
+
             }
         };
         countDownTimer.start();
-        mService.startRecord(this);
+        startFTPTest();
     }
 
     private void initView() {
@@ -73,13 +76,22 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
         progressBar.setMaxValues((float) SPUtils.get(getActivity(),"ftp", FTMSConstant.FTP));
     }
 
+    private void startFTPTest(){
+        //start
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
+        mService.startRecord(this);
+    }
+    private void stopFTPTest(){
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
+        mService.stopRecord();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 pop();
                 countDownTimer.cancel();
-                mService.stopRecord();
+                stopFTPTest();
                 break;
         }
     }
@@ -119,7 +131,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataWatt(int watt) {
-        //progressBar.setCurrentValues(watt);
+        progressBar.setCurrentValues(watt);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
         tvTotalKilometre = (TextView) rootView.findViewById(R.id.tv_total_kilometre);
         prg_avg_watt = (ColorArcProgressBar) rootView.findViewById(R.id.prg_avg_watt);
         tvTotalKcal = (TextView) rootView.findViewById(R.id.tv_total_kcal);
-        prg_avg_watt.setMaxValues((float) SPUtils.get(getActivity(),"ftp", FTMSConstant.FTP));
+        prg_avg_watt.setMaxValues((float)SPUtils.get(getActivity(),"ftp", FTMSConstant.FTP));
         iv_back.setOnClickListener(this);
         iv_setting.setOnClickListener(this);
         iv_best_record.setOnClickListener(this);
