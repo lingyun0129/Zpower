@@ -72,6 +72,22 @@ public class FileUtils {
             e.printStackTrace();
         }*/
     }
+
+    public  static void saveBytesToFile2(byte[] data){
+        for (byte byteChar : data) {
+            try {
+                writer.append(String.format("%02X ", byteChar));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            writer.append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void closeWriter(){
         if(writer!=null){
             try {
