@@ -59,6 +59,17 @@
     <string name="kilometer">Kilometer</string>
     <string name="battery_level">Battery level</string>
     <string name="low_battery">Low battery warning</string>
+    <string name="exit_hint">press back key again to exit the program</string>
+    <string name="permission_ok">User agrees to authorize</string>
+    <string name="permission_no">User refuses to authorize</string>
+    <string name="empty_warning">Email or password can\'t be empty</string>
+    <string name="login_success">Login success</string>
+    <string name="login_faile">Email or password maybe wrong</string>
+    <string name="email_format_warning">Emai fromat is incorrect</string>
+    <string name="sign_in_success">Sign in success</string>
+    <string name="sigin_in_failed">the email has registed</string>
+    <string name="location_permission_request">Need open location service to scan ble device</string>
+    <string name="open_location_service">Location service</string>
 
 
 </resources>

@@ -42,7 +42,7 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
                     finish();
                 } else {
                     TOUCH_TIME = System.currentTimeMillis();
-                    Toast.makeText(this, "再按一次退出！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.exit_hint, Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -90,9 +90,9 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
         switch (requestCode) {
             case 1:
                 if (grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this, "用户同意授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.permission_ok, Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(this, "用户拒绝授权", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.permission_no, Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

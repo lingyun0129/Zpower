@@ -54,7 +54,7 @@ public class StartTrainingFragment extends BaseFragment {
             _mActivity.finish();
         } else {
             TOUCH_TIME = System.currentTimeMillis();
-            Toast.makeText(_mActivity, "再按一次退出！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_mActivity, R.string.exit_hint, Toast.LENGTH_SHORT).show();
         }
         Log.e(TAG,"onBackPressedSupport 执行");
         return true;

@@ -88,20 +88,20 @@ public class RegisterFragment extends BaseFragment implements View.OnClickListen
                 Matcher matcher = pattern.matcher(email);
                 //判断邮箱是否已注册
                 if (email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(getActivity(),"邮箱或密码不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.empty_warning,Toast.LENGTH_SHORT).show();
 
                 }else if (!matcher.matches()){
-                    Toast.makeText(getActivity(),"邮箱格式不正确",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.email_format_warning,Toast.LENGTH_SHORT).show();
                 }else {
                     if (DBService.getInstance().checkEmail(email)){
                         if (DBService.getInstance().insertUser(email,password) > 0){
-                            Toast.makeText(getActivity(),"注册成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),R.string.sign_in_success,Toast.LENGTH_SHORT).show();
                             //SPUtils.put(getActivity(),"user_email_signup",email);//保存邮箱到sharedpreferences
                             //SPUtils.put(getActivity(),"user_password",password);
                             start(LoginFragment.newInstance(),SINGLETASK);
                         }
                     }else {
-                        Toast.makeText(getActivity(),"邮箱已注册",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),R.string.sigin_in_failed,Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;

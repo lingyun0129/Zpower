@@ -77,15 +77,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                String email = et_email.getText().toString().trim();//用户输入的邮箱
                String password = et_password.getText().toString().trim();//用户输入的密码
                 if (email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(getActivity(),"邮箱或密码不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),R.string.empty_warning,Toast.LENGTH_SHORT).show();
                 }else {
                     if (DBService.getInstance().checkEmailAndPassword(email,password)){
-                            Toast.makeText(getActivity(),"登录成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),R.string.login_success,Toast.LENGTH_SHORT).show();
                             SPUtils.put(getActivity(),"user_email",email);
                             SPUtils.put(getActivity(),"user_password",password);
                         start(OpenBluetoothFragment.newInstance());//跳转到蓝牙扫描界面
                     }else {
-                        Toast.makeText(getActivity(),"邮箱或密码错误",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),R.string.login_faile,Toast.LENGTH_SHORT).show();
                     }
         }
         break;

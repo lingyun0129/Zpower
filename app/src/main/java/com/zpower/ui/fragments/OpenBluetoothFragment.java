@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -109,14 +108,14 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             //判断是否需要 向用户解释，为什么要申请该权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                Toast.makeText(getActivity(), "自Android 6.0开始需要打开位置权限才可以搜索到Ble设备", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.location_permission_request, Toast.LENGTH_SHORT).show();
             }
         }
         //检查位置信息是否打开
         if(!myBluetoothManager.isLocationEnable(getActivity())){
             AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-            builder.setTitle("需要打开位置信息");
-            builder.setMessage("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备.");
+            builder.setTitle(R.string.open_location_service);
+            builder.setMessage(R.string.location_permission_request);
             builder.setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
