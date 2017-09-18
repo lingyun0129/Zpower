@@ -390,13 +390,14 @@ public class MyBluetoothManager {
                     stringBuilder.append(String.format("%02X ", byteChar));
                 MyLog.e(TAG, "接收到的数据:" + stringBuilder.toString());
             }
-            //save data to file
-/*            if(data.length>2){
-                FileUtils.saveBytesToFile(data);
-            }*/
+
             if (characteristic.getUuid().equals(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT)){
                 BluetoothService.handlerIndicationData(data);
             }else if (characteristic.getUuid().equals(BluetoothUUID.INDOOR_BIKE_DATA)){
+                //save data to file
+/*                if(data.length>2){
+                    FileUtils.saveBytesToFile2(data);
+                }*/
                 BluetoothService.handlerBlueData(data);
             }
         }

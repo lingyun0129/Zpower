@@ -471,12 +471,12 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataWatt(int watt) {
         MyLog.e(tag,"当前功率："+watt);
         tv_watt.setText(watt+"");
-        int ftp=(int)SPUtils.get(getActivity(),"ftp",FTMSConstant.FTP);
+        float ftp=(float)SPUtils.get(getActivity(),"ftp",FTMSConstant.FTP);
         if (watt>ftp){
-            watt = ftp;
+            watt = (int)ftp;
         }
         addEntry(watt);
-        int percent = watt*100/ftp;
+        int percent = watt*100/(int)ftp;
         tv_percent.setText(percent+"%");
         waveLoadingView.setProgressValue((int) (watt/2.9));
     }
