@@ -34,6 +34,11 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * save adc data
+     * @param data
+     */
     public  static void saveBytesToFile(byte[] data){
         byte[] round=new byte[2];
         byte[] power=new byte[2];
@@ -53,26 +58,12 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-/*        final StringBuilder stringBuilder = new StringBuilder(data.length);
-        for (byte byteChar : data)
-            stringBuilder.append(String.format("%D ", byteChar));
-            String hexString=stringBuilder.toString();
-            String roundStr=hexString.substring(0,4);
-            String powerStr=hexString.substring(4,8);
-            String otherStr=hexString.substring(8,hexString.length());
-        try {
-           writer.append(powerStr);
-            writer.append("  ,  ");
-            writer.append(roundStr);
-            writer.append("\n");
-            writer.append(otherStr);
-            writer.append("\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
+    /**
+     * 十六进制保存数据
+     * @param data
+     */
     public  static void saveBytesToFile2(byte[] data){
         for (byte byteChar : data) {
             try {
@@ -87,6 +78,33 @@ public class FileUtils {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 十进制保存数据
+     * @param data
+     */
+    public  static void saveBytesToFile3(byte[] data){
+        byte[] flag=new byte[2];
+        byte[] instan_cadence=new byte[2];
+        byte[] avg_cadence=new byte[2];
+        byte[] instan_power=new byte[2];
+        byte[] avg_power=new byte[2];
+        System.arraycopy(data,0,flag,0,2);
+        System.arraycopy(data,2,instan_cadence,0,2);
+        System.arraycopy(data,4,avg_cadence,0,2);
+        System.arraycopy(data,6,instan_power,0,2);
+        System.arraycopy(data,8,avg_power,0,2);
+        try {
+            writer.append(BaseUtils.bytes2ToInt(flag,0)+" ");
+            writer.append(BaseUtils.bytes2ToInt(instan_cadence,0)+" ");
+            writer.append(BaseUtils.bytes2ToInt(avg_cadence,0)+" ");
+            writer.append(BaseUtils.bytes2ToInt(instan_power,0)+" ");
+            writer.append(BaseUtils.bytes2ToInt(avg_power,0)+" ");
+            writer.append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public static void closeWriter(){
         if(writer!=null){
