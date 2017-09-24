@@ -59,7 +59,18 @@ public class FileUtils {
             e.printStackTrace();
         }
     }
-
+    public  static void saveBytesToFile4(byte[] data){
+        byte[] temp=new byte[2];
+        try {
+            for (int i=0;i<data.length;i=i+2){
+                System.arraycopy(data,i,temp,0,2);
+                writer.append(BaseUtils.bytes2ToInt(temp,0)+"");
+                writer.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 十六进制保存数据
      * @param data
