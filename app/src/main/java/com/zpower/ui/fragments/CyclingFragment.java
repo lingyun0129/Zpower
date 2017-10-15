@@ -401,7 +401,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     public void onDataTotalKM(double totalKM) {
         //totalKM:每分钟行驶的米数
         totalTime = (double) (System.currentTimeMillis() - startTime)/(double) (1000*60);//共计多少分钟
-        double km = (totalKM*totalTime*3.84/1000);//?为何要*3.84
+        double km = (totalKM*totalTime*3.84/1000);//3.84是轮速比
         BigDecimal bd = new BigDecimal(km);
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);//保留2位小数，四舍五入
         tv_total_km.setText(bd+"");
