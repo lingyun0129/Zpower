@@ -30,7 +30,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
     private CountDownTimer countDownTimer;
     private MainService mService;
     private final static long TRAINNING_TIME = 5 * 60 * 1000;
-
+    private float mFTP=0.0f;
     public static FTPTestFragment newInstance() {
         return new FTPTestFragment();
     }
@@ -61,7 +61,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
             public void onFinish() {
                 tv_countDownTime.setText("Done");
                 stopFTPTest();
-
+                SPUtils.put(getActivity(),"ftp",mFTP);
             }
         };
         countDownTimer.start();
@@ -116,7 +116,8 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataAvgWatt(int avgWATT) {
-
+        mFTP=(float)avgWATT;
+        progressBar.setCurrentValues(mFTP);
     }
 
     @Override

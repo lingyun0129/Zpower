@@ -202,6 +202,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void startCycling() {
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start
         mService.startRecord(this);//开始读蓝牙数据
         iv_start_cycling.setImageDrawable(getResources().getDrawable(R.mipmap.play));
         //将时间设置为暂停时的时间
@@ -211,7 +212,6 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         isCycling = true;
     }
     private void stopCycling(){
-
         mService.stopRecord();//停止读蓝牙数据
         iv_start_cycling.setImageDrawable(getResources().getDrawable(R.mipmap.pause));
         chronometer.stop();
