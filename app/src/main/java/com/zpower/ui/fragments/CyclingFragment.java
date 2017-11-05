@@ -217,6 +217,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         chronometer.stop();
         showButtons();
         isCycling = false;
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
     }
     private void pauseCycling(){
         mService.pauseRecord();
@@ -227,7 +228,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x02});//pause
     }
     private void restart() {
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start or resume
+        //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start or resume
         mService.stopRecord();
         tv_avgWatt.setText("0");
         tv_max_watt.setText("0");

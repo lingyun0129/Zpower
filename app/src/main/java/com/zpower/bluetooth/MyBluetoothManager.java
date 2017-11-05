@@ -145,6 +145,10 @@ public class MyBluetoothManager {
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
             MyLog.e(TAG, "find a new device name:" + device.getName() + " mac:" + device.getAddress());
+/*            final StringBuilder stringBuilder = new StringBuilder(scanRecord.length);
+            for (byte byteChar : scanRecord)
+                stringBuilder.append(String.format("%02X ", byteChar));
+            MyLog.e(TAG, "cly 接收到的广播数据:" + stringBuilder.toString());*/
             onRegisterBTReceiver.onBluetoothNewDevice(device);//发现新设备
         }
     };
