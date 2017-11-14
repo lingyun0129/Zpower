@@ -355,12 +355,12 @@ public class MyBluetoothManager {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    setCharacteristicNotification(BluetoothUUID.INDOOR_BIKE_DATA,false);
+                    setCharacteristicNotification(BluetoothUUID.CYCLING_POWER_MEASUREMENT,false);
                 }
             },2000);
             //setCharacteristicNotification(BluetoothUUID.INDOOR_BIKE_DATA,false);
             //setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_STATUS,false);
-            setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT,true);
+            setCharacteristicNotification(BluetoothUUID.CYCLING_POWER_CONTROL_POINT,true);
         }
 
 
@@ -395,11 +395,11 @@ public class MyBluetoothManager {
                 MyLog.e(TAG, "接收到的数据:" + stringBuilder.toString());
             }
 
-            if (characteristic.getUuid().equals(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT)){
+            if (characteristic.getUuid().equals(BluetoothUUID.CYCLING_POWER_CONTROL_POINT)){
                 BluetoothService.handlerIndicationData(data);
-            }else if (characteristic.getUuid().equals(BluetoothUUID.INDOOR_BIKE_DATA)){
+            }else if (characteristic.getUuid().equals(BluetoothUUID.CYCLING_POWER_MEASUREMENT)){
                 //save data to file
-/*                if(data.length>2){
+            /* if(data.length>2){
                     FileUtils.saveBytesToFile2(data);
                 }*/
                 BluetoothService.handlerBlueData(data);
@@ -426,7 +426,7 @@ public class MyBluetoothManager {
             MyLog.e(TAG, "mBluetoothGatt is null");
             return false;
         }
-        BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
+        BluetoothGattService service = mBluetoothGatt.getService(BluetoothUUID.CYCLING_POWER_SERVICE);
         if (service == null) {
             MyLog.e(TAG, "Service is null");
             return false;
@@ -463,14 +463,14 @@ public class MyBluetoothManager {
             Log.e(TAG, "lost connection");
             return false;
         }
-        BluetoothGattService Service = mBluetoothGatt.getService(BluetoothUUID.FITNESS_MACHINE_SERVICE);
+        BluetoothGattService Service = mBluetoothGatt.getService(BluetoothUUID.CYCLING_POWER_SERVICE);
         if (Service == null) {
             Log.e(TAG, "service not found!");
             return false;
         }
 
         BluetoothGattCharacteristic charac = Service
-                .getCharacteristic(BluetoothUUID.FITNESS_MACHINE_CONTROL_POINT);
+                .getCharacteristic(BluetoothUUID.CYCLING_POWER_CONTROL_POINT);
         if (charac == null) {
             Log.e(TAG, "char not found!");
             return false;
