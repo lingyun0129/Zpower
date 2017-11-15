@@ -76,11 +76,11 @@ public class BluetoothService {
         if(mHandler == null){
             return;
         }
-        if (buffer.length == 10) {
+        if (buffer.length == 8) {
             DataRecord d1 = new DataRecord(buffer);
-            MyLog.e(TAG, "接收到的数据转Int后数据：" + BaseUtils.bytes2ToInt(d1.getFlag(), 0)
+/*            MyLog.e(TAG, "接收到的数据转Int后数据：" + BaseUtils.bytes2ToInt(d1.getFlag(), 0)
                     + " " + d1.getInsCadence() + " " + d1.getAvgCadence()
-                    + " " + d1.getInsPower() + " " + d1.getAvgPower());
+                    + " " + d1.getInsPower() + " " + d1.getAvgPower());*/
             sendBluetoothMessage(mHandler, d1);
         }else {
             MyLog.e(TAG,"Data is error.");
