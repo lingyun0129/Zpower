@@ -36,9 +36,9 @@ public class DataRecord {
 
     /**
      *
-     * @return 返回瞬时踏频
+     * @return 返回圈数
      */
-    public int getRunds(){
+    public int getRounds(){
         return BaseUtils.bytes2ToInt(round,0);
     }
 

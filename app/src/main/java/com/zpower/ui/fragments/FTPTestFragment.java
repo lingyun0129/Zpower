@@ -78,11 +78,11 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
 
     private void startFTPTest(){
         //start
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
+        //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
         mService.startRecord(this);
     }
     private void stopFTPTest(){
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
+        //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
         mService.stopRecord();
     }
     @Override

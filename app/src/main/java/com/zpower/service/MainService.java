@@ -67,6 +67,9 @@ public class MainService {
         private int defaultADC;
         private double m;
         private double v1;
+        private DataRecord preData=null;//上一条数据
+        private DataRecord currentData=null;//当前数据
+
         @Override
         public void handleMessage(Message msg) {
 
@@ -114,18 +117,29 @@ public class MainService {
                 case MessageTypes.MSG_BLUETOOTH://蓝牙数据
 
                     //根据踏频计算相应参数
-                    DataRecord data=(DataRecord)msg.obj;
-                    if(data==null||mDataCallback==null){
+                    currentData=(DataRecord)msg.obj;
+                    if(currentData==null||mDataCallback==null){
                         return;
                     }
-                    mDataCallback.onRPM(data.getInsCadence());//瞬时踏频
-                    mDataCallback.onDataMaxRpm(data.getInsCadence());//最大踏频
-                    mDataCallback.onDataTotalKM(data.getAvgCadence()*l);//平均踏频*周长
+                    if(preData==null&&currentData!=null){
+                        preData=currentData;
+                        return;
+                    }
+                    if(preData.getRounds()!=currentData.getRounds()) {
+                        int InsCadence = getFrequency(preData.getRounds(), currentData.getRounds(), preData.getElapsedTime(), currentData.getElapsedTime());
+                        if (InsCadence > 0) {
+                            mFrquency = InsCadence;
+                        }
+                        mDataCallback.onRPM(InsCadence);//瞬时踏频
+                        mDataCallback.onDataMaxRpm(InsCadence);//最大踏频
+                        mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
 
-                    mDataCallback.onDataWatt((int) data.getInsPower());//当前功率
-                    mDataCallback.onDataMaxWatt((int) data.getInsPower());//用来计算最大功率
-                    mDataCallback.onDataAvgWatt((int) data.getAvgPower());//用来计算平均功率
-                    mDataCallback.onDataTotalCalores(data.getAvgPower());//用来计算卡路里
+                        mDataCallback.onDataWatt(currentData.getInsPower());//当前功率
+                        mDataCallback.onDataMaxWatt(currentData.getInsPower());//用来计算最大功率
+                        mDataCallback.onDataAvgWatt(currentData.getInsPower());//用来计算平均功率
+                        mDataCallback.onDataTotalCalores(currentData.getInsPower());//用来计算卡路里
+                        preData = currentData;
+                    }
                     /*DataModel dataModel = (DataModel) msg.obj;
                     if (dataModel == null) {
                         return;
@@ -181,26 +195,19 @@ public class MainService {
     private int mTime;
     private int count = 0;
     private int frequencySum = 0;
-    private int getFrequency(int round,int s,int ms){
-
+    private int getFrequency(int r1,int r2,int t1,int t2){
         if (isFirstRound){
-            firstTime = s*1000+ms*20;
             isFirstRound = false;
-            Log.e(tag,"firstTime:"+firstTime);
         }else {
-                mTime = s*1000+ms*20;
-                Log.e(tag,"mTime:"+mTime);
-                int duration = mTime-firstTime;
-                firstTime = mTime;
-            if (duration > 200){
-                frequency = 1*60*1000/duration;
-                Log.e(tag,"mTime-firstTime:"+duration);
-                Log.e(tag,"踏频:"+frequency);
-                count ++;
-                frequencySum = frequencySum+frequency;
-                avgFrequency = frequencySum/count;
-                Log.e(tag,"平均踏频:"+avgFrequency);
-            }
+                int duration = t2-t1;
+                if(duration!=0) {
+                    frequency = (r2 - r1)*60*1024/duration;
+                    Log.e(tag, "瞬时踏频:" + frequency);
+                    count++;
+                    frequencySum = frequencySum + frequency;
+                    avgFrequency = frequencySum / count;
+                    Log.e(tag, "平均踏频:" + avgFrequency);
+                }
         }
 
         return  frequency;

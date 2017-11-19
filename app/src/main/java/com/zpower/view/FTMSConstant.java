@@ -19,7 +19,7 @@ public class FTMSConstant {
     public final static int OP_RESET=0x01;
     public final static int OP_START_RESUME=0x07;
     public final static int OP_STOP_PAUSE=0x08;
-    public final static int OP_CALIBRATION=0x09;
+    public final static int OP_CALIBRATION=0x0c;
     public final static int OP_NEWTON=0x0a;
     public final static int RESPONSE_CODE=0x80;
 

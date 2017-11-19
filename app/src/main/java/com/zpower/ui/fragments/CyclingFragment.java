@@ -202,7 +202,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void startCycling() {
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start
+        //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start
         mService.startRecord(this);//开始读蓝牙数据
         iv_start_cycling.setImageDrawable(getResources().getDrawable(R.mipmap.play));
         //将时间设置为暂停时的时间
@@ -217,7 +217,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         chronometer.stop();
         showButtons();
         isCycling = false;
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
+       // MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01});
     }
     private void pauseCycling(){
         mService.pauseRecord();
@@ -225,7 +225,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         chronometer.stop();
         showButtons();
         isCycling = false;
-        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x02});//pause
+       // MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x02});//pause
     }
     private void restart() {
         //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});//start or resume
@@ -308,11 +308,11 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         dbHelper.insertRecordData(recordData);
         EventBus.getDefault().postSticky(recordData);
         //stop
-        if(!MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01})){
+/*        if(!MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x08,0x01})){
             MyLog.e(tag,"write stop command failed");
-        };
+        }*/
         //FileUtils.closeWriter();
-
+        stopCycling();
     }
     @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
     public void onEventReceiver(BluetoothDevice device){
@@ -411,8 +411,8 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataAvgWatt(int p) {
-        MyLog.e(tag,"平均功率是："+p);
-        tv_avgWatt.setText(p+"");
+        Log.e(tag,"平均功率："+getAVGWatt(p));
+        tv_avgWatt.setText(getAVGWatt(p)+"");
     }
 
 
@@ -426,7 +426,7 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataTotalCalores(double p) {
-        double AVGWatt=p;
+        double AVGWatt = getAVGWatt((int) p);
         BigDecimal bd = new BigDecimal(AVGWatt*totalTime*60/1000/4.184/0.22);
         bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
         tv_kcal.setText(bd+"");

@@ -108,7 +108,7 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                     Toast.makeText(getActivity(), "请先校准ADC", Toast.LENGTH_SHORT).show();
                 }*/
                 //发送控制指令--start or resume
-                boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
+                boolean success =true;// MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x07});
                 if (success){
                     start(CyclingFragment.newInstance(), STANDARD);
                 }else{
@@ -146,10 +146,10 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
                 builder.setPositiveButton(R.string.zpower_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x10});
+                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x0C});
                         if (success) {
                             isReset = true;
-                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x09}");
+                            Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x0C}");
                         }
                     }
                 });
