@@ -130,8 +130,8 @@ public class MainService {
                         if (InsCadence > 0) {
                             mFrquency = InsCadence;
                         }
-                        mDataCallback.onRPM(InsCadence);//瞬时踏频
-                        mDataCallback.onDataMaxRpm(InsCadence);//最大踏频
+                        mDataCallback.onRPM(mFrquency);//瞬时踏频
+                        mDataCallback.onDataMaxRpm(mFrquency);//最大踏频
                         mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
 
                         mDataCallback.onDataWatt(currentData.getInsPower());//当前功率
@@ -304,7 +304,7 @@ public class MainService {
         stopTimer();
     }
     public void getDefaultADC(DefaultADCCallback callback){
-        BluetoothService.startReadingData(mHandler);
+        BluetoothService.setHandler(mHandler);
         mDefaultADCCallback = callback;
     }
 

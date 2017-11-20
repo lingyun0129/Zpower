@@ -39,11 +39,21 @@ public class BluetoothService {
     }
 
     /**
+     * set handler
+     * @param handler
+     */
+    public static void setHandler(Handler handler){
+        mHandler=handler;
+    }
+    /**
      * 接收indication 数据
      * @param buffer
      */
     public static void handlerIndicationData(byte[] buffer){
         //response data formate:responseCode+opCode+ResultCode+ResponseParameter(if present)
+        if(mHandler==null){
+            return;
+        }
         if (buffer.length>=3){
             int responseCode=buffer[0];
             int opCode=buffer[1];
