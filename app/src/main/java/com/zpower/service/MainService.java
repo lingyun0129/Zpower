@@ -309,7 +309,7 @@ public class MainService {
     }
 
     public void setBatteryLevelCallback(BatteryLevelCallback callback){
-        BluetoothService.startReadingData(mHandler);
+        BluetoothService.setHandler(mHandler);
         mBatteryLevelCallback = callback;
     }
     public boolean isInCycling() {
