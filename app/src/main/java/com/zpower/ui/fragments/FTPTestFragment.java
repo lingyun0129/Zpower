@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.shinelw.library.ColorArcProgressBar;
 import com.zpower.R;
-import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.inter.RecordDataCallback;
 import com.zpower.service.MainService;
 import com.zpower.utils.BaseUtils;
@@ -116,7 +115,7 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onDataAvgWatt(int avgWATT) {
-        mFTP=(float)avgWATT;
+        mFTP=getAVGWatt(avgWATT);
         progressBar.setCurrentValues(mFTP);
     }
 
@@ -153,5 +152,12 @@ public class FTPTestFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onDataMaxSpeed(float speed) {
 
+    }
+    private double wattSum = 0;
+    private int wattCount = 0;
+    private  int getAVGWatt(int watt){
+        wattCount++;
+        wattSum = wattSum+watt;
+        return (int) (wattSum/wattCount);
     }
 }
