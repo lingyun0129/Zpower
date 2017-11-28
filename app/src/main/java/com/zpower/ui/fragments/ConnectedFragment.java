@@ -49,8 +49,8 @@ public class ConnectedFragment extends BaseFragment {
                     if (time<0){
                         timer.cancel();
                         tv_count_down.setVisibility(View.GONE);
-                        start(StartTrainingFragment.newInstance());
-                        //start(CyclingRecordFragment.newInstance());
+                        //start(StartTrainingFragment.newInstance());
+                        start(CyclingRecordFragment.newInstance());
                     }
             }
         }

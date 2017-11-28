@@ -34,6 +34,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class CyclingRecordFragment extends BaseFragment implements View.OnClickListener {
     private final static String TAG = CyclingFragment.class.getCanonicalName();
+    // 再点一次退出程序时间设置
+    private static final long WAIT_TIME = 2000L;
+    private long TOUCH_TIME = 0;
     private View rootView;
     private TextView tv_device_name;
     private TextView tvTotalTime;
@@ -217,10 +220,17 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public boolean onBackPressedSupport() {
-        pop();
+
+        if (System.currentTimeMillis() - TOUCH_TIME < WAIT_TIME) {
+            MyBluetoothManager.getInstance().close();
+            _mActivity.finish();
+        } else {
+            TOUCH_TIME = System.currentTimeMillis();
+            Toast.makeText(_mActivity, R.string.exit_hint, Toast.LENGTH_SHORT).show();
+        }
+        Log.e(TAG,"onBackPressedSupport 执行");
         return true;
     }
-
     @Override
     public void onBluetoothConnect(BluetoothDevice device) {
         isConnected = true;
