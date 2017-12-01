@@ -26,6 +26,7 @@ import com.zpower.model.BluetoothUUID;
 import com.zpower.service.BluetoothService;
 import com.zpower.utils.MyLog;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
@@ -149,6 +150,7 @@ public class MyBluetoothManager {
             for (byte byteChar : scanRecord)
                 stringBuilder.append(String.format("%02X ", byteChar));
             MyLog.e(TAG, "cly 接收到的广播数据:" + stringBuilder.toString());*/
+
             onRegisterBTReceiver.onBluetoothNewDevice(device);//发现新设备
         }
     };
@@ -171,6 +173,7 @@ public class MyBluetoothManager {
         } else {
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            onRegisterBTReceiver.onDiscoveryFinished();//停掉扫描动画
         }
     }
 
@@ -274,6 +277,7 @@ public class MyBluetoothManager {
 
 
     private BluetoothGatt mBluetoothGatt;
+    private ArrayList<BluetoothGatt> connectionQueue = new ArrayList<BluetoothGatt>();
 
     /**
      * 尝试配对和连接

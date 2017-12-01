@@ -12,10 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zpower.R;
+import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.service.MainService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,16 +37,18 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
     private ListView listView;
     private BluetoothDevice device;
     private ProgressDialog progressDialog;
+    private ProgressBar scanPgr;
     private BLEDeviceListAdapter mAdater;
     public static DiscoveredFragment2 newInstance(){
         return new DiscoveredFragment2();
     }
-
+    MyBluetoothManager myBluetoothManager = MyBluetoothManager.getInstance();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_discovered2,container,false);
         initView();
+        registerMyBTReceiver();
         EventBus.getDefault().register(this);
         return rootView;
     }
@@ -55,6 +59,8 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
         iv_back.setOnClickListener(this);
         mAdater=new BLEDeviceListAdapter();
         listView.setAdapter(mAdater);
+        scanPgr=(ProgressBar)rootView.findViewById(R.id.scan_pgr);
+
     }
 
 
@@ -90,7 +96,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 //        super.onBluetoothConnect(device);
         Log.e(TAG,device.getAddress()+"连接成功");
         Toast.makeText(getActivity(),"连接成功！", Toast.LENGTH_SHORT).show();
-        EventBus.getDefault().postSticky(device.getName());
+        EventBus.getDefault().postSticky(device);
         if (progressDialog != null){
             progressDialog.dismiss();
         }
@@ -232,5 +238,45 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
             }).start();
         }
 
+    }
+
+    private void registerMyBTReceiver() {
+        myBluetoothManager.registerBTReceiver(getActivity(), new MyBluetoothManager.OnRegisterBTReceiver() {
+
+            /***
+             * 发现新设备
+             * @param device
+             */
+            @Override
+            public void onBluetoothNewDevice(BluetoothDevice device) {
+                if (device != null&&device.getName()!=null){
+                    if (mAdater!=null){
+                        mAdater.addDevice(device);
+                        mAdater.notifyDataSetChanged();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onBluetoothPairing(BluetoothDevice device) {
+
+            }
+
+            @Override
+            public void onBluetoothPaired(BluetoothDevice device) {
+
+            }
+
+            @Override
+            public void onBluetoothUnpaired(BluetoothDevice device) {
+
+            }
+
+            @Override
+            public void onDiscoveryFinished() {
+               scanPgr.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 }

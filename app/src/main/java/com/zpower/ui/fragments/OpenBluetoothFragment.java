@@ -75,13 +75,16 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                     lodingIndicator.setVisibility(View.VISIBLE);
                     initData();
                 }
+                myBluetoothManager.startDiscoveringDevices();
+                start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
                 break;
             case R.id.btn_skip:
                 //myBluetoothAdapter.cancelDiscovery();
                 //stop scan
                myBluetoothManager.scanLeDevice(false);
                 EventBus.getDefault().postSticky(true);
-                start(StartTrainingFragment.newInstance());
+                //start(StartTrainingFragment.newInstance());
+                start(CyclingRecordFragment.newInstance());
                 break;
         }
     }
@@ -89,14 +92,14 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     private void initData() {
         //检查蓝牙是否打开
         myBluetoothManager.checkDevice(getActivity());
-        registerMyBTReceiver();
+        //registerMyBTReceiver();
         MyLog.e(TAG,"myBluetoothAdapter.isEnabled:"+myBluetoothAdapter.isEnabled());
         if (myBluetoothAdapter.isEnabled()){
-            lodingIndicator.setVisibility(View.VISIBLE);
+            //lodingIndicator.setVisibility(View.VISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermission();
             }
-            myBluetoothManager.startDiscoveringDevices();
+            //myBluetoothManager.startDiscoveringDevices();
         }else {
             lodingIndicator.setVisibility(View.INVISIBLE);
         }
@@ -141,9 +144,9 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                     //E3:B1:08:D7:12:E5
                     /*if (device.getAddress().equals("DC:C5:0A:7D:1C:AC")||device.getAddress().equals("E2:0A:F4:68:E4:9D")||device.getAddress().equals("E9:BC:4E:A5:DB:AE"))*/ {
                         //myBluetoothAdapter.cancelDiscovery();
-                        myBluetoothManager.scanLeDevice(false);
-                        start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
-                        EventBus.getDefault().postSticky(device);
+                        //myBluetoothManager.scanLeDevice(false);
+                        //start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
+                        //EventBus.getDefault().postSticky(device);
                     }
                 }
 
@@ -174,6 +177,6 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        myBluetoothManager.unregisterReceiver(getActivity());
+        //myBluetoothManager.unregisterReceiver(getActivity());
     }
 }
