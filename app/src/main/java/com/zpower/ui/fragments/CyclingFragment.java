@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +92,9 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
     private long longestTime=0L;
 
     private RecordData recordData;
+    private ImageView sub,add;
+    private int magnetic_value=0;//当前磁控阻力值
+    private ProgressBar magnetic_pgr;//磁控进度条
     public CyclingFragment(){
         mService = MainService.getService();
     }
@@ -265,6 +269,13 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
         mChart.setOnChartGestureListener(this);
         iv_restart.setOnClickListener(this);
         iv_stop.setOnClickListener(this);
+
+        //磁控
+        sub=(ImageView)rootView.findViewById(R.id.sub_btn);
+        sub.setOnClickListener(this);
+        add=(ImageView)rootView.findViewById(R.id.add_btn);
+        add.setOnClickListener(this);
+        magnetic_pgr=(ProgressBar)rootView.findViewById(R.id.magnetic_pgr);
     }
     private void showButtons(){
         rl_restart.setVisibility(View.VISIBLE);
@@ -368,6 +379,25 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
             case R.id.iv_stop:
                 showDialog();
                 break;
+            case R.id.sub_btn:
+                if(magnetic_value>0){
+                    setMagneticValue(--magnetic_value);
+                }
+                break;
+            case R.id.add_btn:
+                if (magnetic_value<8){
+                    setMagneticValue(++magnetic_value);
+                }
+                break;
+        }
+    }
+
+    private void setMagneticValue(int i) {
+        if(i>=0&&i<=8){
+            magnetic_pgr.setProgress(i);
+            byte value=(byte)i;
+            MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,value});
+            Toast.makeText(getActivity(), "当前磁控阻力值："+value, Toast.LENGTH_SHORT).show();
         }
     }
 
