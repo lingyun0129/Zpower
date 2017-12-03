@@ -90,7 +90,19 @@ public class FileUtils {
         }
 
     }
-
+    public  static void saveBytesToFile5(byte[] data){
+        byte[] temp=new byte[2];
+        try {
+            for (int i=0;i<data.length;i=i+2){
+                System.arraycopy(data,i,temp,0,2);
+                writer.append(BaseUtils.bytes2ToInt(temp,0)+"");
+                writer.append(" ");
+            }
+            writer.append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 十进制保存数据
      * @param data
