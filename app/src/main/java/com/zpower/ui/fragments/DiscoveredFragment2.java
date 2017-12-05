@@ -236,6 +236,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
                     MainService.getService().connectBLEDevice(clickedDevice);
                 }
             }).start();
+            myBluetoothManager.scanLeDevice(false);
         }
 
     }

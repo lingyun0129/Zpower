@@ -397,7 +397,6 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
             magnetic_pgr.setProgress(i);
             byte value=(byte)i;
             MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,value});
-            Toast.makeText(getActivity(), "当前磁控阻力值："+value, Toast.LENGTH_SHORT).show();
         }
     }
 

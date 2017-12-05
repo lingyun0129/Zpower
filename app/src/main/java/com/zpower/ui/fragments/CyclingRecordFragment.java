@@ -216,6 +216,9 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(MyBluetoothManager.getInstance()!=null){
+            MyBluetoothManager.getInstance().unregisterReceiver(getActivity());
+        }
     }
 
     @Override

@@ -37,7 +37,7 @@
     <string name="end_cycling_confim">结束本次骑行?</string>
     <string name="connect_success">连接成功</string>
     <string name="bt_disconnected">蓝牙断开连接</string>
-    <string name="btn_scan">扫描</string>
+    <string name="btn_scan">扫码</string>
     <string name="btn_skip">跳过</string>
     <string name="setting">设置</string>
     <string name="my_account">我的账户</string>
@@ -70,4 +70,9 @@
     <string name="sigin_in_failed">邮箱已经注册</string>
     <string name="location_permission_request">自Android 6.0开始需要打开位置信息才能搜索BLE设备</string>
     <string name="open_location_service">打开位置信息</string>
+    <string name="btn_search">搜索</string>
+    <string name="viewfinderview_status_text1">将二维码/条码放入取景框内</string>
+    <string name="viewfinderview_status_text2">即可自动扫描</string>
+    <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
+    <string name="button_ok">确定</string>
 </resources>

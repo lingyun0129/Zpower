@@ -17,15 +17,17 @@
             android:src="@mipmap/subtract"
             android:layout_alignParentLeft="true"
             />
-        <ProgressBar
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <com.zpower.view.MyProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
             android:id="@+id/magnetic_pgr"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="20dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:progress="0"
             android:max="8"
+            android:progressDrawable="@drawable/progress"
+            android:textAlignment="center"
             />
         <ImageButton
             android:id="@+id/add_btn"

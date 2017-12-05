@@ -70,6 +70,7 @@
     <string name="sigin_in_failed">the email has registed</string>
     <string name="location_permission_request">Need open location service to scan ble device</string>
     <string name="open_location_service">Location service</string>
+    <string name="btn_search">Search</string>
 
 
 </resources>

@@ -24,8 +24,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.utils.MyLog;
-
-import org.greenrobot.eventbus.EventBus;
+import com.zpower.zxing.android.CaptureActivity;
 
 import static com.zpower.R.id.iv_back;
 
@@ -57,11 +56,11 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         lodingIndicator = (AVLoadingIndicatorView) rootView.findViewById(R.id.lodaingView);
         ImageView iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         Button btn_rescan = (Button) rootView.findViewById(R.id.btn_scan);
-        Button btn_skip= (Button) rootView.findViewById(R.id.btn_skip);
+        Button btn_search= (Button) rootView.findViewById(R.id.btn_search);
 
         iv_back.setOnClickListener(this);
         btn_rescan.setOnClickListener(this);
-        btn_skip.setOnClickListener(this);
+        btn_search.setOnClickListener(this);
     }
 
     @Override
@@ -70,7 +69,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             case iv_back:
                 pop();
                 break;
-            case R.id.btn_scan:
+            //搜索
+            case R.id.btn_search:
                 if (lodingIndicator.getVisibility() == View.INVISIBLE){
                     lodingIndicator.setVisibility(View.VISIBLE);
                     initData();
@@ -78,13 +78,12 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                 myBluetoothManager.startDiscoveringDevices();
                 start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
                 break;
-            case R.id.btn_skip:
-                //myBluetoothAdapter.cancelDiscovery();
-                //stop scan
-               myBluetoothManager.scanLeDevice(false);
-                EventBus.getDefault().postSticky(true);
-                //start(StartTrainingFragment.newInstance());
-                start(CyclingRecordFragment.newInstance());
+            //扫二维码
+            case R.id.btn_scan:
+            {
+                Intent intent=new Intent(getActivity(), CaptureActivity.class);
+                startActivity(intent);
+            }
                 break;
         }
     }
@@ -95,7 +94,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         //registerMyBTReceiver();
         MyLog.e(TAG,"myBluetoothAdapter.isEnabled:"+myBluetoothAdapter.isEnabled());
         if (myBluetoothAdapter.isEnabled()){
-            //lodingIndicator.setVisibility(View.VISIBLE);
+            lodingIndicator.setVisibility(View.INVISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermission();
             }
