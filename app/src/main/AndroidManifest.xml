@@ -40,8 +40,7 @@
         </activity>
         <activity
             android:name=".zxing.android.CaptureActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:screenOrientation="portrait" />
         <receiver
             android:name=".broadcastreceiver.SecretCodeReceiver"
             android:enabled="true"

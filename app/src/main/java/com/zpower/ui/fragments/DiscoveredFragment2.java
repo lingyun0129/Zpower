@@ -139,6 +139,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        myBluetoothManager.unregisterReceiver(getActivity());
     }
 
     // Adapter for holding devices found through scanning.

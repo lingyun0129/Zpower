@@ -1,6 +1,5 @@
 package com.zpower.zxing.android;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -25,12 +24,14 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
+import me.yokeyword.fragmentation.SupportActivity;
+
 /**
  * 这个activity打开相机，在后台线程做常规的扫描；它绘制了一个结果view来帮助正确地显示条形码，在扫描的时候显示反馈信息，
  * 然后在扫描成功的时候覆盖扫描结果
  * 
  */
-public final class CaptureActivity extends Activity implements
+public final class CaptureActivity extends SupportActivity implements
 		SurfaceHolder.Callback {
 
 	private static final String TAG = CaptureActivity.class.getSimpleName();
@@ -76,6 +77,7 @@ public final class CaptureActivity extends Activity implements
 		// 保持Activity处于唤醒状态
 		Window window = getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		getSupportActionBar().hide();
 		setContentView(R.layout.capture);
 
 		hasSurface = false;
@@ -192,6 +194,7 @@ public final class CaptureActivity extends Activity implements
 			//setResult(RESULT_OK, intent);
 			startActivity(intent);
 			finish();*/
+
 		}
 
 	}
