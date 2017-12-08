@@ -50,7 +50,6 @@ public class CaptureFragment extends BaseFragment implements Callback,
 		DecodeHandlerInterface {
 	public static CaptureFragment newInstance() {return new CaptureFragment();}
 	public static final String SCAN_RESULT_ACTION = "com.zxing.fragment.ACTION_SCAN_RESULT";
-	private static final int ADDRESS_LENGTH = 17;
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
 	private boolean hasSurface;
@@ -152,7 +151,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
 					.show();
 			String bt_mac=resultString;
 			BluetoothAdapter bluetoothAdapter= MyBluetoothManager.getInstance().getmBluetoothAdapter();
-			if(bluetoothAdapter!=null&&checkBluetoothAddress(bt_mac)){
+			if(bluetoothAdapter!=null&&BluetoothAdapter.checkBluetoothAddress(bt_mac)){
 				final BluetoothDevice device=bluetoothAdapter.getRemoteDevice(bt_mac);
 				if (device!=null){
 					//在子线程中连接蓝牙设备
@@ -313,34 +312,5 @@ public class CaptureFragment extends BaseFragment implements Callback,
 //        super.onBluetoothDsiconnecting();
 		Toast.makeText(getActivity(),"正在断开连接", Toast.LENGTH_LONG).show();
 
-	}
-
-	/**
-	 * 蓝牙地址校验
-	 * @param address
-	 * @return
-	 */
-	public  boolean checkBluetoothAddress(String address) {
-		if (address == null || address.length() != ADDRESS_LENGTH) {
-			return false;
-		}
-		for (int i = 0; i < ADDRESS_LENGTH; i++) {
-			char c = address.charAt(i);
-			switch (i % 3) {
-				case 0:
-				case 1:
-					if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')) {
-						// hex character, OK
-						break;
-					}
-					return false;
-				case 2:
-					if (c == ':') {
-						break;  // OK
-					}
-					return false;
-			}
-		}
-		return true;
 	}
 }
