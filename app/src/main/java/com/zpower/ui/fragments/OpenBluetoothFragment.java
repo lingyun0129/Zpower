@@ -24,7 +24,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import com.zpower.R;
 import com.zpower.bluetooth.MyBluetoothManager;
 import com.zpower.utils.MyLog;
-import com.zpower.zxing.android.CaptureActivity;
+import com.zpower.zxing.fragment.CaptureFragment;
 
 import static com.zpower.R.id.iv_back;
 
@@ -81,8 +81,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             //扫二维码
             case R.id.btn_scan:
             {
-                Intent intent=new Intent(getActivity(), CaptureActivity.class);
-                startActivity(intent);
+                start(CaptureFragment.newInstance());
             }
                 break;
         }

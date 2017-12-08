@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package com.zpower.zxing.android;
+package com.zpower.zxing.decoding;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 
 /**
  * Simple listener used to exit the app in a few cases.
- * 用于在少数情况下退出App的监听
  *
- * @author Sean Owen
  */
-public final class FinishListener implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener {
+public final class FinishListener
+    implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener, Runnable {
 
   private final Activity activityToFinish;
 
@@ -33,17 +32,15 @@ public final class FinishListener implements DialogInterface.OnClickListener, Di
     this.activityToFinish = activityToFinish;
   }
 
-  @Override
   public void onCancel(DialogInterface dialogInterface) {
     run();
   }
 
-  @Override
   public void onClick(DialogInterface dialogInterface, int i) {
     run();
   }
 
-  private void run() {
+  public void run() {
     activityToFinish.finish();
   }
 
