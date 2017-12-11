@@ -30,6 +30,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile(name: 'ColorArcProgressBar', ext: 'aar')
+    compile files('libs/core-3.3.1.jar')
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.wang.avi:library:2.1.3'
     compile 'org.greenrobot:eventbus:3.0.0'
@@ -37,5 +38,4 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/core-3.3.1.jar')
 }
