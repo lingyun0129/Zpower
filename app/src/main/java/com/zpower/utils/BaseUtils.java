@@ -31,7 +31,11 @@ public class BaseUtils {
         int b2 = bytes[off + 2] & 0xFF;
         return (b0 << 16) | (b1 << 8) | b2;
     }
-
+    public static int byteToInt(byte b) {
+        //Java 总是把 byte 当做有符处理；我们可以通过将其和 0xFF 进行二进制与得到它的无符值
+        //return b & 0xFF;
+        return (int)b;
+    }
     /**
      * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序。
      */
@@ -53,6 +57,10 @@ public class BaseUtils {
         targets[0] = (byte) (s >> 8 & 0xFF);
         targets[1] = (byte) (s & 0xFF);
         return targets;
+    }
+    public static int convertTwoBytesToInt (byte b1, byte b2)      // signed
+    {
+        return (b2 << 8) | (b1 & 0xFF);
     }
     /**
          * 将String类型的时间转换成long,如：12:01:08
