@@ -52,5 +52,9 @@ public interface BluetoothUUID {
     UUID SENSOR_LOCATION=UUID.fromString("00002a5d-0000-1000-8000-00805F9B34FB");
 
     UUID CYCLING_POWER_CONTROL_POINT=UUID.fromString("00002a66-0000-1000-8000-00805F9B34FB");
-
+    /**
+     * Cycling Speed and Cadence
+     */
+    //Service
+    UUID CYCLING_SPEED_CADENCE_SERVICE=UUID.fromString("00001816-0000-1000-8000-00805F9B34FB");
 }
