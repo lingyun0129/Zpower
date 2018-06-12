@@ -5,7 +5,6 @@ package com.zpower.utils;
  */
 
 public class BaseUtils {
-
     /**
      * byte数组转换为int整数
      *
@@ -15,26 +14,25 @@ public class BaseUtils {
      *            开始位置
      * @return int整数
      */
-    public static int byte6ToInt(byte[] bytes, int off) {
+    public static int byte4ToInt(byte[] bytes, int off) {
         int b0 = bytes[off] & 0xFF;
         int b1 = bytes[off + 1] & 0xFF;
-        int b2 = bytes[off + 2] & 0xFF;
-        int b3 = bytes[off + 3] & 0xFF;
-        int b4 = bytes[off + 4] & 0xFF;
-        int b5 = bytes[off + 5] & 0xFF;
-        return (b0 << 40) | (b1 << 32) | (b2 << 24) | (b3 << 16) | (b4 << 8) | b5;
+        int b2 = bytes[off +2] & 0xFF;
+        int b3 = bytes[off+3] & 0xFF;
+        return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
     }
 
+    /**
+     * byte数组转换为int整数
+     * @param bytes
+     * @param off
+     * @return
+     */
     public static int byte3ToInt(byte[] bytes, int off) {
         int b0 = bytes[off] & 0xFF;
         int b1 = bytes[off + 1] & 0xFF;
         int b2 = bytes[off + 2] & 0xFF;
-        return (b0 << 16) | (b1 << 8) | b2;
-    }
-    public static int byteToInt(byte b) {
-        //Java 总是把 byte 当做有符处理；我们可以通过将其和 0xFF 进行二进制与得到它的无符值
-        //return b & 0xFF;
-        return (int)b;
+        return (b2 << 16) | (b1 << 8) | b0;
     }
     /**
      * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序。
@@ -45,6 +43,18 @@ public class BaseUtils {
                 | (src[offset ] & 0xFF));
         return value;
     }
+
+    /**
+     * byte数组转换为int整数
+     * @param b
+     * @return
+     */
+    public static int byteToInt(byte b) {
+        //Java 总是把 byte 当做有符处理；我们可以通过将其和 0xFF 进行二进制与得到它的无符值
+        //return b & 0xFF;
+        return (int)b;
+    }
+
     /**
      * short整数转换为2字节的byte数组(高位在前，低位在后)
      *
