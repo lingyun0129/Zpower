@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Zpower</string>
+    <string name="app_name">zpone</string>
     <string name="ble_not_supported">Not support BLE</string>
     <string name="error_bluetooth_not_supported">Not support Bluetooth</string>
     <string name="nameTitle">Your Email</string>

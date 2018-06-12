@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zpower">
+    package="com.zpone">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -20,17 +20,17 @@
         android:required="true" />
 
     <application
-        android:name=".ZPower"
+        android:name=".zpone.ZPower"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".zpone.ui.MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".zpone.ui.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,11 +39,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".zxing.activity.CaptureActivity"
+            android:name=".zpone.zxing.activity.CaptureActivity"
             android:screenOrientation="portrait" />
 
         <receiver
-            android:name=".broadcastreceiver.SecretCodeReceiver"
+            android:name=".zpone.broadcastreceiver.SecretCodeReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -56,8 +56,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.UnitCalibrationActivity" />
-        <activity android:name=".ui.MagneticCalibrationActivity"></activity>
+        <activity android:name=".zpone.ui.UnitCalibrationActivity" />
+        <activity android:name=".zpone.ui.MagneticCalibrationActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,76 @@
+package com.zpone.ui.fragments;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.zpone.R;
+import com.zpone.utils.BaseUtils;
+import com.zpone.utils.DBHelper;
+import com.zpone.utils.SPUtils;
+
+import java.math.BigDecimal;
+
+import me.yokeyword.fragmentation.SupportFragment;
+
+/**
+ * Created by zx on 2017/3/7.
+ */
+
+public class DataBestFragment extends BaseFragment {
+    private TextView tvMaxWatt;
+    private TextView tvLongestTime;
+    private TextView tvMaxRpm;
+    private TextView tvLongestDistance;
+    private TextView tvMaxSpeed;
+    private TextView tvMaxKcal;
+    private Button btn_ftp_test;
+    private View rootView;
+    public static DataBestFragment newInstance() {
+        return new DataBestFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_best_data, container, false);
+        initView();
+        initData();
+        return rootView;
+    }
+    private void initView() {
+        tvMaxWatt = (TextView) rootView.findViewById(R.id.tv_maxWatt);
+        tvLongestTime = (TextView) rootView.findViewById(R.id.tv_longestTime);
+        tvMaxRpm = (TextView) rootView.findViewById(R.id.tv_maxRpm);
+        tvLongestDistance = (TextView) rootView.findViewById(R.id.tv_longestDistance);
+        tvMaxSpeed = (TextView) rootView.findViewById(R.id.tv_maxSpeed);
+        tvMaxKcal = (TextView) rootView.findViewById(R.id.tv_maxKcal);
+        btn_ftp_test=(Button)rootView.findViewById(R.id.btn_ftp_test);
+        btn_ftp_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SupportFragment parent=(SupportFragment)getParentFragment();
+                parent.start(FTPTestFragment.newInstance());
+
+            }
+        });
+    }
+    private void initData() {
+        DBHelper dbHelper=new DBHelper(getActivity());
+        tvMaxWatt.setText(SPUtils.get(getActivity(),"maxWatt",0)+"");
+        tvMaxRpm.setText(SPUtils.get(getActivity(),"maxRpm",0)+"");
+        float maxSpeed=(float)SPUtils.get(getActivity(),"maxSpeed",0.00f);
+        BigDecimal bd = new BigDecimal(maxSpeed);
+        bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);//保留2位小数，四舍五入
+        tvMaxSpeed.setText(bd+"");
+
+        tvLongestDistance.setText(dbHelper.getMaxKm()+"");
+        tvMaxKcal.setText(dbHelper.getMaxKcal()+"");
+
+        tvLongestTime.setText(BaseUtils.coventLongTimeToStr(dbHelper.getLongestTime()));
+    }
+}
