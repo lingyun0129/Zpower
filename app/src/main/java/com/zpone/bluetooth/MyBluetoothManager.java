@@ -24,6 +24,7 @@ import com.zpone.MessageTypes;
 import com.zpone.R;
 import com.zpone.model.BluetoothUUID;
 import com.zpone.service.BluetoothService;
+import com.zpone.utils.FileUtils;
 import com.zpone.utils.MyLog;
 
 import java.util.ArrayList;
@@ -401,9 +402,9 @@ public class MyBluetoothManager {
                 BluetoothService.handlerIndicationData(data);
             }else if (characteristic.getUuid().equals(BluetoothUUID.CSC_MEASUREMENT)){
                 //save data to file
-            /* if(data.length>2){
-                    FileUtils.saveBytesToFile2(data);
-                }*/
+             if(data.length>2){
+                    //FileUtils.saveBytesToFile2(data);
+                }
                 BluetoothService.handlerBlueData(data);
             }
         }

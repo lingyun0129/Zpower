@@ -19,9 +19,10 @@ public class DataRecord {
     private byte[] crank_round=new byte[2];
     private byte[] crank_time=new byte[2];
     public DataRecord(byte[] buffer) {
-        if(buffer!=null&&buffer.length==8){
-            System.arraycopy(buffer, 0, flag, 0, 0);
-            System.arraycopy(buffer, 1, wheel_round, 0, 3);
+        if(buffer!=null){
+            //System.arraycopy(buffer, 0, flag, 0, 0);
+            flag=buffer[0];
+            System.arraycopy(buffer, 1, wheel_round, 0, 4);
             System.arraycopy(buffer, 5, wheel_time, 0, 2);
             System.arraycopy(buffer, 7, crank_round, 0, 2);
             System.arraycopy(buffer, 9, crank_time, 0, 2);
