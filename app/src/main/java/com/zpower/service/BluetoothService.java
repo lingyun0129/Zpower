@@ -86,7 +86,7 @@ public class BluetoothService {
         if(mHandler == null){
             return;
         }
-        if (buffer.length == 8) {
+        if (buffer.length == 11) {
             DataRecord d1 = new DataRecord(buffer);
             sendBluetoothMessage(mHandler, d1);
         }else {

@@ -134,10 +134,10 @@ public class MainService {
                         mDataCallback.onDataMaxRpm(mFrquency);//最大踏频
                         mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
 
-                        mDataCallback.onDataWatt(currentData.getInsPower());//当前功率
-                        mDataCallback.onDataMaxWatt(currentData.getInsPower());//用来计算最大功率
-                        mDataCallback.onDataAvgWatt(currentData.getInsPower());//用来计算平均功率
-                        mDataCallback.onDataTotalCalores(currentData.getInsPower());//用来计算卡路里
+                        mDataCallback.onDataWatt(0);//当前功率
+                        mDataCallback.onDataMaxWatt(0);//用来计算最大功率
+                        mDataCallback.onDataAvgWatt(0);//用来计算平均功率
+                        mDataCallback.onDataTotalCalores(0);//用来计算卡路里
                         preData = currentData;
                     }
                     /*DataModel dataModel = (DataModel) msg.obj;

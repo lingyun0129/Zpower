@@ -14,7 +14,7 @@ public class BaseUtils {
      *            开始位置
      * @return int整数
      */
-    public static int byte4ToInt(byte[] bytes, int off) {
+    public static int bytes4ToInt(byte[] bytes, int off) {
         int b0 = bytes[off] & 0xFF;
         int b1 = bytes[off + 1] & 0xFF;
         int b2 = bytes[off +2] & 0xFF;
