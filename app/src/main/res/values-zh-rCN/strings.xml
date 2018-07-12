@@ -76,4 +76,5 @@
     <string name="msg_camera_framework_bug">Sorry, the Android camera encountered a problem. You may need to restart the device.</string>
     <string name="button_ok">确定</string>
     <string name="invalid_mac_adress">无效的蓝牙mac地址</string>
+    <string name="mac_connect">MAC 连接</string>
 </resources>

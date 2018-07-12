@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">zpone</string>
+    <string name="app_name">BLETool</string>
     <string name="ble_not_supported">Not support BLE</string>
     <string name="error_bluetooth_not_supported">Not support Bluetooth</string>
     <string name="nameTitle">Your Email</string>
@@ -72,6 +72,7 @@
     <string name="open_location_service">Location service</string>
     <string name="btn_search">Search</string>
     <string name="invalid_mac_adress">Invalid Bluetooth address</string>
+    <string name="mac_connect">MAC connect</string>
 
 
 </resources>

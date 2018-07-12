@@ -13,9 +13,9 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_weight="3">
-        <include
+<!--        <include
             android:id="@+id/include"
-            layout="@layout/connect_common"/>
+            layout="@layout/connect_common"/>-->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,13 +29,27 @@
             android:layout_weight="1"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
+            >
+            <EditText
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Discovering devices..."
+                android:id="@+id/et_mac"
+                android:layout_weight="10"
+                android:hint="输入蓝牙mac地址"
+                android:textColorHint="#969494"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"/>
+                android:textSize="22sp"
+                android:maxLength="17"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ:"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_mac_connect"
+                android:background="@drawable/selector_connect_button"
+                android:text="@string/mac_connect"
+                android:textColor="#FFFFFF"/>
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_connecting"

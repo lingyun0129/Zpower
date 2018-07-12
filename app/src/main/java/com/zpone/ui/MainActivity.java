@@ -11,6 +11,7 @@ import com.zpone.inter.BluetoothConnectCallback;
 import com.zpone.service.MainService;
 import com.zpone.ui.fragments.BaseFragment;
 import com.zpone.ui.fragments.LoginFragment;
+import com.zpone.ui.fragments.OpenBluetoothFragment;
 
 import me.yokeyword.fragmentation.SupportActivity;
 
@@ -28,8 +29,8 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
         MainService.getService().init(this,this);
         if (savedInstanceState == null){
             //replaceLoadRootFragment(R.id.main_frag, LoginFragment.newInstance(),false);
-            loadRootFragment(R.id.main_frag, LoginFragment.newInstance());
-            //loadRootFragment(R.id.main_frag, CyclingFragment.newInstance());
+            //loadRootFragment(R.id.main_frag, LoginFragment.newInstance());
+            loadRootFragment(R.id.main_frag, OpenBluetoothFragment.newInstance());
         }
     }
     @Override
