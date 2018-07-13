@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
 import com.zpone.R;
 import com.zpone.inter.BluetoothConnectCallback;
 import com.zpone.service.MainService;

@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
@@ -32,12 +31,9 @@ import com.clj.fastble.exception.BleException;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
-import com.zpone.service.MainService;
 import com.zpone.utils.KeyBoardUtils;
 import com.zpone.utils.MyLog;
 import com.zpone.zxing.fragment.CaptureFragment;
-
-import org.greenrobot.eventbus.EventBus;
 
 import static com.zpone.R.id.iv_back;
 
@@ -115,7 +111,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             //mac地址连接
             case R.id.btn_mac_connect: {
                 KeyBoardUtils.hideKeyboard(et_mac);
-                final String mac_str = "FD:CC:83:2E:F2:7E";//et_mac.getText().toString().toUpperCase();
+                final String mac_str = et_mac.getText().toString().toUpperCase();
                 BluetoothAdapter bluetoothAdapter = MyBluetoothManager.getInstance().getmBluetoothAdapter();
                 if (bluetoothAdapter != null && BluetoothAdapter.checkBluetoothAddress(mac_str)) {
                     final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac_str);
@@ -189,8 +185,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+        BleManager.getInstance().disconnectAllDevice();
         super.onDestroy();
-        //myBluetoothManager.unregisterReceiver(getActivity());
     }
 
     /**
@@ -216,12 +212,15 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
+            start(ConnectedDeviceInfoFragment.newInstance());
             Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
