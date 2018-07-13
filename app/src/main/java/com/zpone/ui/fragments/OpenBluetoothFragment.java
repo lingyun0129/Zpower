@@ -2,13 +2,16 @@ package com.zpone.ui.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,11 +25,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
+import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
+import com.zpone.service.MainService;
+import com.zpone.utils.KeyBoardUtils;
 import com.zpone.utils.MyLog;
 import com.zpone.zxing.fragment.CaptureFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import static com.zpone.R.id.iv_back;
 
@@ -42,6 +53,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     MyBluetoothManager myBluetoothManager = MyBluetoothManager.getInstance();
     BluetoothAdapter myBluetoothAdapter = myBluetoothManager.getmBluetoothAdapter();
     private AVLoadingIndicatorView lodingIndicator;
+    private ProgressDialog progressDialog = null;
 
     public static OpenBluetoothFragment newInstance() {
         return new OpenBluetoothFragment();
@@ -51,10 +63,18 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_open_bluetooth, container, false);
-        //myBluetoothManager.initBluetoothManager(getActivity());
         initView();
         initData();
+        initBLEManager();
         return rootView;
+    }
+
+    private void initBLEManager() {
+        BleManager.getInstance().init(getActivity().getApplication());
+        BleManager.getInstance()
+                .enableLog(true)
+                .setReConnectCount(1, 5000)
+                .setOperateTimeout(5000);
     }
 
     private void initView() {
@@ -93,22 +113,47 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             }
             break;
             //mac地址连接
-            case R.id.btn_mac_connect:
-                break;
+            case R.id.btn_mac_connect: {
+                KeyBoardUtils.hideKeyboard(et_mac);
+                final String mac_str = "FD:CC:83:2E:F2:7E";//et_mac.getText().toString().toUpperCase();
+                BluetoothAdapter bluetoothAdapter = MyBluetoothManager.getInstance().getmBluetoothAdapter();
+                if (bluetoothAdapter != null && BluetoothAdapter.checkBluetoothAddress(mac_str)) {
+                    final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac_str);
+                    if (device != null) {
+                        //在子线程中连接蓝牙设备
+                        progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setCancelable(true);
+                        progressDialog.setCanceledOnTouchOutside(true);
+                        progressDialog.setMessage("Connecting:" + device.getName());
+                        progressDialog.show();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //MainService.getService().connectBLEDevice(device);
+                                Looper.prepare();
+                                BleManager.getInstance().connect(mac_str, new MyBleGattCallback());
+                                Looper.loop();
+                            }
+                        }).start();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), R.string.invalid_mac_adress, Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
         }
     }
 
     private void initData() {
         //检查蓝牙是否打开
         myBluetoothManager.checkDevice(getActivity());
-        //registerMyBTReceiver();
         MyLog.e(TAG, "myBluetoothAdapter.isEnabled:" + myBluetoothAdapter.isEnabled());
         if (myBluetoothAdapter.isEnabled()) {
             lodingIndicator.setVisibility(View.INVISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermission();
             }
-            //myBluetoothManager.startDiscoveringDevices();
         } else {
             lodingIndicator.setVisibility(View.INVISIBLE);
         }
@@ -116,7 +161,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
 
     private void requestPermission() {
         if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.CAMERA}, 2);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA}, 2);
             //判断是否需要 向用户解释，为什么要申请该权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -139,55 +184,45 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         }
     }
 
-    private void registerMyBTReceiver() {
-        myBluetoothManager.registerBTReceiver(getActivity(), new MyBluetoothManager.OnRegisterBTReceiver() {
-
-            /***
-             * 发现新设备
-             * @param device
-             */
-            @Override
-            public void onBluetoothNewDevice(BluetoothDevice device) {
-                if (device != null && device.getName() != null) {
-                    //nrf51422_HRM E7:9B:EE:4B:9C:79
-                    //E3:B1:08:D7:12:E5
-                    /*if (device.getAddress().equals("DC:C5:0A:7D:1C:AC")||device.getAddress().equals("E2:0A:F4:68:E4:9D")||device.getAddress().equals("E9:BC:4E:A5:DB:AE"))*/
-                    {
-                        //myBluetoothAdapter.cancelDiscovery();
-                        //myBluetoothManager.scanLeDevice(false);
-                        //start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
-                        //EventBus.getDefault().postSticky(device);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onBluetoothPairing(BluetoothDevice device) {
-
-            }
-
-            @Override
-            public void onBluetoothPaired(BluetoothDevice device) {
-
-            }
-
-            @Override
-            public void onBluetoothUnpaired(BluetoothDevice device) {
-
-            }
-
-            @Override
-            public void onDiscoveryFinished() {
-                lodingIndicator.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
     @Override
     public void onDestroy() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
         super.onDestroy();
         //myBluetoothManager.unregisterReceiver(getActivity());
+    }
+
+    /**
+     * 连接回调
+     */
+    class MyBleGattCallback extends BleGattCallback {
+
+        @Override
+        public void onStartConnect() {
+            Toast.makeText(getActivity(), "正在连接！", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onConnectFail(BleDevice bleDevice, BleException e) {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
+            Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
