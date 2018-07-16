@@ -2,7 +2,9 @@ package com.zpone.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
+import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
 import com.zpone.service.MainService;
@@ -234,12 +240,49 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    MainService.getService().connectBLEDevice(clickedDevice);
+                    //MainService.getService().connectBLEDevice(clickedDevice);
+                    Looper.prepare();
+                    BleManager.getInstance().connect(clickedDevice.getAddress(), new MyBleGattCallback());
+                    Looper.loop();
                 }
             }).start();
             myBluetoothManager.scanLeDevice(false);
         }
 
+    }
+    /**
+     * 连接回调
+     */
+    class MyBleGattCallback extends BleGattCallback {
+
+        @Override
+        public void onStartConnect() {
+            Toast.makeText(getActivity(), "正在连接！", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onConnectFail(BleDevice bleDevice, BleException e) {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+            start(ConnectedDeviceInfoFragment.newInstance());
+            Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
+            if (getActivity() != null) {
+                Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void registerMyBTReceiver() {

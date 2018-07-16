@@ -19,7 +19,7 @@ public class BaseUtils {
         int b1 = bytes[off + 1] & 0xFF;
         int b2 = bytes[off +2] & 0xFF;
         int b3 = bytes[off+3] & 0xFF;
-        return (b3 << 24) | (b2 << 16) | (b1 << 8) | b0;
+        return (b0 << 24) | (b1 << 16) | (b2 << 8) | b3;
     }
 
     /**
