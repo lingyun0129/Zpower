@@ -34,6 +34,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
+import com.zpone.observer.ObserverManager;
 import com.zpone.ui.fragments.BaseFragment;
 import com.zpone.ui.fragments.ConnectedDeviceInfoFragment;
 import com.zpone.ui.fragments.ConnectedFragment;
@@ -163,7 +164,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
             Toast.makeText(getActivity(), "Scan Result:" + resultString, Toast.LENGTH_SHORT)
                     .show();
             final String bt_mac = resultString;
-            BluetoothAdapter bluetoothAdapter = MyBluetoothManager.getInstance().getmBluetoothAdapter();
+            BluetoothAdapter bluetoothAdapter = BleManager.getInstance().getBluetoothAdapter();
             if (bluetoothAdapter != null && BluetoothAdapter.checkBluetoothAddress(bt_mac)) {
                 final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(bt_mac);
                 if (device != null) {
@@ -360,6 +361,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
             }
+            ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
 }

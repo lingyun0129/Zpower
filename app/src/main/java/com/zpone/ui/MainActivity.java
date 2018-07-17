@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
@@ -34,7 +35,7 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
             loadRootFragment(R.id.main_frag, OpenBluetoothFragment.newInstance());
         }
     }
-    @Override
+    /*@Override
     public void onBackPressedSupport() {
 
             if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
@@ -47,10 +48,11 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
                     Toast.makeText(this, R.string.exit_hint, Toast.LENGTH_SHORT).show();
                 }
             }
-        }
+        }*/
 
     @Override
     protected void onDestroy() {
+        Log.e("cly","MainActivity OnDestroy is called");
         super.onDestroy();
     }
 

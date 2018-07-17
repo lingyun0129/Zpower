@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.method.ReplacementTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.clj.fastble.exception.BleException;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
+import com.zpone.observer.ObserverManager;
 import com.zpone.utils.KeyBoardUtils;
 import com.zpone.utils.MyLog;
 import com.zpone.zxing.fragment.CaptureFragment;
@@ -112,7 +114,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             case R.id.btn_mac_connect: {
                 KeyBoardUtils.hideKeyboard(et_mac);
                 final String mac_str = et_mac.getText().toString().toUpperCase();
-                BluetoothAdapter bluetoothAdapter = MyBluetoothManager.getInstance().getmBluetoothAdapter();
+                BluetoothAdapter bluetoothAdapter = BleManager.getInstance().getBluetoothAdapter();
                 if (bluetoothAdapter != null && BluetoothAdapter.checkBluetoothAddress(mac_str)) {
                     final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(mac_str);
                     if (device != null) {
@@ -186,6 +188,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             progressDialog.dismiss();
         }
         BleManager.getInstance().disconnectAllDevice();
+        BleManager.getInstance().destroy();
+        Log.e("cly","OpenBluetoothFragment OnDestroy is called");
         super.onDestroy();
     }
 
@@ -221,6 +225,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
             }
+            ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
 

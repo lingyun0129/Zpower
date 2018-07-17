@@ -24,6 +24,7 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
+import com.zpone.observer.ObserverManager;
 import com.zpone.service.MainService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -282,6 +283,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
             }
+            ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
 
