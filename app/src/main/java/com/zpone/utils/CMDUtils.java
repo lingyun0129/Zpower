@@ -8,7 +8,7 @@ public final class CMDUtils {
     public static byte[] CMD_HIGHLEVEL_TIME_TEST={0x68,0x05};//高电平检测时间设置
     public static byte[] CMD_LOWLEVEL_TIME_TEST={0x68,0x06};//低电平检测时间设置
     public static byte[] CMD_BATTERY_TEST={0x68,0x07};//获取电量
-    public static byte[] CMD_GET_BATTERY_TEST={0x68,0x08};//正常模式
+    public static byte[] CMD_ENTER_NORMAL_MODE={0x68,0x08};//正常模式
 
 
 }

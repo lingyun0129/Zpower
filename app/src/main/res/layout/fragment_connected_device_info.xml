@@ -120,23 +120,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_park"
         android:text="车位检测"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_lmd"
         android:text="灵敏度设置"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_time"
         android:text="检测时间设置"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_highlevel_time"
+        android:layout_marginTop="10dp"
         android:text="高电平时间"
         android:enabled="false"/>
     <Button
@@ -144,18 +148,21 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_lowlevel_time"
         android:text="低电平时间"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_battery"
         android:text="电量获取"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_test_normal_mode"
         android:text="进入正常模式"
+        android:layout_marginTop="10dp"
         android:enabled="false"/>
 
 </LinearLayout>
