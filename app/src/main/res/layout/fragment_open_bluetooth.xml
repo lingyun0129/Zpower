@@ -28,13 +28,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
             <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:id="@+id/et_mac"
-                android:layout_weight="10"
                 android:hint="输入蓝牙mac地址"
                 android:textColorHint="#969494"
                 android:textColor="#FFFFFF"
@@ -42,12 +41,13 @@
                 android:maxLength="17"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ:"/>
             <Button
-                android:layout_width="0dp"
-                android:layout_weight="6"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_mac_connect"
                 android:background="@drawable/selector_connect_button"
                 android:text="@string/mac_connect"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:textColor="#FFFFFF"/>
 
         </LinearLayout>
@@ -59,7 +59,8 @@
             android:layout_marginTop="40dp"
             android:layout_below="@id/include"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
             <ImageView
                 android:id="@+id/iv_phone"
                 android:layout_width="wrap_content"

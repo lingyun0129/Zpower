@@ -148,7 +148,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         myBluetoothManager.checkDevice(getActivity());
         MyLog.e(TAG, "myBluetoothAdapter.isEnabled:" + myBluetoothAdapter.isEnabled());
         if (myBluetoothAdapter.isEnabled()) {
-            lodingIndicator.setVisibility(View.INVISIBLE);
+            //lodingIndicator.setVisibility(View.INVISIBLE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermission();
             }

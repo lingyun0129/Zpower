@@ -42,7 +42,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
     ImageView iv_back;
     BleDevice connected_device = null;
     byte[] cmd = new byte[3];//指令数组
-    int selected_item=2;//dialog siglechoice 选择项
+    int selected_item = 2;//dialog siglechoice 选择项
 
     public static ConnectedDeviceInfoFragment newInstance() {
         return new ConnectedDeviceInfoFragment();
@@ -220,7 +220,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                 writeCharacteristic(CMDUtils.CMD_PARK_TEST);
                 break;
             case R.id.btn_test_lmd: {
-                selected_item=2;
+                selected_item = 2;
                 cmd[0] = CMDUtils.CMD_SET_LMD_TEST[0];
                 cmd[1] = CMDUtils.CMD_SET_LMD_TEST[1];
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -228,13 +228,13 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                 builder.setSingleChoiceItems(R.array.lmd, 2, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        selected_item=which;
+                        selected_item = which;
                     }
                 });
                 builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        cmd[2] = (byte)(selected_item+1);
+                        cmd[2] = (byte) (selected_item + 1);
                         writeCharacteristic(cmd);
                     }
                 });
@@ -242,7 +242,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
             }
             break;
             case R.id.btn_test_time: {
-                selected_item=1;
+                selected_item = 1;
                 cmd[0] = CMDUtils.CMD_SET_TIME_TEST[0];
                 cmd[1] = CMDUtils.CMD_SET_TIME_TEST[1];
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -250,7 +250,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                 builder.setSingleChoiceItems(R.array.time, 1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        selected_item=which;
+                        selected_item = which;
 
                     }
                 });

@@ -345,6 +345,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
                 progressDialog.dismiss();
             }
             Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+            pop();
         }
 
         @Override
