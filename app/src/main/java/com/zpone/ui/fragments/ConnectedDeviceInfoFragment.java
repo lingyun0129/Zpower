@@ -109,6 +109,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                     public void onCharacteristicChanged(byte[] data) {
                         // 打开通知后，设备发过来的数据将在这里出现
                         Log.e("cly", "接收到的数据:" + HexUtil.formatHexString(data));
+                        Toast.makeText(getActivity(),"接收:"+ HexUtil.formatHexString(data),Toast.LENGTH_SHORT).show();
                         switch (data[0]) {
                             case 0x01:
                                 test_park.setEnabled(true);
