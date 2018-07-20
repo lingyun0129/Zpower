@@ -158,10 +158,10 @@ public class CaptureFragment extends BaseFragment implements Callback,
         // FIXME
         if (resultString.equals("")) {
 
-            Toast.makeText(getActivity(), "Scan failed!", Toast.LENGTH_SHORT)
+            Toast.makeText(mContext, "Scan failed!", Toast.LENGTH_SHORT)
                     .show();
         } else {
-            Toast.makeText(getActivity(), "Scan Result:" + resultString, Toast.LENGTH_SHORT)
+            Toast.makeText(mContext, "Scan Result:" + resultString, Toast.LENGTH_SHORT)
                     .show();
             final String bt_mac = resultString;
             BluetoothAdapter bluetoothAdapter = BleManager.getInstance().getBluetoothAdapter();
@@ -186,7 +186,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
                     }).start();
                 }
             } else {
-                Toast.makeText(getActivity(), R.string.invalid_mac_adress, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.invalid_mac_adress, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -307,25 +307,25 @@ public class CaptureFragment extends BaseFragment implements Callback,
     @Override
     public void onBluetoothConnect(BluetoothDevice device) {
 //        super.onBluetoothConnect(device);
-        Toast.makeText(getActivity(), "连接成功！", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "连接成功！", Toast.LENGTH_SHORT).show();
         EventBus.getDefault().postSticky(device);
         start(ConnectedFragment.newInstance());
     }
 
     @Override
     public void onBluetoothDisconnect() {
-        Toast.makeText(getActivity(), "连接失败请重试！", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "连接失败请重试！", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBluetoothConnecting() {
-        Toast.makeText(getActivity(), "正在连接...", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "正在连接...", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onBluetoothDsiconnecting() {
 //        super.onBluetoothDsiconnecting();
-        Toast.makeText(getActivity(), "正在断开连接", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "正在断开连接", Toast.LENGTH_LONG).show();
 
     }
 
@@ -336,7 +336,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
 
         @Override
         public void onStartConnect() {
-            Toast.makeText(getActivity(), "正在连接！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "正在连接！", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -344,7 +344,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接失败", Toast.LENGTH_SHORT).show();
             pop();
         }
 
@@ -354,14 +354,12 @@ public class CaptureFragment extends BaseFragment implements Callback,
                 progressDialog.dismiss();
             }
             start(ConnectedDeviceInfoFragment.newInstance());
-            Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mContext, "连接断开！", Toast.LENGTH_SHORT).show();
             ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }

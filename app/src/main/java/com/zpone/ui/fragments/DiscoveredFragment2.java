@@ -3,6 +3,7 @@ package com.zpone.ui.fragments;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -46,34 +47,38 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
     private ProgressDialog progressDialog;
     private ProgressBar scanPgr;
     private BLEDeviceListAdapter mAdater;
-    public static DiscoveredFragment2 newInstance(){
+
+    public static DiscoveredFragment2 newInstance() {
         return new DiscoveredFragment2();
     }
+
     MyBluetoothManager myBluetoothManager = MyBluetoothManager.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_discovered2,container,false);
+        rootView = inflater.inflate(R.layout.fragment_discovered2, container, false);
         initView();
         registerMyBTReceiver();
         EventBus.getDefault().register(this);
         return rootView;
     }
 
+
     private void initView() {
-        listView=(ListView)rootView.findViewById(R.id.device_list);
+        listView = (ListView) rootView.findViewById(R.id.device_list);
         iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(this);
-        mAdater=new BLEDeviceListAdapter();
+        mAdater = new BLEDeviceListAdapter();
         listView.setAdapter(mAdater);
-        scanPgr=(ProgressBar)rootView.findViewById(R.id.scan_pgr);
+        scanPgr = (ProgressBar) rootView.findViewById(R.id.scan_pgr);
 
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 pop();
                 break;
@@ -101,31 +106,32 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
     @Override
     public void onBluetoothConnect(BluetoothDevice device) {
 //        super.onBluetoothConnect(device);
-        Log.e(TAG,device.getAddress()+"连接成功");
-        Toast.makeText(getActivity(),"连接成功！", Toast.LENGTH_SHORT).show();
+        Log.e(TAG, device.getAddress() + "连接成功");
+        Toast.makeText(mContext, "连接成功！", Toast.LENGTH_SHORT).show();
         EventBus.getDefault().postSticky(device);
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
         start(ConnectedFragment.newInstance());
     }
+
     @Override
     public void onBluetoothDisconnect() {
-        Toast.makeText(getActivity(),"连接失败请重试！", Toast.LENGTH_SHORT).show();
-        if (progressDialog != null){
+        Toast.makeText(mContext, "连接失败请重试！", Toast.LENGTH_SHORT).show();
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }
 
     @Override
     public void onBluetoothConnecting() {
-        Toast.makeText(getActivity(),"正在连接...", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "正在连接...", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onBluetoothDsiconnecting() {
 //        super.onBluetoothDsiconnecting();
-        Toast.makeText(getActivity(),"正在断开连接", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "正在断开连接", Toast.LENGTH_LONG).show();
 
     }
 
@@ -133,10 +139,10 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
      * 接收Eventbus消息
      * @param device
      */
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    public void onEventReceiver(BluetoothDevice device){
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventReceiver(BluetoothDevice device) {
         this.device = device;
-        if (mAdater!=null){
+        if (mAdater != null) {
             mAdater.addDevice(device);
             mAdater.notifyDataSetChanged();
         }
@@ -161,7 +167,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
         }
 
         public void addDevice(BluetoothDevice device) {
-            if(!mLeDevices.contains(device)) {
+            if (!mLeDevices.contains(device)) {
                 mLeDevices.add(device);
             }
         }
@@ -198,7 +204,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
                 viewHolder = new ViewHolder();
                 viewHolder.deviceAddress = (TextView) view.findViewById(R.id.tv_bt_mac);
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.tv_bt_name);
-                viewHolder.btn_connect=(Button)view.findViewById(R.id.btn_bt_connect);
+                viewHolder.btn_connect = (Button) view.findViewById(R.id.btn_bt_connect);
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) view.getTag();
@@ -215,11 +221,13 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
             return view;
         }
     }
+
     static class ViewHolder {
         TextView deviceName;
         TextView deviceAddress;
         Button btn_connect;
     }
+
     public class ListBtnListener implements View.OnClickListener {
 
         int mPosition;
@@ -230,12 +238,12 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 
         @Override
         public void onClick(View v) {
-            final BluetoothDevice clickedDevice=mAdater.getDevice(mPosition);
+            final BluetoothDevice clickedDevice = mAdater.getDevice(mPosition);
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(true);
             progressDialog.setCanceledOnTouchOutside(true);
-            progressDialog.setMessage("Connecting:"+clickedDevice.getName());
+            progressDialog.setMessage("Connecting:" + clickedDevice.getName());
             progressDialog.show();
             //在子线程中连接蓝牙设备
             new Thread(new Runnable() {
@@ -251,6 +259,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
         }
 
     }
+
     /**
      * 连接回调
      */
@@ -258,7 +267,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 
         @Override
         public void onStartConnect() {
-            Toast.makeText(getActivity(), "正在连接！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "正在连接！", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -266,7 +275,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接失败", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -275,20 +284,18 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
                 progressDialog.dismiss();
             }
             start(ConnectedDeviceInfoFragment.newInstance());
-            Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mContext, "连接断开！", Toast.LENGTH_SHORT).show();
             ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
 
     private void registerMyBTReceiver() {
-        myBluetoothManager.registerBTReceiver(getActivity(), new MyBluetoothManager.OnRegisterBTReceiver() {
+        myBluetoothManager.registerBTReceiver(mContext, new MyBluetoothManager.OnRegisterBTReceiver() {
 
             /***
              * 发现新设备
@@ -296,8 +303,8 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
              */
             @Override
             public void onBluetoothNewDevice(BluetoothDevice device) {
-                if (device != null&&device.getName()!=null){
-                    if (mAdater!=null){
+                if (device != null && device.getName() != null) {
+                    if (mAdater != null) {
                         mAdater.addDevice(device);
                         mAdater.notifyDataSetChanged();
                     }
@@ -322,7 +329,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 
             @Override
             public void onDiscoveryFinished() {
-               scanPgr.setVisibility(View.INVISIBLE);
+                scanPgr.setVisibility(View.INVISIBLE);
             }
         });
     }

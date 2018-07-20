@@ -136,7 +136,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                         }).start();
                     }
                 } else {
-                    Toast.makeText(getActivity(), R.string.invalid_mac_adress, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.invalid_mac_adress, Toast.LENGTH_SHORT).show();
                 }
             }
             break;
@@ -189,7 +189,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         }
         BleManager.getInstance().disconnectAllDevice();
         BleManager.getInstance().destroy();
-        Log.e("cly","OpenBluetoothFragment OnDestroy is called");
+        Log.e("cly", "OpenBluetoothFragment OnDestroy is called");
         super.onDestroy();
     }
 
@@ -200,7 +200,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
 
         @Override
         public void onStartConnect() {
-            Toast.makeText(getActivity(), "正在连接！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "正在连接！", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -208,7 +208,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
             if (progressDialog != null) {
                 progressDialog.dismiss();
             }
-            Toast.makeText(getActivity(), "连接失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接失败", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -217,14 +217,12 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                 progressDialog.dismiss();
             }
             start(ConnectedDeviceInfoFragment.newInstance());
-            Toast.makeText(getActivity(), "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接成功：！" + bleDevice.getName(), Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            if (getActivity() != null) {
-                Toast.makeText(getActivity(), "连接断开！", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mContext, "连接断开！", Toast.LENGTH_SHORT).show();
             ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
