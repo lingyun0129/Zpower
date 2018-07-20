@@ -98,10 +98,6 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
                 break;
             //搜索
             case R.id.btn_search:
-                if (lodingIndicator.getVisibility() == View.INVISIBLE) {
-                    lodingIndicator.setVisibility(View.VISIBLE);
-                    initData();
-                }
                 myBluetoothManager.startDiscoveringDevices();
                 start(DiscoveredFragment2.newInstance());//跳转到DiscoveredFragment
                 break;

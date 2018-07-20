@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,10 @@ import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleGattCallback;
+import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.clj.fastble.scan.BleScanRuleConfig;
 import com.zpone.R;
 import com.zpone.bluetooth.MyBluetoothManager;
 import com.zpone.observer.ObserverManager;
@@ -33,6 +36,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by zx on 2017/2/25.
@@ -61,6 +66,8 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
         initView();
         registerMyBTReceiver();
         EventBus.getDefault().register(this);
+        //setScanRule();
+        //startScan();
         return rootView;
     }
 
@@ -75,30 +82,50 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 
     }
 
+    private void setScanRule() {
 
+
+        BleScanRuleConfig scanRuleConfig = new BleScanRuleConfig.Builder()
+                //.setServiceUuids(serviceUuids)      // 只扫描指定的服务的设备，可选
+                //.setDeviceName(true, names)   // 只扫描指定广播名的设备，可选
+                //.setDeviceMac(mac)                  // 只扫描指定mac的设备，可选
+                //.setAutoConnect(isAutoConnect)      // 连接时的autoConnect参数，可选，默认false
+                .setScanTimeOut(10000)              // 扫描超时时间，可选，默认10秒
+                .build();
+        BleManager.getInstance().initScanRule(scanRuleConfig);
+    }
+
+    private void startScan() {
+        BleManager.getInstance().scan(new BleScanCallback() {
+            @Override
+            public void onScanStarted(boolean success) {
+                mAdater.clear();
+                mAdater.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLeScan(BleDevice bleDevice) {
+                super.onLeScan(bleDevice);
+            }
+
+            @Override
+            public void onScanning(BleDevice bleDevice) {
+                mAdater.addDevice(bleDevice.getDevice());
+                mAdater.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onScanFinished(List<BleDevice> scanResultList) {
+                scanPgr.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 pop();
                 break;
-/*            case R.id.btn_bt_connect:
-                int position=(Integer) v.getTag();
-                final BluetoothDevice clickedDevice=mAdater.getDevice(position);
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setCancelable(true);
-                progressDialog.setCanceledOnTouchOutside(true);
-                progressDialog.setMessage("正在连接设备:"+clickedDevice.getName());
-                progressDialog.show();
-                //在子线程中连接蓝牙设备
-                new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            MainService.getService().connectBLEDevice(clickedDevice);
-                        }
-                    }).start();
-                break;*/
         }
     }
 
@@ -178,6 +205,7 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
 
         public void clear() {
             mLeDevices.clear();
+
         }
 
         @Override
