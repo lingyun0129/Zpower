@@ -359,7 +359,7 @@ public class CaptureFragment extends BaseFragment implements Callback,
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            Toast.makeText(mContext, "连接断开！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接断开！"+b, Toast.LENGTH_SHORT).show();
             ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }

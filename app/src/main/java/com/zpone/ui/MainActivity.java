@@ -93,7 +93,7 @@ public class MainActivity extends SupportActivity implements BluetoothConnectCal
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if (grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0&&grantResults[0]== PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(this, R.string.permission_ok, Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(this, R.string.permission_no, Toast.LENGTH_SHORT).show();

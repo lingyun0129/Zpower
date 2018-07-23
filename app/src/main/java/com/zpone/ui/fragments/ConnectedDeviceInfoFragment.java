@@ -103,13 +103,16 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                     @Override
                     public void onNotifyFailure(BleException exception) {
                         // 打开通知操作失败
+                        Log.e("cly","异常:"+exception.getDescription());
+                        Toast.makeText(mContext,"打开通知操作失败",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCharacteristicChanged(byte[] data) {
                         // 打开通知后，设备发过来的数据将在这里出现
                         Log.e("cly", "接收到的数据:" + HexUtil.formatHexString(data));
-                        Toast.makeText(getActivity(),"接收:"+ HexUtil.formatHexString(data),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,"接收:"+ HexUtil.formatHexString(data),Toast.LENGTH_SHORT).show();
+
                         switch (data[0]) {
                             case 0x01:
                                 test_park.setEnabled(true);

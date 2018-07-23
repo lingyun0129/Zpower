@@ -154,8 +154,9 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     }
 
     private void requestPermission() {
-        if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA}, 2);
+        if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)||
+                (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.CAMERA}, 2);
             //判断是否需要 向用户解释，为什么要申请该权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -218,7 +219,7 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
 
         @Override
         public void onDisConnected(boolean b, BleDevice bleDevice, BluetoothGatt bluetoothGatt, int i) {
-            Toast.makeText(mContext, "连接断开！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "连接断开！"+b, Toast.LENGTH_SHORT).show();
             ObserverManager.getInstance().notifyObserver(bleDevice);
         }
     }
