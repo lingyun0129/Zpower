@@ -58,7 +58,8 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
         Button btn_rescan = (Button) rootView.findViewById(R.id.btn_scan);
         Button btn_search= (Button) rootView.findViewById(R.id.btn_search);
 
-        iv_back.setOnClickListener(this);
+        //iv_back.setOnClickListener(this);
+        iv_back.setVisibility(View.INVISIBLE);
         btn_rescan.setOnClickListener(this);
         btn_search.setOnClickListener(this);
     }
@@ -104,8 +105,9 @@ public class OpenBluetoothFragment extends BaseFragment implements View.OnClickL
     }
 
     private void requestPermission() {
-        if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)||
+                (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.CAMERA}, 2);
             //判断是否需要 向用户解释，为什么要申请该权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {

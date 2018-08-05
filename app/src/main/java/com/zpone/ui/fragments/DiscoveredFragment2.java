@@ -100,7 +100,8 @@ public class DiscoveredFragment2 extends BaseFragment implements View.OnClickLis
         if (progressDialog != null){
             progressDialog.dismiss();
         }
-        start(ConnectedFragment.newInstance());
+        //start(ConnectedFragment.newInstance());
+        start(CyclingRecordFragment.newInstance());
     }
     @Override
     public void onBluetoothDisconnect() {

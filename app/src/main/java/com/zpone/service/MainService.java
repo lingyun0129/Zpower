@@ -69,7 +69,8 @@ public class MainService {
         private double v1;
         private DataRecord preData=null;//上一条数据
         private DataRecord currentData=null;//当前数据
-
+        private int p;
+        private int count=0;
         @Override
         public void handleMessage(Message msg) {
 
@@ -133,13 +134,37 @@ public class MainService {
                         mDataCallback.onRPM(mFrquency);//瞬时踏频
                         mDataCallback.onDataMaxRpm(mFrquency);//最大踏频
                         mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
-
-                        mDataCallback.onDataWatt(0);//当前功率
-                        mDataCallback.onDataMaxWatt(0);//用来计算最大功率
-                        mDataCallback.onDataAvgWatt(0);//用来计算平均功率
-                        mDataCallback.onDataTotalCalores(0);//用来计算卡路里
+                        if(mFrquency<60){
+                            p=mFrquency/2;
+                        }else if(mFrquency>=60||mFrquency<120)
+                        {
+                            p=(mFrquency*4)/5;
+                        }else if (mFrquency>=120||mFrquency<200)
+                        {
+                            p=(mFrquency*3)/2;
+                        }else if(mFrquency>=200){
+                            p=mFrquency*2;
+                        }
+                        mDataCallback.onDataWatt(p);//当前功率
+                        mDataCallback.onDataMaxWatt(p);//用来计算最大功率
+                        mDataCallback.onDataAvgWatt(p);//用来计算平均功率
+                        mDataCallback.onDataTotalCalores(p);//用来计算卡路里
                         preData = currentData;
+                        count=0;
                     }
+                    else{
+                        count++;
+                        if(count>3){
+                            mDataCallback.onRPM(0);//瞬时踏频
+                            mDataCallback.onDataMaxRpm(0);//最大踏频
+                            //mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
+                            mDataCallback.onDataWatt(0);//当前功率
+                            mDataCallback.onDataMaxWatt(0);//用来计算最大功率
+                            mDataCallback.onDataAvgWatt(0);//用来计算平均功率
+                            //mDataCallback.onDataTotalCalores(p);//用来计算卡路里
+                        }
+                    }
+
                     /*DataModel dataModel = (DataModel) msg.obj;
                     if (dataModel == null) {
                         return;

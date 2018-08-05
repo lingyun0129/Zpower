@@ -222,7 +222,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="桨频"
+                    android:text="踏频"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:textColor="@color/orange_text"/>
