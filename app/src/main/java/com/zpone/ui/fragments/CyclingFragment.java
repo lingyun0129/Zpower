@@ -383,22 +383,40 @@ public class CyclingFragment extends BaseFragment implements View.OnClickListene
             case R.id.sub_btn:
                 if(magnetic_value>0){
                     setMagneticValue(--magnetic_value);
+                    motorBackword();
                 }
                 break;
             case R.id.add_btn:
                 if (magnetic_value<8){
                     setMagneticValue(++magnetic_value);
+                    motorForward();
                 }
                 break;
         }
     }
-
+    private void motorForward()
+    {
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,0x01});
+    }
+    private void motorBackword()
+    {
+        MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,0x09});
+    }
+    public int getMagneticLevel()
+    {
+        return magnetic_value;
+    }
     private void setMagneticValue(int i) {
         if(i>=0&&i<=8){
+            mService.setZuLiLevel(i);
             magnetic_pgr.setProgress(i);
             byte value=(byte)i;
-            MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,value});
+            //MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,value});
         }
+    }
+
+    public ProgressBar getMagnetic_pgr() {
+        return magnetic_pgr;
     }
 
     /**

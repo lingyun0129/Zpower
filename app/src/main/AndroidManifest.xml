@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait">
@@ -49,7 +49,7 @@
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
                 <!-- *#*#0606#*#* -->
-                >
+
                 <data
                     android:host="0606"
                     android:scheme="android_secret_code" />
@@ -57,7 +57,7 @@
         </receiver>
 
         <activity android:name=".ui.UnitCalibrationActivity" />
-        <activity android:name=".ui.MagneticCalibrationActivity"></activity>
+        <activity android:name=".ui.MagneticCalibrationActivity" />
     </application>
 
 </manifest>

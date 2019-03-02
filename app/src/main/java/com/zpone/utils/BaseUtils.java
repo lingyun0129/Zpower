@@ -6,7 +6,7 @@ package com.zpone.utils;
 
 public class BaseUtils {
     /**
-     * byte数组转换为int整数
+     * byte数组转换为int整数,本方法适用于(低位在前，高位在后)的顺序，
      *
      * @param bytes
      *            byte数组

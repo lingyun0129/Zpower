@@ -13,6 +13,7 @@ import com.zpone.inter.BluetoothConnectCallback;
 import com.zpone.inter.DefaultADCCallback;
 import com.zpone.inter.RecordDataCallback;
 import com.zpone.model.DataRecord;
+import com.zpone.ui.fragments.CyclingFragment;
 import com.zpone.utils.BaseUtils;
 import com.zpone.utils.MyLog;
 
@@ -27,12 +28,16 @@ public class MainService {
 
     private final static String tag = MainService.class.getCanonicalName();
     private final double r = 0.17;
-    private final double l =  2 * Math.PI * r;//曲柄周长
+    private final double l = 2 * Math.PI * r;//曲柄周长
     private Context mContext;
     private static MainService mService;
     private BluetoothDevice mConnDevice;
     private boolean isInCycling = false;
-
+    private int zuLiLevel=1;
+    public void setZuLiLevel(int level)
+    {
+        zuLiLevel=level;
+    }
     //重力加速度
     private final static float g = 9.8f;
     /**
@@ -47,6 +52,7 @@ public class MainService {
     private BluetoothConnectCallback mBLEconnCallback;
     private DefaultADCCallback mDefaultADCCallback;
     private BatteryLevelCallback mBatteryLevelCallback;
+
     private MainService() {
     }
 
@@ -61,16 +67,16 @@ public class MainService {
         mContext = context;
         mBLEconnCallback = callback;
     }
-    private int LastRound = 0;
-    private int round;
+
     private Handler mHandler = new Handler() {
         private int defaultADC;
         private double m;
         private double v1;
-        private DataRecord preData=null;//上一条数据
-        private DataRecord currentData=null;//当前数据
+        private DataRecord preData = null;//上一条数据
+        private DataRecord currentData = null;//当前数据
         private int p;
-        private int count=0;
+        private int count = 0;
+
         @Override
         public void handleMessage(Message msg) {
 
@@ -118,15 +124,15 @@ public class MainService {
                 case MessageTypes.MSG_BLUETOOTH://蓝牙数据
 
                     //根据踏频计算相应参数
-                    currentData=(DataRecord)msg.obj;
-                    if(currentData==null||mDataCallback==null){
+                    currentData = (DataRecord) msg.obj;
+                    if (currentData == null || mDataCallback == null) {
                         return;
                     }
-                    if(preData==null&&currentData!=null){
-                        preData=currentData;
+                    if (preData == null && currentData != null) {
+                        preData = currentData;
                         return;
                     }
-                    if(preData.getRounds()!=currentData.getRounds()) {
+                    if (preData.getRounds() != currentData.getRounds()) {
                         int InsCadence = getFrequency(preData.getRounds(), currentData.getRounds(), preData.getElapsedTime(), currentData.getElapsedTime());
                         if (InsCadence > 0) {
                             mFrquency = InsCadence;
@@ -134,27 +140,53 @@ public class MainService {
                         mDataCallback.onRPM(mFrquency);//瞬时踏频
                         mDataCallback.onDataMaxRpm(mFrquency);//最大踏频
                         mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
-                        if(mFrquency<60){
-                            p=mFrquency/2;
-                        }else if(mFrquency>=60||mFrquency<120)
-                        {
-                            p=(mFrquency*4)/5;
-                        }else if (mFrquency>=120||mFrquency<200)
-                        {
-                            p=(mFrquency*3)/2;
-                        }else if(mFrquency>=200){
-                            p=mFrquency*2;
+                        if (mFrquency < 60) {
+                            p = mFrquency / 2;
+                        } else if (mFrquency >= 60 || mFrquency < 120) {
+                            p = (mFrquency * 4) / 5;
+                        } else if (mFrquency >= 120 || mFrquency < 200) {
+                            p = (mFrquency * 3) / 2;
+                        } else if (mFrquency >= 200) {
+                            p = mFrquency * 2;
+                        }
+                        Log.d("cly", "当前阻力等级 " + CyclingFragment.newInstance().getMagneticLevel());
+                        switch (zuLiLevel) {
+                            case 1:
+
+                                break;
+                            case 2:
+                                p = p * 15 / 10;
+                                break;
+                            case 3:
+                                p = p * 18 / 10;
+                                break;
+                            case 4:
+                                p = p * 22 / 10;
+                                break;
+                            case 5:
+                                p = p * 25 / 10;
+                                break;
+                            case 6:
+                                p = p * 28 / 10;
+                                break;
+                            case 7:
+                                p = p * 3;
+                                break;
+                            case 8:
+                                p = p * 35 / 10;
+                                break;
+                            default:
+                                break;
                         }
                         mDataCallback.onDataWatt(p);//当前功率
                         mDataCallback.onDataMaxWatt(p);//用来计算最大功率
                         mDataCallback.onDataAvgWatt(p);//用来计算平均功率
                         mDataCallback.onDataTotalCalores(p);//用来计算卡路里
                         preData = currentData;
-                        count=0;
-                    }
-                    else{
+                        count = 0;
+                    } else {
                         count++;
-                        if(count>3){
+                        if (count > 3) {
                             mDataCallback.onRPM(0);//瞬时踏频
                             mDataCallback.onDataMaxRpm(0);//最大踏频
                             //mDataCallback.onDataTotalKM(avgFrequency * l);//平均踏频*周长
@@ -200,12 +232,12 @@ public class MainService {
                     }*/
                     break;
                 case MessageTypes.MSG_DEFAULT_ADC:
-                    defaultADC =(int)msg.obj; //getADC((byte[]) msg.obj);
+                    defaultADC = (int) msg.obj; //getADC((byte[]) msg.obj);
                     mDefaultADCCallback.onDefaultADC(defaultADC);
-                    Log.e(tag,"MainService defaultADC:"+ defaultADC +"");
+                    Log.e(tag, "MainService defaultADC:" + defaultADC + "");
                     break;
                 case MessageTypes.MSG_BATTERY_LEVEL:
-                    int battery_level=(int)msg.obj;
+                    int battery_level = (int) msg.obj;
                     mBatteryLevelCallback.onBatterLevelDisplay(battery_level);
                     break;
             }
@@ -220,27 +252,28 @@ public class MainService {
     private int mTime;
     private int count = 0;
     private int frequencySum = 0;
-    private int getFrequency(int r1,int r2,int t1,int t2){
-        if (isFirstRound){
+
+    private int getFrequency(int r1, int r2, int t1, int t2) {
+        if (isFirstRound) {
             isFirstRound = false;
-        }else {
-                int duration = t2-t1;
-                if(duration!=0) {
-                    frequency = (r2 - r1)*60*1024/duration;
-                    Log.e(tag, "瞬时踏频:" + frequency);
-                    count++;
-                    frequencySum = frequencySum + frequency;
-                    avgFrequency = frequencySum / count;
-                    Log.e(tag, "平均踏频:" + avgFrequency);
-                }
+        } else {
+            int duration = t2 - t1;
+            if (duration != 0) {
+                frequency = (r2 - r1) * 10 * 1024 / duration;//60/5=12
+                Log.e(tag, "瞬时踏频:" + frequency);
+                count++;
+                frequencySum = frequencySum + frequency;
+                avgFrequency = frequencySum / count;
+                Log.e(tag, "平均踏频:" + avgFrequency);
+            }
         }
 
-        return  frequency;
+        return frequency;
     }
     private Timer mTimer = null;
     private TimerTask mTask = null;
 
-    private void startTimer(){
+    private void startTimer() {
         stopTimer();
         mTimer = new Timer("CycleTimer");
         mTask = new TimerTask() {
@@ -249,11 +282,11 @@ public class MainService {
                 mHandler.sendEmptyMessage(MessageTypes.MSG_CYCLE_TIMER);
             }
         };
-        mTimer.schedule(mTask,0,4000);
+        mTimer.schedule(mTask, 0, 4000);
     }
 
-    private void stopTimer(){
-        if(mTimer != null){
+    private void stopTimer() {
+        if (mTimer != null) {
             mTimer.cancel();
             mTask.cancel();
             mTimer.purge();
@@ -262,12 +295,12 @@ public class MainService {
         }
     }
 
-    private int getADC(byte[] data){
+    private int getADC(byte[] data) {
         int adc = 0;
-        if(data == null || data.length != 3){
-            return  0;
+        if (data == null || data.length != 3) {
+            return 0;
         }
-        adc = BaseUtils.byte3ToInt(data,0);
+        adc = BaseUtils.byte3ToInt(data, 0);
         return adc;
     }
 
@@ -287,7 +320,7 @@ public class MainService {
      V2 = V1 * M;
      说明
      V1：曲柄速度    V2:实际速度   f:踏频     l：曲柄周长    V：速度  M : 轮速比  r : 曲柄半径
-        卡路里 = p*s/1000/4.18/0.22 (p:功率 s:时间)
+     卡路里 = p*s/1000/4.18/0.22 (p:功率 s:时间)
 
      */
 
@@ -323,20 +356,22 @@ public class MainService {
     /***
      * 暂停读取数据
      */
-    public void pauseRecord(){
+    public void pauseRecord() {
         BluetoothService.stopReadData();
         setInCycling(false);
         stopTimer();
     }
-    public void getDefaultADC(DefaultADCCallback callback){
+
+    public void getDefaultADC(DefaultADCCallback callback) {
         BluetoothService.setHandler(mHandler);
         mDefaultADCCallback = callback;
     }
 
-    public void setBatteryLevelCallback(BatteryLevelCallback callback){
+    public void setBatteryLevelCallback(BatteryLevelCallback callback) {
         BluetoothService.setHandler(mHandler);
         mBatteryLevelCallback = callback;
     }
+
     public boolean isInCycling() {
         return isInCycling;
     }

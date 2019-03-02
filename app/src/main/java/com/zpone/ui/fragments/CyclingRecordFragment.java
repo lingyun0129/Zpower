@@ -143,13 +143,12 @@ public class CyclingRecordFragment extends BaseFragment implements View.OnClickL
             case R.id.iv_reset:
                 mService.getDefaultADC(defaultADCCallback);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.adc_calibration);
-                builder.setMessage(R.string.calibration_hint);
+                builder.setTitle("磁控复位");
                 builder.setNegativeButton(R.string.zpower_cancel, null);
                 builder.setPositiveButton(R.string.zpower_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x0C});
+                        boolean success = MyBluetoothManager.getInstance().writeCharacteristic(new byte[]{0x11,0x10});
                         if (success) {
                             isReset = true;
                             Log.e(TAG, "writeDataToCharacteristic(new byte[]{0x0C}");

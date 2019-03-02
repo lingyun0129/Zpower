@@ -44,8 +44,8 @@ public class DataRecord {
      * @return 返回圈数
      */
     public int getRounds(){
-        Log.e("cly","圈数："+BaseUtils.bytes2ToInt(crank_round,0));
-        return BaseUtils.bytes2ToInt(crank_round,0);
+        Log.e("cly","圈数："+BaseUtils.bytes4ToInt(wheel_round,0));
+        return BaseUtils.bytes4ToInt(wheel_round,0);
     }
 
     /**
@@ -53,8 +53,7 @@ public class DataRecord {
      * @return 返回耗时
      */
     public int getElapsedTime(){
-        return BaseUtils.bytes2ToInt(crank_time,0);
+        return BaseUtils.bytes2ToInt(wheel_time,0);
     }
-
 
 }

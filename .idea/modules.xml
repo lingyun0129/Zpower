@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Zpower.iml" filepath="$PROJECT_DIR$/Zpower.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zpower_motor.iml" filepath="$PROJECT_DIR$/zpower_motor.iml" />
     </modules>
   </component>
 </project>

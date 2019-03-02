@@ -30,6 +30,8 @@ import com.zpone.utils.MyLog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 /**
@@ -354,13 +356,13 @@ public class MyBluetoothManager {
             }
             //找到服务了
             mBluetoothGatt = gatt;
-/*            Timer timer=new Timer();
+            Timer timer=new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    setCharacteristicNotification(BluetoothUUID.CYCLING_POWER_MEASUREMENT,false);
+                    setCharacteristicNotification(BluetoothUUID.SC_CONTROL_POINT,true);
                 }
-            },2000);*/
+            },2000);
             setCharacteristicNotification(BluetoothUUID.CSC_MEASUREMENT,false);
             //setCharacteristicNotification(BluetoothUUID.FITNESS_MACHINE_STATUS,false);
             //setCharacteristicNotification(BluetoothUUID.CYCLING_POWER_CONTROL_POINT,true);
@@ -473,7 +475,7 @@ public class MyBluetoothManager {
         }
 
         BluetoothGattCharacteristic charac = Service
-                .getCharacteristic(BluetoothUUID.CYCLING_POWER_CONTROL_POINT);
+                .getCharacteristic(BluetoothUUID.SC_CONTROL_POINT);
         if (charac == null) {
             Log.e(TAG, "char not found!");
             return false;
