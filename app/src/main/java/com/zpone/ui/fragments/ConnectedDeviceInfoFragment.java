@@ -38,7 +38,7 @@ import java.util.List;
 public class ConnectedDeviceInfoFragment extends BaseFragment implements Observer, View.OnClickListener {
     View rootView;
     TextView parking_status, network_status, battery_info;
-    Button test_mode, test_park, test_set_lmd, test_set_time, test_highlevel_time, test_lowlevel_time, test_get_battery, test_normal;
+    Button test_mode, test_park, test_set_lmd, test_set_time, test_highlevel_time, test_lowlevel_time, test_get_battery, test_normal,test_reset;
     ImageView iv_back;
     BleDevice connected_device = null;
     byte[] cmd = new byte[3];//指令数组
@@ -72,14 +72,16 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
         test_set_lmd.setOnClickListener(this);
         test_set_time = (Button) rootView.findViewById(R.id.btn_test_time);
         test_set_time.setOnClickListener(this);
-        test_highlevel_time = (Button) rootView.findViewById(R.id.btn_test_highlevel_time);
-        test_highlevel_time.setOnClickListener(this);
-        test_lowlevel_time = (Button) rootView.findViewById(R.id.btn_test_lowlevel_time);
-        test_lowlevel_time.setOnClickListener(this);
+        //test_highlevel_time = (Button) rootView.findViewById(R.id.btn_test_highlevel_time);
+        //test_highlevel_time.setOnClickListener(this);
+        //test_lowlevel_time = (Button) rootView.findViewById(R.id.btn_test_lowlevel_time);
+        //test_lowlevel_time.setOnClickListener(this);
         test_get_battery = (Button) rootView.findViewById(R.id.btn_test_battery);
         test_get_battery.setOnClickListener(this);
         test_normal = (Button) rootView.findViewById(R.id.btn_test_normal_mode);
         test_normal.setOnClickListener(this);
+        test_reset = (Button) rootView.findViewById(R.id.btn_test_reset);
+        test_reset.setOnClickListener(this);
 
 
         List<BleDevice> connected_devices = BleManager.getInstance().getAllConnectedDevice();
@@ -103,22 +105,32 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                     @Override
                     public void onNotifyFailure(BleException exception) {
                         // 打开通知操作失败
-                        Log.e("cly","异常:"+exception.getDescription());
-                        Toast.makeText(mContext,"打开通知操作失败",Toast.LENGTH_SHORT).show();
+                        Log.e("cly", "异常:" + exception.getDescription());
+                        Toast.makeText(mContext, "打开通知操作失败", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onCharacteristicChanged(byte[] data) {
+                    public void onCharacteristicChanged(byte[] value) {
                         // 打开通知后，设备发过来的数据将在这里出现
-                        Log.e("cly", "接收到的数据:" + HexUtil.formatHexString(data));
-                        Toast.makeText(mContext,"接收:"+ HexUtil.formatHexString(data),Toast.LENGTH_SHORT).show();
-
-                        switch (data[0]) {
+                        Log.e("cly", "接收到的数据:" + HexUtil.formatHexString(value));
+                        Toast.makeText(mContext, "接收:" + HexUtil.formatHexString(value), Toast.LENGTH_SHORT).show();
+                        byte cmd = value[1];
+                        byte data = value[2];
+                        switch (cmd) {
                             case 0x01:
-                                test_park.setEnabled(true);
-                                setButtonBgGreen(test_mode);
+                                if(data==0x00){//成功
+                                    test_park.setEnabled(true);
+                                    setButtonBgGreen(test_mode);
+                                }else if(data==0x01){//失败
+                                    setButtonBgRed(test_mode);
+                                }
                                 break;
                             case 0x02:
+                                if(data==0x01){//有车
+                                    parking_status.setText("有车");
+                                }else{//无车
+                                    parking_status.setText("无车");
+                                }
                                 test_set_lmd.setEnabled(true);
                                 setButtonBgGreen(test_park);
                                 break;
@@ -127,7 +139,8 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                                 setButtonBgGreen(test_set_lmd);
                                 break;
                             case 0x04:
-                                test_highlevel_time.setEnabled(true);
+                                //test_highlevel_time.setEnabled(true);
+                                test_get_battery.setEnabled(true);
                                 setButtonBgGreen(test_set_time);
                                 break;
                             case 0x05:
@@ -144,6 +157,9 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                                 break;
                             case 0x08:
                                 setButtonBgGreen(test_normal);
+                                break;
+                            case 0x09:
+                                setButtonBgGreen(test_reset);
                                 break;
                         }
                     }
@@ -274,7 +290,7 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                 builder.show();
             }
             break;
-            case R.id.btn_test_highlevel_time: {
+           /* case R.id.btn_test_highlevel_time: {
                 final EditText et_time = new EditText(getContext());
                 et_time.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                 et_time.setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
@@ -319,12 +335,15 @@ public class ConnectedDeviceInfoFragment extends BaseFragment implements Observe
                 });
                 builder.show();
             }
-            break;
+            break;*/
             case R.id.btn_test_battery:
                 writeCharacteristic(CMDUtils.CMD_BATTERY_TEST);
                 break;
             case R.id.btn_test_normal_mode:
                 writeCharacteristic(CMDUtils.CMD_ENTER_NORMAL_MODE);
+                break;
+            case R.id.btn_test_reset:
+                writeCharacteristic(CMDUtils.CMD_ENTER_RESET);
                 break;
         }
     }

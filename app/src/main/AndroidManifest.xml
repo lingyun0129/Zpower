@@ -48,7 +48,6 @@
             <intent-filter>
                 <action android:name="android.provider.Telephony.SECRET_CODE" />
                 <!-- *#*#0606#*#* -->
-                >
                 <data
                     android:host="0606"
                     android:scheme="android_secret_code" />
